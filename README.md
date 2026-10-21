@@ -1,6 +1,6 @@
 # Silverstripe CMS Styles
 
-A fresh, modern style for the Silverstripe CMS (it replaces the previous CMS theme module).
+A fresh, modern style for the Silverstripe CMS (it replaces styles loaded by cms modules).
 
 The CMS's own stylesheets, and those of the modules that add to it, are **blocked** (`Requirements::block`) and the CMS
 is styled from scratch, so nothing is overridden. The CMS's javascript is untouched: only the styles are replaced.
