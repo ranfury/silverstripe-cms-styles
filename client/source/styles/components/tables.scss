@@ -1,0 +1,135 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Tables
+// ===============================
+
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .93rem;
+  color: var(--cms-text);
+  vertical-align: middle;
+
+  th,
+  td {
+    padding: .7rem 1rem;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--cms-border);
+  }
+
+  thead th {
+    padding-top: .6rem;
+    padding-bottom: .6rem;
+    font-size: .75rem;
+    font-weight: $semibold;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--cms-text-muted);
+    background-color: var(--cms-sunken);
+  }
+
+  tbody tr:last-child > * {
+    border-bottom: 0;
+  }
+}
+
+.table-hover tbody tr:hover > * {
+  background-color: var(--cms-hover);
+}
+
+.table-striped tbody tr:nth-of-type(odd) > * {
+  background-color: color-mix(in srgb, var(--cms-sunken), transparent 50%);
+}
+
+.table-sm {
+  th,
+  td {
+    padding: .4rem .65rem;
+  }
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+// ===============================
+// Lists (bootstrap list groups)
+// ===============================
+
+.list-group {
+  @include list-reset;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius);
+}
+
+.list-group-item {
+  position: relative;
+  display: block;
+  padding: .65rem 1rem;
+  color: var(--cms-text);
+  background-color: var(--cms-surface);
+
+  & + & {
+    border-top: 1px solid var(--cms-border);
+  }
+
+  &-action {
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: none;
+      background-color: var(--cms-hover);
+    }
+  }
+
+  &.active {
+    color: var(--cms-text);
+    background-color: var(--cms-accent-soft);
+  }
+}
+
+// ===============================
+// Pagination (bootstrap)
+// ===============================
+
+.pagination {
+  @include list-reset;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
+}
+
+.page-link {
+  display: grid;
+  place-items: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 .5rem;
+  border-radius: var(--cms-radius-sm);
+  font-size: .9rem;
+  color: var(--cms-text);
+
+  &:hover {
+    text-decoration: none;
+    background-color: var(--cms-hover);
+  }
+
+  .active > & {
+    color: var(--cms-on-accent);
+    background-color: var(--cms-accent);
+  }
+
+  .disabled > & {
+    color: var(--cms-text-faint);
+    pointer-events: none;
+  }
+}

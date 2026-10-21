@@ -1,0 +1,49 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Switch states (the preview's Draft / Published)
+// ===============================
+
+// A segmented control: the active state is the raised segment
+.switch-states {
+  display: inline-flex;
+
+  .switch {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    border-radius: var(--cms-radius);
+    background-color: var(--cms-sunken);
+  }
+
+  .state-name {
+    display: inline-flex;
+    align-items: center;
+    padding: .3rem .75rem;
+    border-radius: calc(var(--cms-radius) - 3px);
+    font-size: .86rem;
+    font-weight: $medium;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--cms-text-muted);
+    transition:
+      color $fast ease,
+      background-color $fast ease;
+
+    &:hover {
+      text-decoration: none;
+      color: var(--cms-text);
+    }
+
+    &.active {
+      color: var(--cms-text);
+      background-color: var(--cms-surface);
+      box-shadow: var(--cms-shadow-sm);
+    }
+
+    // The radios some versions use
+    input {
+      @include visually-hidden;
+    }
+  }
+}

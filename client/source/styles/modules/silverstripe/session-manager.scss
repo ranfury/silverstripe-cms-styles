@@ -1,0 +1,41 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Login sessions (silverstripe/session-manager, on a member's profile)
+// ===============================
+
+.session-manager-field {
+  padding: .5rem 0;
+}
+
+.login-session {
+  height: auto;
+  margin-bottom: .5rem;
+  padding: .75rem 1rem;
+  overflow: hidden;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-surface);
+  transition:
+    opacity .5s ease 1s,
+    height .5s ease 1s;
+
+  p {
+    margin: 0;
+    font-size: .9rem;
+  }
+
+  // Logged out: fades away
+  &.hidden {
+    height: 0;
+    padding-block: 0;
+    border-width: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.login-session__logout {
+  padding: 0;
+  font-weight: $semibold;
+}

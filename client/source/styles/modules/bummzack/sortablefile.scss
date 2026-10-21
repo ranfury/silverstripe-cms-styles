@@ -1,0 +1,103 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Sortable upload field (bummzack/sortablefile)
+// ===============================
+
+// An upload field whose files can be dragged into order. Each file's row (asset-admin's .uploadfield-item, see
+// modules/silverstripe/asset-admin/upload-field.scss) is wrapped in a .sortable-item with a drag handle, and the
+// wrapper is the row here: the same card as an ordinary upload field's list, with the handle in a gutter on its left.
+// The module's own client/dist/styles/main.css is blocked (blocked_stylesheets in _config/config.yml): its rows had a
+// fixed light border whatever the theme, and its handle was centred with a 60px line height, so it sat at the top
+// of any row taller than that.
+
+.sortable-item {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--cms-border);
+  border-radius: 0;
+  background-color: var(--cms-surface);
+  transition: background-color $fast ease;
+
+  // Joined into one list: each row's top border is the one above's bottom
+  & + & {
+    margin-top: -1px;
+  }
+
+  .uploadfield__dropzone + &,
+  &:first-of-type {
+    border-top-left-radius: var(--cms-radius);
+    border-top-right-radius: var(--cms-radius);
+  }
+
+  &:last-of-type {
+    border-bottom-left-radius: var(--cms-radius);
+    border-bottom-right-radius: var(--cms-radius);
+  }
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--cms-surface), var(--cms-text) 2%);
+  }
+
+  // Being dragged: lifted off the list
+  &--dragging {
+    z-index: 2;
+    border-radius: var(--cms-radius);
+    box-shadow: var(--cms-shadow);
+    cursor: grabbing;
+    pointer-events: auto !important;
+
+    .sortable-item__handle {
+      cursor: grabbing;
+    }
+  }
+
+  // The file inside is the wrapper's: no border, corners or background of its own, and room for the handle
+  .uploadfield-item {
+    &,
+    &:first-child,
+    &:last-child,
+    .uploadfield__dropzone + & {
+      min-height: 3.75rem;
+      height: auto;
+      padding-left: 2rem;
+      border: 0;
+      border-radius: 0;
+      background-color: transparent;
+    }
+  }
+}
+
+// The handle: a gutter the height of the row, the dots in its middle
+.sortable-item__handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: auto;
+  font-size: 1.15rem;
+  color: var(--cms-text-muted);
+  opacity: .7;
+  cursor: grab;
+  transition:
+    opacity $fast ease,
+    color $fast ease;
+
+  &::before {
+    position: static;
+    width: auto;
+    line-height: 1;
+    text-indent: 0;
+  }
+
+  .sortable-item:hover &,
+  &:hover {
+    opacity: 1;
+    color: var(--cms-text);
+  }
+}

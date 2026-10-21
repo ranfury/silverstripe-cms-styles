@@ -1,0 +1,228 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Inputs
+// ===============================
+
+// Every text-like control looks the same (selects: forms/select.scss)
+.form-control,
+input:is([type="text"], [type="email"], [type="password"], [type="search"], [type="url"], [type="tel"], [type="number"], [type="date"], [type="time"], [type="datetime-local"], [type="month"], [type="week"]),
+input:not([type]),
+textarea {
+  @include control;
+
+  &:focus,
+  &:focus-visible {
+    @include control-focus;
+  }
+}
+
+textarea {
+  min-height: 6rem;
+}
+
+input[type="color"] {
+  width: 3rem;
+  height: 2.5rem;
+  padding: .2rem;
+  border: 1px solid var(--cms-border-strong);
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-surface);
+}
+
+input[type="file"] {
+  font-size: .9rem;
+}
+
+// Native pickers follow the color-scheme
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  max-width: 16rem;
+}
+
+input[type="number"] {
+  max-width: 12rem;
+}
+
+// ===============================
+// Sizes
+// ===============================
+
+.form-control-sm {
+  min-height: 2rem;
+  padding: .3rem .6rem;
+  font-size: .86rem;
+}
+
+.form-control-lg {
+  min-height: 3rem;
+  font-size: 1.05rem;
+}
+
+// ===============================
+// Input groups (an input with buttons or text joined on)
+// ===============================
+
+.input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  width: 100%;
+
+  > .form-control,
+  > input,
+  > select {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+
+    &:focus {
+      z-index: 2;
+    }
+  }
+
+  > :not(:first-child) {
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  > :not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  > .btn {
+    position: relative;
+    z-index: 1;
+    box-shadow: none;
+  }
+}
+
+.input-group-text {
+  display: flex;
+  align-items: center;
+  padding: 0 .8rem;
+  border: 1px solid var(--cms-border-strong);
+  border-radius: var(--cms-radius);
+  font-size: .9rem;
+  white-space: nowrap;
+  color: var(--cms-text-muted);
+  background-color: var(--cms-sunken);
+}
+
+.input-group-prepend,
+.input-group-append {
+  display: flex;
+}
+
+// ===============================
+// Read only fields
+// ===============================
+
+// A readonly field's value (readonly is also put on other things, e.g. a tab, so only field values)
+span.readonly,
+p.readonly,
+.form-control-plaintext {
+  display: block;
+  padding: .5rem 0;
+  min-height: 2.5rem;
+  color: var(--cms-text);
+}
+
+// A readonly field's value, e.g. on a published record
+.form-group.readonly .form__field-holder > span,
+.form-group.readonly .form__field-holder > p,
+.form-control-static {
+  display: block;
+  padding: .5rem 0;
+  color: var(--cms-text);
+}
+
+// ===============================
+// URL segment (page "URL segment": a link with an Edit button, then an input)
+// ===============================
+
+.urlsegment {
+  .preview-holder {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    min-height: 2.5rem;
+
+    a {
+      overflow-wrap: anywhere;
+    }
+  }
+
+  // Hidden until "Edit" is pressed (the javascript shows it): the input with OK / Cancel joined on
+  .edit-holder {
+    display: none;
+
+    .input-group {
+      max-width: 34rem;
+    }
+
+    .btn {
+      --btn-height: auto;
+      --btn-font-size: .93rem;
+      padding: 0 1rem;
+    }
+  }
+
+  .form__field-description {
+    flex: 1 1 100%;
+  }
+}
+
+// The "Update URL" button after the page name
+.form__field-update-url {
+  margin-top: .5rem;
+}
+
+// ===============================
+// Confirmed password (two inputs, revealed by a button)
+// ===============================
+
+.confirmedpassword {
+  .showOnClick {
+    margin-top: .75rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+}
+
+// ===============================
+// Progress bars (e.g. a queued job's)
+// ===============================
+
+progress {
+  width: 100%;
+  max-width: 34rem;
+  height: .5rem;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--cms-radius-pill);
+  background-color: var(--cms-sunken);
+  appearance: none;
+
+  &::-webkit-progress-bar {
+    background-color: var(--cms-sunken);
+  }
+
+  &::-webkit-progress-value {
+    border-radius: inherit;
+    background-color: var(--cms-accent);
+  }
+
+  &::-moz-progress-bar {
+    border-radius: inherit;
+    background-color: var(--cms-accent);
+  }
+}

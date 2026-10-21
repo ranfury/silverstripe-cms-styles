@@ -1,0 +1,223 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Checkboxes & radios
+// ===============================
+
+// Native controls, drawn in the theme
+.form-check-input,
+input[type="checkbox"],
+input[type="radio"] {
+  @include check-box;
+  appearance: none;
+  vertical-align: middle;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    border-color: var(--cms-focus);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+}
+
+input[type="checkbox"],
+.form-check-input[type="checkbox"] {
+  &:checked {
+    @include check-box-checked;
+  }
+
+  &:indeterminate {
+    @include check-box-checked(dash);
+  }
+}
+
+input[type="radio"],
+.form-check-input[type="radio"] {
+  border-radius: 50%;
+
+  &:checked {
+    border-color: var(--cms-accent);
+    background-color: var(--cms-surface);
+    box-shadow: inset 0 0 0 4px var(--cms-accent);
+  }
+}
+
+// ===============================
+// Option rows (a control and its label)
+// ===============================
+
+// (not the field itself, a .form-group.checkbox keeps the spacing of a field)
+.form-check,
+.checkbox:not(input, .form-group),
+.radio:not(input, .form-group) {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  min-height: 1.75rem;
+  margin: 0;
+  padding: 0;
+}
+
+// The CMS nests the input inside its label, before or after the text: it always shows first
+.form-check-label {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+
+  > input {
+    order: -1;
+  }
+
+  margin: 0;
+  font-weight: $regular;
+  color: var(--cms-text);
+  cursor: pointer;
+}
+
+// A single checkbox field: its holder has the label (and the box inside it), so it lines up with the other fields
+.form-group.checkbox {
+  // Checkboxes one after the other sit close together, the last one has the space of a field
+  &:has(+ .form-group.checkbox) {
+    margin-bottom: .25rem;
+  }
+
+  .form__field-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: .25rem;
+  }
+
+  > .form__field-holder {
+    padding-top: .35rem;
+  }
+}
+
+// ===============================
+// Option sets (radios / checkboxes in a list)
+// ===============================
+
+// (the field's holder has the same class, it keeps the form's spacing)
+:is(.optionset, .checkboxset, .selection-group):not(.form-group) {
+  @include list-reset;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  padding-top: .35rem;
+
+  li {
+    list-style: none;
+  }
+
+  // The option's description, e.g. a page type's
+  .description,
+  .form-check-label span {
+    color: var(--cms-text-muted);
+  }
+}
+
+// Horizontal option sets
+:is(.optionset--inline, .optionset.inline):not(.form-group) {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: .5rem 1.25rem;
+}
+
+// ===============================
+// Selection group (a radio for each option, and the fields that go with the chosen one)
+// ===============================
+
+.selection-group {
+  gap: .5rem;
+
+  > li {
+    padding: .65rem .8rem;
+    border: 1px solid var(--cms-border);
+    border-radius: var(--cms-radius);
+    background-color: var(--cms-surface);
+
+    &.selected {
+      border-color: var(--cms-focus);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--cms-focus), transparent 82%);
+    }
+  }
+
+  // An option's own fields only show while it's chosen
+  li > .selectiongroup_item,
+  li > .selection-group__item__fieldlist {
+    display: none;
+    margin-top: .75rem;
+    padding-left: 1.75rem;
+  }
+
+  li.selected > .selectiongroup_item,
+  li.selected > .selection-group__item__fieldlist {
+    display: block;
+  }
+}
+
+// ===============================
+// Switches (bootstrap form-switch)
+// ===============================
+
+.form-switch .form-check-input {
+  width: 2.1rem;
+  height: 1.2rem;
+  border-radius: var(--cms-radius-pill);
+  background-image: radial-gradient(circle at 30% 50%, var(--cms-border-strong) 0 .4rem, transparent .42rem);
+  background-size: auto;
+  transition: background-position $fast ease;
+
+  &:checked {
+    background-image: radial-gradient(circle at 70% 50%, var(--cms-on-accent) 0 .4rem, transparent .42rem);
+  }
+}
+
+// ===============================
+// Permission checkboxes (security groups)
+// ===============================
+
+.permissioncheckboxset {
+  .optionset,
+  ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: .35rem 1.5rem;
+  }
+
+  h4 {
+    grid-column: 1 / -1;
+    margin: 1.25rem 0 .25rem;
+    font-size: .8rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--cms-text-muted);
+  }
+
+  .font-icon-check-mark-circle,
+  .font-icon-plus-circled,
+  .font-icon-cancel-circled,
+  .font-icon-disable-circle {
+    font-size: 1.1rem;
+  }
+
+  .font-icon-check-mark-circle,
+  .font-icon-plus-circled {
+    color: var(--cms-success);
+  }
+
+  .font-icon-cancel-circled {
+    color: var(--cms-danger);
+  }
+
+  .font-icon-disable-circle {
+    color: var(--cms-text-faint);
+  }
+}

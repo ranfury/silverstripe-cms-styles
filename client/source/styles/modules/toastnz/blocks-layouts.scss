@@ -1,0 +1,171 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Blocks (toastnz/blocks-layouts): a block's type in its grid and the rail of a page's blocks,
+// both a small tile with the block's icon (the template and module set some inline / important styles)
+// ===============================
+
+// (the heading sits over the tile, which is centred)
+th.col-IconForCMS {
+  text-align: center;
+}
+
+td.col-IconForCMS {
+  width: 5.5rem;
+  text-align: center;
+
+  .toast-block-icon {
+    width: 2.75rem;
+    margin: 0 auto .35rem !important;
+    padding: 0 !important;
+  }
+
+  .toast-block-icon__media {
+    font-size: 1.35rem !important;
+  }
+
+  .toast-block-title {
+    font-size: .66rem !important;
+    font-weight: $semibold !important;
+    line-height: 1.25 !important;
+    letter-spacing: .04em;
+    color: var(--cms-text-muted);
+  }
+}
+
+td.col-IconForCMS div::before,
+.content-block-siblings a div {
+  border-radius: var(--cms-radius-sm) !important;
+}
+
+.content-block-siblings {
+  &::before {
+    background: var(--cms-bg) !important;
+    font-size: .75rem !important;
+    font-weight: $semibold !important;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--cms-text-muted);
+  }
+
+  a {
+    margin-bottom: 1rem !important;
+    font-size: .66rem;
+    font-weight: $semibold;
+    letter-spacing: .04em;
+    text-align: center;
+  }
+
+  a div {
+    margin-bottom: .35rem !important;
+  }
+
+  a.active div {
+    outline-width: 2px;
+    background-color: var(--cms-accent-soft) !important;
+  }
+}
+
+// ===============================
+// The rail of a page's blocks beside a block's form
+// ===============================
+
+// The form's tab pane scrolls (the module's layout), so the form fills its panel and the pane brings its own spacing:
+// the scroll bar is at the panel's edge, not inside the panel's padding
+.panel--padded:has(> fieldset > #Root .content-block-siblings) {
+  padding: 0;
+  // (the panel doesn't scroll itself here, so it doesn't keep room for a scroll bar)
+  overflow: hidden;
+  scrollbar-gutter: auto;
+
+  > fieldset {
+    padding: 1.75rem 0 0 1.75rem;
+  }
+}
+
+fieldset:has(> #Root .content-block-siblings) .tab-pane {
+  padding: 0 1.75rem 1.75rem 15px;
+}
+
+// ===============================
+// A page's Blocks tab: the grid's buttons
+// ===============================
+
+// The module's own styles give these clearfix pseudo-elements (as flex items they'd each add a gap),
+// so the buttons stop short of the grid's edge
+#Root_Blocks :is(.btn-toolbar, .pull-xs-right)::before,
+#Root_Blocks :is(.btn-toolbar, .pull-xs-right)::after {
+  display: none;
+}
+
+// ===============================
+// Layout picker: a tile for each layout, side by side (they stack when there's no room)
+// ===============================
+
+// (the CMS's option sets are a column, the module's picker is a row of tiles)
+.toast-block-layouts.optionset:not(.form-group) {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 1rem 1.25rem;
+  padding-top: .35rem;
+}
+
+.toast-block-layouts .radio {
+  .blockThumbnail {
+    border: 1px solid var(--cms-border-strong);
+    border-radius: var(--cms-radius);
+    color: var(--cms-text);
+    background-color: var(--cms-surface);
+    transition:
+      color $fast ease,
+      background-color $fast ease,
+      border-color $fast ease,
+      box-shadow $fast ease;
+
+    // (the icon is a font glyph, or an svg that draws in currentColor)
+    .layout-icons {
+      color: inherit;
+    }
+  }
+
+  &:hover .blockThumbnail {
+    border-color: var(--cms-text-faint);
+  }
+
+  // The chosen one: the theme colour, its icon in the colour that reads on it
+  input:checked + .blockThumbnail {
+    border-color: var(--cms-accent);
+    color: var(--cms-on-accent);
+    background-color: var(--cms-accent);
+    box-shadow:
+      0 0 0 2px var(--cms-bg),
+      0 0 0 4px var(--cms-accent);
+
+    svg {
+      color: inherit;
+      background-color: transparent;
+    }
+  }
+
+  // (not dimmed and greyed: the tiles are the choice)
+  input:not(:checked) + .blockThumbnail svg {
+    filter: none;
+    opacity: 1;
+  }
+
+  input:checked ~ strong {
+    color: var(--cms-link);
+  }
+
+  input:focus-visible + .blockThumbnail {
+    outline: 2px solid var(--cms-focus);
+    outline-offset: 4px;
+  }
+
+  strong {
+    font-size: .72rem;
+    letter-spacing: .05em;
+    color: var(--cms-text-muted);
+  }
+}

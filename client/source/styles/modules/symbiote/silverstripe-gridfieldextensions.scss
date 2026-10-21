@@ -1,0 +1,153 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Gridfield extensions (symbiote/silverstripe-gridfieldextensions)
+// ===============================
+
+// Add new (choose a type, then Add): a select and button joined
+.ss-gridfield-add-new-multi-class {
+  display: inline-flex;
+  align-items: stretch;
+  margin: 0 0 .85rem;
+  white-space: nowrap;
+
+  .form-group {
+    min-width: 13rem;
+    margin: 0;
+  }
+
+  select {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.btn__addnewmulticlass {
+  margin-left: -1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+// Drag to reorder
+.ss-gridfield-orderable {
+  .grid-field__table td.col-reorder {
+    position: relative;
+    width: 2rem;
+    padding: 0 0 0 .5rem;
+  }
+
+  .col-reorder .handle {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 2rem;
+    border-radius: var(--cms-radius-sm);
+    color: var(--cms-text-faint);
+    cursor: grab;
+
+    &:hover {
+      color: var(--cms-text);
+      background-color: var(--cms-hover);
+    }
+
+    .icon {
+      font-size: 1.05rem;
+    }
+  }
+
+  thead th.col-Reorder span {
+    padding: 0;
+  }
+
+  // Drop on the previous / next page buttons
+  tfoot .ui-droppable-active {
+    background-color: var(--cms-accent-soft);
+  }
+}
+
+// The row being dragged
+.ss-gridfield-orderhelper {
+  display: table;
+  background-color: var(--cms-surface);
+  box-shadow: var(--cms-shadow-lg);
+
+  td {
+    border: 0;
+  }
+}
+
+.grid-field .ui-sortable-placeholder td {
+  height: 3rem;
+  border: 2px dashed var(--cms-border-strong);
+  background-color: var(--cms-sunken);
+}
+
+// Editable columns / inline new rows
+.ss-gridfield-editable {
+  .readonly {
+    padding: 0;
+  }
+
+  input.text,
+  textarea,
+  select,
+  .TreeDropdownField {
+    max-width: none;
+    margin: 0;
+  }
+}
+
+.grid-field__table .form-check-input.editable-column-field {
+  position: relative;
+}
+
+.ss-gridfield-inline-new td {
+  background-color: var(--cms-success-soft);
+}
+
+.ss-gridfield-add-new-inline {
+  margin-bottom: .85rem;
+
+  .col-buttons {
+    text-align: right;
+  }
+}
+
+// Add new inline, choosing a type
+.grid-field-inline-new--multi-class-list {
+  @include floating;
+  @include list-reset;
+  position: fixed;
+  right: 3rem;
+  bottom: 3rem;
+  display: none;
+  padding: .35rem;
+
+  a {
+    @include menu-item;
+  }
+
+  &__visible {
+    display: block;
+  }
+}
+
+// Page size (the configurable paginator)
+.ss-gridfield-configurable-paginator {
+  .pagination-page-size {
+    display: flex;
+    float: left;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  .pagination-page-size-select {
+    width: auto;
+    min-height: 1.85rem;
+    padding-block: .15rem;
+  }
+
+  .ss-gridfield-pagesize-submit {
+    display: none;
+  }
+}

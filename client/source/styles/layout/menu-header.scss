@@ -1,0 +1,102 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Site name
+// ===============================
+
+.cms-sitename {
+  display: flex;
+  align-items: center;
+  // The same height as the panels' headers (and the frame's gap above them), so the line under it carries on theirs
+  min-height: $header-height + 8px;
+  padding: 8px 1.25rem 0;
+  border-bottom: 1px solid var(--cms-border);
+
+  // The silverstripe logo link, the site's own name is enough
+  &__link {
+    display: none;
+  }
+
+  &__title {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    font-size: 1.15rem;
+    font-weight: $bold;
+    letter-spacing: -.02em;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--cms-text);
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+// ===============================
+// Profile
+// ===============================
+
+// A plain row: who's signed in, and how to sign out
+.cms-login-status {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  margin: .75rem .75rem 0;
+  padding: 0;
+
+  &__profile-link {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: .85rem;
+    min-width: 0;
+    padding: .35rem .75rem;
+    border-radius: var(--cms-radius-sm);
+    font-size: .93rem;
+    color: var(--cms-text-muted);
+
+    &:hover {
+      text-decoration: none;
+      color: var(--cms-text);
+      background-color: var(--cms-hover);
+    }
+  }
+
+  &__profile-icon {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    font-size: .9rem;
+    color: var(--cms-link);
+    background-color: var(--cms-accent-soft);
+  }
+
+  &__profile-text {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__logout-link {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--cms-radius-sm);
+    color: var(--cms-text-muted);
+
+    &:hover {
+      text-decoration: none;
+      color: var(--cms-danger);
+      background-color: var(--cms-danger-soft);
+    }
+  }
+}

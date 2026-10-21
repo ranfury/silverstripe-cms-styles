@@ -1,0 +1,102 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Theme
+// ===============================
+
+// --cms-theme and --cms-accent-text-colour are set by the appearance menu (scripts/components/appearance.js),
+// every other colour is made from them, so changing the theme colour restyles the whole CMS.
+// Each colour has a light and a dark value (light-dark()), the color-scheme below picks which one is used
+
+:root {
+  --cms-theme: #77cdff;
+
+  // Accent
+  --cms-accent: var(--cms-theme);
+  --cms-on-accent: var(--cms-accent-text-colour, #000);
+  --cms-accent-soft: #{scheme(tint(var(--cms-theme), $s: 90%, $l: 50%, $a: .14), tint(var(--cms-theme), $s: 80%, $l: 60%, $a: .18))};
+  --cms-focus: #{scheme(tint(var(--cms-theme), $s: 85%, $l: 42%), tint(var(--cms-theme), $s: 90%, $l: 70%))};
+  --cms-link: #{scheme(tint(var(--cms-theme), $s: 85%, $l: 34%), tint(var(--cms-theme), $s: 90%, $l: 74%))};
+
+  // Surfaces, from back to front
+  --cms-sunken: #{scheme(tint(var(--cms-theme), $s: 22%, $l: 95%), tint(var(--cms-theme), $s: 18%, $l: 5%))};
+  --cms-bg: #{scheme(tint(var(--cms-theme), $s: 30%, $l: 99.4%), tint(var(--cms-theme), $s: 16%, $l: 8.5%))};
+  --cms-surface: #{scheme(#fff, tint(var(--cms-theme), $s: 16%, $l: 11%))};
+  --cms-surface-raised: #{scheme(#fff, tint(var(--cms-theme), $s: 18%, $l: 14.5%))};
+  // The html editor's page: a soft tint of the theme (not white), or the sunken dark (the sidebar's bottom) in place of black
+  --cms-editor-bg: #{tint(var(--cms-theme), $s: 26%, $l: 97.5%)};
+  --cms-editor-bg-dark: #{tint(var(--cms-theme), $s: 18%, $l: 5%)};
+  --cms-overlay: #{scheme(tint(var(--cms-theme), $s: 30%, $l: 10%, $a: .35), hsl(0 0% 0% / .6))};
+
+  // Interaction
+  --cms-hover: #{scheme(tint(var(--cms-theme), $s: 40%, $l: 30%, $a: .07), tint(var(--cms-theme), $s: 40%, $l: 80%, $a: .08))};
+  --cms-active: #{scheme(tint(var(--cms-theme), $s: 40%, $l: 30%, $a: .12), tint(var(--cms-theme), $s: 40%, $l: 80%, $a: .14))};
+
+  // Scrollbars
+  --cms-scrollbar: #{scheme(tint(var(--cms-theme), $s: 45%, $l: 62%, $a: .55), tint(var(--cms-theme), $s: 40%, $l: 55%, $a: .45))};
+  --cms-scrollbar-hover: #{scheme(tint(var(--cms-theme), $s: 55%, $l: 50%, $a: .8), tint(var(--cms-theme), $s: 50%, $l: 65%, $a: .7))};
+
+  // Lines
+  --cms-border: #{scheme(tint(var(--cms-theme), $s: 22%, $l: 88%), tint(var(--cms-theme), $s: 16%, $l: 20%))};
+  --cms-border-strong: #{scheme(tint(var(--cms-theme), $s: 16%, $l: 76%), tint(var(--cms-theme), $s: 14%, $l: 32%))};
+
+  // Text
+  --cms-text: #{scheme(tint(var(--cms-theme), $s: 25%, $l: 13%), tint(var(--cms-theme), $s: 12%, $l: 92%))};
+  --cms-text-muted: #{scheme(tint(var(--cms-theme), $s: 10%, $l: 42%), tint(var(--cms-theme), $s: 8%, $l: 66%))};
+  --cms-text-faint: #{scheme(tint(var(--cms-theme), $s: 8%, $l: 60%), tint(var(--cms-theme), $s: 6%, $l: 46%))};
+
+  // Status
+  --cms-success: #{scheme(#17803d, #4ade80)};
+  --cms-success-soft: #{scheme(#e7f6ec, hsl(142 60% 40% / .16))};
+  --cms-warning: #{scheme(#a15c07, #fbbf24)};
+  --cms-warning-soft: #{scheme(#fdf3dc, hsl(43 90% 50% / .14))};
+  --cms-danger: #{scheme(#c2261c, #f87171)};
+  --cms-danger-soft: #{scheme(#fdecea, hsl(0 85% 60% / .14))};
+  --cms-info: #{scheme(#1d5fbf, #7cb4ff)};
+  --cms-info-soft: #{scheme(#e8f0fc, hsl(215 90% 65% / .14))};
+
+  // The names the previous CMS theme module used, other Toast modules' styles (colour palettes, theme transfer, blocks) still use them
+  --cms-accent-colour: var(--cms-accent);
+  --cms-text-colour: var(--cms-text);
+  --cms-border-colour: var(--cms-border);
+  --cms-background-colour: var(--cms-surface);
+  --cms-background-colour--light: var(--cms-surface);
+  --cms-background-colour--dark: var(--cms-sunken);
+  --cms-background-colour--dynamic: var(--cms-sunken);
+
+  // Shapes
+  --cms-radius-sm: 6px;
+  --cms-radius: 10px;
+  --cms-radius-lg: 16px;
+  --cms-radius-pill: 999px;
+
+  // Depth
+  --cms-shadow-sm: 0 1px 2px #{scheme(hsl(220 30% 20% / .06), hsl(0 0% 0% / .4))};
+  --cms-shadow: 0 1px 2px #{scheme(hsl(220 30% 20% / .06), hsl(0 0% 0% / .4))}, 0 8px 24px -6px #{scheme(hsl(220 30% 20% / .16), hsl(0 0% 0% / .55))};
+  --cms-shadow-inset: inset 0 1px 2px #{scheme(hsl(220 30% 20% / .07), hsl(0 0% 0% / .35))};
+  // The panels sitting in the frame: a thin lift, and a long soft shadow so they read as floating
+  --cms-shadow-panel: 0 1px 2px #{scheme(hsl(220 30% 20% / .05), hsl(0 0% 0% / .35))}, 0 12px 32px -12px #{scheme(hsl(220 30% 20% / .14), hsl(0 0% 0% / .55))};
+  // The theme colour glowing under something raised in it (a primary button, the current menu item)
+  --cms-glow: #{scheme(tint(var(--cms-theme), $s: 80%, $l: 45%, $a: .38), tint(var(--cms-theme), $s: 80%, $l: 55%, $a: .3))};
+  --cms-shadow-lg: 0 2px 6px #{scheme(hsl(220 30% 20% / .08), hsl(0 0% 0% / .4))}, 0 24px 64px -12px #{scheme(hsl(220 30% 20% / .3), hsl(0 0% 0% / .7))};
+
+  // Code (code fields, the previous module's code syntax)
+  --code-syntax-orange: #{scheme(#965d0e, #f09156)};
+  --code-syntax-green: #{scheme(#287a2c, #99c894)};
+  --code-syntax-blue: #{scheme(#2062a8, #6598cc)};
+  --code-syntax-yellow: #{scheme(#817000, #f6c862)};
+  --code-syntax-red: #{scheme(#b22222, #db686a)};
+  --code-syntax-purple: #{scheme(#6c3fa7, #bf97c3)};
+  --code-syntax-gray: #{scheme(#4a4a4a, #838383)};
+
+  // Follows the system until the appearance menu picks one (scripts/appearance-boot.js sets html[data-darkmode])
+  color-scheme: light dark;
+
+  &[data-darkmode="on"] {
+    color-scheme: dark;
+  }
+
+  &[data-darkmode="off"] {
+    color-scheme: light;
+  }
+}

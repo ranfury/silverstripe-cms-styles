@@ -1,0 +1,236 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Selects
+// ===============================
+
+// The CMS turns its selects into chosen dropdowns. Chosen's javascript still runs (the CMS relies on it),
+// but its dropdown is hidden and the native select it hides is shown again, styled below
+.chosen-container {
+  display: none;
+}
+
+select:has(+ .chosen-container) {
+  display: var(--select-display, block) !important; // chosen hides the select with an inline style
+}
+
+select,
+.form-select {
+  @include control;
+  padding-right: 2.5rem;
+  cursor: pointer;
+  appearance: none;
+  // A chevron for browsers without customisable selects (replaced by ::picker-icon below)
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23889' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right .8rem center;
+  background-size: 1rem;
+
+  &:focus,
+  &:focus-visible {
+    @include control-focus;
+  }
+}
+
+// Lists (multiple / size)
+select:is([multiple], [size]:not([size="1"])) {
+  min-height: 8rem;
+  padding: .35rem;
+  background-image: none;
+  cursor: default;
+
+  option {
+    padding: .4rem .6rem;
+    border-radius: var(--cms-radius-sm);
+
+    &:checked {
+      color: var(--cms-text);
+      background: var(--cms-accent-soft);
+    }
+  }
+}
+
+// Inline widths the CMS gives some selects (e.g. the files sort) are kept, field selects fill their column
+.form__field-holder select {
+  width: 100%;
+}
+
+// ===============================
+// Customisable selects (the dropdown is styled too, where the browser can)
+// ===============================
+
+@supports (appearance: base-select) {
+  // (kept at the specificity of an element, so variants like the quiet selects below can change it)
+  select:where(:not([multiple], [size]:not([size="1"]))),
+  .form-select {
+    --select-display: flex;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding-right: .75rem;
+    background-image: none;
+
+    &,
+    &::picker(select) {
+      appearance: base-select;
+    }
+
+    // The chevron
+    &::picker-icon {
+      @include chevron;
+      margin-left: auto;
+      color: var(--cms-text-faint);
+      transition: rotate $normal $ease;
+    }
+
+    &:open {
+      @include control-focus;
+
+      &::picker-icon {
+        rotate: 180deg;
+      }
+    }
+
+    // The option shown in the select (keeps the option's icon)
+    selectedcontent {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  // The list
+  ::picker(select) {
+    @include floating;
+    // As wide as its longest option (with the tick's room), never narrower than the select
+    width: max-content;
+    min-width: anchor-size(width);
+    max-width: min(30rem, calc(100vw - 2rem));
+    max-height: min(22rem, 60vh);
+    margin-block: .35rem;
+    padding: .35rem;
+    overflow-y: auto;
+    transition:
+      opacity $fast ease,
+      translate $fast $ease,
+      overlay $fast allow-discrete,
+      display $fast allow-discrete;
+  }
+
+  ::picker(select):popover-open {
+    opacity: 1;
+    translate: 0 0;
+
+    @starting-style {
+      opacity: 0;
+      translate: 0 -.25rem;
+    }
+  }
+
+  option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    min-height: 2.15rem;
+    // Room on the right for the tick, so it lines up on every option however long its text
+    padding: .4rem 2.1rem .4rem .6rem;
+    // (an option longer than the widest the list can be is cut short, not run under the tick)
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-radius: var(--cms-radius-sm);
+    color: var(--cms-text);
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      outline: 0;
+      background-color: var(--cms-hover);
+    }
+
+    &:checked {
+      font-weight: $medium;
+      color: var(--cms-link);
+      background-color: var(--cms-accent-soft);
+    }
+
+    &:disabled {
+      color: var(--cms-text-faint);
+      cursor: default;
+    }
+
+    // A tick in its own column at the end of the chosen option
+    &::checkmark {
+      position: absolute;
+      top: 50%;
+      right: .65rem;
+      font-size: .8rem;
+      translate: 0 -50%;
+    }
+
+    // Options with an icon class (e.g. the preview modes)
+    &[class*="font-icon-"]::before {
+      width: 1.1rem;
+      font-size: 1rem;
+      text-align: center;
+    }
+  }
+
+  optgroup {
+    padding-top: .35rem;
+    font-size: .75rem;
+    font-weight: $semibold;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--cms-text-muted);
+
+    option {
+      font-size: .95rem;
+      font-weight: $regular;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+  }
+
+  hr {
+    margin: .35rem 0;
+  }
+}
+
+// ===============================
+// Quiet selects (in toolbars: the files sort, the preview's mode / size)
+// ===============================
+
+@mixin quiet-select {
+  width: auto !important; // over the inline width chosen copies to it
+  min-height: 2.25rem;
+  padding-block: .3rem;
+  border-color: transparent;
+  font-size: .88rem;
+  font-weight: $medium;
+  color: var(--cms-text-muted);
+  background-color: transparent;
+  box-shadow: none;
+
+  &:hover,
+  &:open {
+    border-color: transparent;
+    color: var(--cms-text);
+    background-color: var(--cms-hover);
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.gallery__sort select,
+.preview-selector select {
+  @include quiet-select;
+}

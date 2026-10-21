@@ -1,0 +1,93 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Batch actions (pages tree: choose an action, then Go)
+// ===============================
+
+.cms-batch-actions {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  max-width: 26rem;
+  margin-top: .75rem;
+
+  fieldset {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .form-group {
+    display: block;
+    margin: 0;
+  }
+
+  .form__field-holder--no-label {
+    margin: 0;
+  }
+
+  .dropdown {
+    width: 100%;
+  }
+
+  // The select and the Go button are joined
+  select {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .btn-toolbar {
+    margin: 0;
+  }
+
+  .action,
+  .btn {
+    min-height: 2.5rem;
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  // Options for the chosen action (e.g. publishing date)
+  .action-parameters {
+    flex: 1 1 100%;
+    margin-top: .75rem;
+
+    .form-group {
+      margin-bottom: .75rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .form__field-description {
+      margin-bottom: 0;
+    }
+  }
+}
+
+// The "Batch actions" button is pressed while they show
+.cms-content-batchactions-button.active {
+  --btn-bg: var(--cms-active);
+}
+
+// ===============================
+// List view (pages as a grid field)
+// ===============================
+
+.cms-list .cms-list__item-breadcrumbs {
+  margin: .15rem 0 0 1.5rem;
+  font-size: .82rem;
+  word-break: break-word;
+  color: var(--cms-text-muted);
+}
+
+// Small screens: the files toolbar's buttons are icons only
+.toolbar--space-save {
+  @include media($lg, max) {
+    .btn__text {
+      @include visually-hidden;
+    }
+  }
+}

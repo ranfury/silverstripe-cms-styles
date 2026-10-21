@@ -1,0 +1,145 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Toolbars
+// ===============================
+
+.toolbar,
+.toolbar--north,
+.toolbar--content,
+.toolbar--south {
+  width: 100%;
+  min-height: $toolbar-height;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+
+  .btn {
+    margin-bottom: 0;
+  }
+
+  .btn-toolbar {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.toolbar__navigation {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+// ===============================
+// North (top of a panel, e.g. a react form's header)
+// ===============================
+
+.toolbar--north {
+  position: relative;
+  z-index: 60;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  border-bottom: 1px solid var(--cms-border);
+  background-color: var(--cms-bg);
+}
+
+// ===============================
+// Content (the buttons above a tree / list, e.g. "Add new page")
+// ===============================
+
+.toolbar--content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  width: auto;
+  min-height: auto;
+  margin: -1.75rem -1.75rem 1.25rem;
+  padding: 1rem 1.75rem;
+
+  .ui-tabs-panel & {
+    margin-left: -1.75rem;
+    margin-right: -1.75rem;
+  }
+
+  .field + .grid-field & {
+    margin-top: 0;
+  }
+}
+
+.cms-content-toolbar {
+  .btn-toolbar {
+    flex: 1 1 auto;
+  }
+
+  .cms-actions-tools-row {
+    flex: 1 1 100%;
+  }
+
+  // The batch actions etc. only show when their button is pressed (the javascript shows them)
+  .tool-action {
+    display: none;
+  }
+}
+
+// ===============================
+// South (the actions along the bottom of a form)
+// ===============================
+
+.toolbar--south {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  min-height: $toolbar-height;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  border-top: 1px solid var(--cms-border);
+  background-color: var(--cms-bg);
+}
+
+// The save / publish bar of an edit form, it floats over the bottom of the form a little like an app's action bar
+.cms-content-actions {
+  position: relative;
+  z-index: 79;
+  margin: 0;
+  height: auto !important; // the edit form javascript sets a height as the buttons wrap
+  max-height: none;
+  box-shadow: 0 -10px 24px -14px light-dark(hsl(220 30% 20% / .18), hsl(0 0% 0% / .6));
+
+  &.south .btn-toolbar {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+  }
+}
+
+// Hidden by the CMS while a form is busy
+.cms-helper-hide-actions .btn-toolbar {
+  display: none;
+}
+
+// ===============================
+// Button toolbar
+// ===============================
+
+.btn-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: .5rem;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+
+  fieldset + & {
+    margin-top: 0;
+  }
+
+  .south &,
+  .ui-tabs-panel & {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}

@@ -1,0 +1,254 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Upload field (react, asset-admin)
+// ===============================
+
+.uploadfield-holder {
+  display: flex;
+  flex-direction: column;
+}
+
+// The drop zone: "Upload new or Choose existing"
+.uploadfield__dropzone {
+  position: relative;
+  height: 4.5rem;
+  margin: 0 0 .5rem;
+  padding: 0;
+  border: 1.5px dashed var(--cms-border-strong);
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-surface);
+  transition:
+    border-color $fast ease,
+    background-color $fast ease;
+
+  &:hover {
+    border-color: var(--cms-focus);
+    background-color: var(--cms-hover);
+  }
+
+  &--hidden {
+    display: none;
+  }
+
+  // While a file is dragged over it
+  &.dragging {
+    border-color: var(--cms-accent);
+    background-color: var(--cms-accent-soft);
+  }
+}
+
+.uploadfield__backdrop {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+}
+
+.uploadfield__droptext {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  font-size: .93rem;
+  white-space: nowrap;
+  color: var(--cms-text-muted);
+  translate: -50% -50%;
+
+  button,
+  a {
+    cursor: pointer;
+  }
+}
+
+.uploadfield__dropicon {
+  margin-right: .5rem;
+  font-size: 1.4rem;
+  color: var(--cms-text-faint);
+}
+
+.uploadfield__upload-button,
+.uploadfield__add-button {
+  @include button-reset;
+  font-weight: $semibold;
+  color: var(--cms-link);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ===============================
+// Files (a row each)
+// ===============================
+
+.uploadfield-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  height: auto;
+  min-height: 3.75rem;
+  margin: 0;
+  padding: .45rem .6rem .45rem .45rem;
+  border: 1px solid var(--cms-border);
+  border-bottom-width: 0;
+  background-color: var(--cms-surface);
+
+  &:first-child,
+  .uploadfield__dropzone + & {
+    border-top-left-radius: var(--cms-radius);
+    border-top-right-radius: var(--cms-radius);
+  }
+
+  &:last-child {
+    border-bottom-width: 1px;
+    border-bottom-left-radius: var(--cms-radius);
+    border-bottom-right-radius: var(--cms-radius);
+  }
+
+  &:hover {
+    background-color: color-mix(in srgb, var(--cms-surface), var(--cms-text) 2%);
+  }
+
+  .btn {
+    flex: 0 0 auto;
+  }
+}
+
+.uploadfield-item__thumbnail {
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0;
+  border-radius: var(--cms-radius-sm);
+  background-color: var(--cms-sunken);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  cursor: pointer;
+
+  &--small {
+    background-size: auto;
+  }
+
+  // Non-image files: an icon for the type
+  .uploadfield-item:not(.uploadfield-item--image) & {
+    display: grid;
+    place-items: center;
+    background-image: none;
+
+    &::before {
+      @include icon('page');
+      font-size: 1.35rem;
+      color: var(--cms-text-muted);
+    }
+  }
+
+  .uploadfield-item--folder &::before {
+    @include icon('menu-files');
+  }
+}
+
+.uploadfield-item__details {
+  justify-content: center;
+  gap: .1rem;
+  min-width: 0;
+  height: auto;
+  padding: 0 .5rem 0 .65rem;
+}
+
+.uploadfield-item__title {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: $medium;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uploadfield-item__meta {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .8rem;
+  text-transform: uppercase;
+  color: var(--cms-text-muted);
+}
+
+.uploadfield-item__specs {
+  color: inherit;
+}
+
+.uploadfield-item__status {
+  color: var(--cms-warning);
+}
+
+// Uploading
+.uploadfield-item__upload-progress {
+  width: 30%;
+  height: .5rem;
+  margin: 0 .5rem;
+  overflow: hidden;
+  border-radius: var(--cms-radius-pill);
+  background-color: var(--cms-sunken);
+}
+
+.uploadfield-item__progress-bar {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background-color: var(--cms-accent);
+  transition: width .5s ease;
+}
+
+.uploadfield-item__complete-icon::before {
+  font-size: 1.5rem;
+  color: var(--cms-success);
+}
+
+.uploadfield-item__error-message {
+  max-width: 50%;
+  margin: 0 .5rem;
+  padding: .2rem .65rem;
+  overflow: hidden;
+  border-radius: var(--cms-radius-pill);
+  font-size: .84rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--cms-danger);
+  background-color: var(--cms-danger-soft);
+}
+
+// ===============================
+// Drop anywhere (files dragged over a drop zone)
+// ===============================
+
+.asset-dropzone {
+  position: relative;
+
+  &--button {
+    position: static;
+  }
+
+  &.dragging::after {
+    content: '';
+    position: absolute;
+    z-index: 5;
+    inset: 0;
+    border: 2px dashed var(--cms-accent);
+    border-radius: var(--cms-radius);
+    background-color: var(--cms-accent-soft);
+    pointer-events: none;
+  }
+}
+
+.editor--asset-dropzone--disable .asset-dropzone {
+  pointer-events: none;
+}
+
+// Dropzone's hidden file inputs
+.dz-hidden-input {
+  visibility: hidden;
+  position: absolute;
+}

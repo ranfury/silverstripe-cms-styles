@@ -1,0 +1,1 @@
+(()=>{"use strict";if(window.location.pathname.replace(/\/$/,"").endsWith("/dev/build")){const e=new MutationObserver(()=>{window.scrollTo(0,document.documentElement.scrollHeight)});e.observe(document.documentElement,{childList:!0,subtree:!0}),window.addEventListener("wheel",t=>{t.deltaY<0&&e.disconnect()},{passive:!0})}})();

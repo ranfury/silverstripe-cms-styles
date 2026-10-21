@@ -1,0 +1,7 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Tag field (silverstripe/tagfield)
+// ===============================
+
+@include react-select('ss-tag-field');

@@ -1,0 +1,79 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Breadcrumbs (react: the files area, react grid field forms)
+// ===============================
+
+.breadcrumb__container {
+  max-height: $header-height;
+  overflow: hidden;
+}
+
+.breadcrumb__list-container {
+  min-height: 1rem;
+  line-height: 1.3;
+}
+
+.breadcrumb {
+  @include list-reset;
+  display: block;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-size: .8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--cms-text-muted);
+
+  a {
+    color: inherit;
+
+    &:hover {
+      color: var(--cms-text);
+    }
+  }
+}
+
+.breadcrumb__item {
+  display: inline;
+
+  &::after {
+    content: '/';
+    padding: 0 .4rem;
+    color: var(--cms-text-faint);
+  }
+
+  // The current item is the panel's title
+  &--last {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+.breadcrumb__item-title,
+.breadcrumb__item-title--last,
+h2.breadcrumb__item-title--last {
+  margin: 0;
+  overflow: hidden;
+  font-size: 1.15rem;
+  font-weight: $semibold;
+  letter-spacing: -.01em;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--cms-text);
+}
+
+.breadcrumb__icon {
+  --btn-height: 1.85rem;
+
+  span[class*="font-icon-"]::before {
+    font-size: 1.1rem;
+  }
+}

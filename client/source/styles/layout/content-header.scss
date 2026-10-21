@@ -1,0 +1,124 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Content header
+// ===============================
+
+// The bar along the top of each panel: the section / page title, breadcrumbs, tabs and view controls
+.cms-content-header {
+  position: relative;
+  z-index: 60;
+  display: flex;
+  flex: 0 0 auto;
+  flex-flow: row wrap;
+  align-items: stretch;
+  gap: 0 1rem;
+  width: 100%;
+  min-width: 100%;
+  min-height: $header-height;
+  padding: 0 1.25rem;
+  border-bottom: 1px solid var(--cms-border);
+  background-color: var(--cms-bg);
+
+  .cms-content-header-info {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: .5rem;
+    min-height: $header-height - 1px;
+    min-width: 12rem;
+  }
+}
+
+// ===============================
+// Section heading
+// ===============================
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.section-label {
+  overflow: hidden;
+  font-size: 1.15rem;
+  font-weight: $semibold;
+  letter-spacing: -.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.view-controls {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  margin-left: auto;
+}
+
+// ===============================
+// Breadcrumbs (classic pages)
+// ===============================
+
+// The parents on one line ("Menu Sets /"), the current page's title under them
+.breadcrumbs-wrapper {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: baseline;
+  min-width: 0;
+  line-height: 1.3;
+
+  .crumb,
+  .sep {
+    font-size: .8rem;
+    white-space: nowrap;
+    color: var(--cms-text-muted);
+  }
+
+  a.crumb:hover {
+    color: var(--cms-text);
+  }
+
+  .sep {
+    margin: 0 .3rem;
+    color: var(--cms-text-faint);
+  }
+
+  .crumb.last {
+    display: block;
+    flex: 1 1 100%;
+    overflow: hidden;
+    font-size: 1.15rem;
+    font-weight: $semibold;
+    letter-spacing: -.01em;
+    text-overflow: ellipsis;
+    color: var(--cms-text);
+  }
+}
+
+// The back arrow beside the breadcrumbs
+.toolbar__back-button {
+  flex: 0 0 auto;
+}
+
+// ===============================
+// Header tabs (Content / Settings / History)
+// ===============================
+
+.cms-content-header-tabs {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: $header-height - 1px;
+  margin-left: auto;
+  // Lots of tabs (e.g. Settings) scroll sideways rather than push the panel wider
+  @include scroll-fade;
+
+  // On a phone they're a row of their own under the title, which they line up with rather than the far side
+  @include media($sm, max) {
+    margin-left: 0;
+    padding-bottom: .6rem;
+  }
+}

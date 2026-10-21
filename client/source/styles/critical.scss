@@ -1,0 +1,17 @@
+//------------------------------------------------------------------
+// Silverstripe CMS Styles: the critical styles
+//
+// Inlined in the CMS's <head> (LeftAndMainExtension), so the first thing drawn is already the CMS: its colours,
+// the window and the loading screen. The rest (cms.scss) loads without blocking the page, and the CMS isn't drawn
+// until it has
+//------------------------------------------------------------------
+
+@use 'base/tokens';
+@use 'base/document';
+@use 'components/loading';
+
+// Until the main stylesheet is applied (the page gets cms-css then) only the loading screen shows,
+// not the CMS's own markup with no style
+html:not(.cms-css) body > :not(.ss-loading-screen) {
+  visibility: hidden;
+}

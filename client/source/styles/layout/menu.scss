@@ -1,0 +1,225 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// CMS Menu
+// ===============================
+
+// The main menu stays open at full width on desktop (the panel javascript sets an inline width, min / max width win over it),
+// below $md it slides in over the content from the menu button
+.cms-menu {
+  z-index: $z-menu;
+  flex: 0 0 auto;
+  min-width: $menu-width;
+  max-width: $menu-width;
+  overflow: hidden;
+  color: var(--cms-text);
+
+  // The panel javascript measures this for the open width
+  .cms-panel-content {
+    width: $menu-width;
+    height: auto;
+    overflow-x: hidden;
+  }
+
+  @include media($md, max) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    min-width: 0;
+    max-width: none;
+    width: min(#{$menu-width + 40px}, calc(100% - 56px)) !important; // over the inline width the panel javascript sets
+    background-color: var(--cms-sunken);
+    translate: -100% 0;
+    visibility: hidden;
+    transition:
+      translate $normal $ease,
+      visibility 0s $normal;
+
+    &--open {
+      translate: 0 0;
+      visibility: visible;
+      box-shadow: var(--cms-shadow-lg);
+      transition: translate $normal $ease;
+    }
+  }
+
+  // ===============================
+  // Header (site name and profile)
+  // ===============================
+
+  &__header {
+    flex: 0 0 auto;
+  }
+
+  // The list takes the room the panel has, so the last item (Settings) is kept at its foot
+  > .cms-panel-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // ===============================
+  // Menu list
+  // ===============================
+
+  // The last item (Settings) is kept at the foot of the list. By position: the CMS's `last` class isn't there when it's the current one
+  &__list > li:last-child {
+    margin-top: auto;
+  }
+
+  &__list {
+    @include list-reset;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: .25rem;
+    padding: .5rem .75rem .75rem;
+
+    li {
+      position: relative;
+
+      a {
+        display: flex;
+        align-items: center;
+        gap: .85rem;
+        min-height: 2.65rem;
+        padding: .45rem .75rem;
+        border-radius: var(--cms-radius-sm);
+        font-weight: $medium;
+        text-decoration: none;
+        color: var(--cms-text);
+        transition:
+          color $fast ease,
+          background-color $fast ease;
+
+        &:hover {
+          background-color: var(--cms-hover);
+
+          .menu__icon {
+            color: var(--cms-text);
+          }
+        }
+      }
+
+      // The current item, as the current page in the tree (a size up, it's the top of the hierarchy)
+      &.current > a {
+        background-color: var(--cms-accent-soft);
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cms-accent), transparent 80%);
+
+        .menu__icon {
+          color: var(--cms-link);
+        }
+      }
+    }
+
+    .text {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+// ===============================
+// Menu icons
+// ===============================
+
+.menu__icon {
+  display: grid;
+  flex: 0 0 1.75rem;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: 1.45rem;
+  line-height: 1;
+  text-align: center;
+  color: var(--cms-text-muted);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  // Image icons (menu_icon config)
+  &:not([class*="font-icon-"]) {
+    height: 1.45rem;
+  }
+
+  // ...drawn in the text colour (scripts/components/menu-icons.js)
+  &--masked {
+    // (the CMS's own rule for the icon sets the image with !important)
+    background: currentColor !important;
+    mask: var(--icon) center / contain no-repeat;
+  }
+}
+
+// ===============================
+// Mobile
+// ===============================
+
+.cms-mobile-menu-toggle-wrapper {
+  display: none;
+  position: absolute;
+  z-index: $z-menu + 1;
+  // Centred in the header beside it
+  top: calc((#{$toolbar-height} - 2.5rem) / 2);
+  left: .65rem;
+
+  @include media($md, max) {
+    display: block;
+  }
+}
+
+// The headers make room for it, by their first row: the title / breadcrumbs. (Not the whole header's padding, a second
+// row, the tabs, would be indented too, and the menu's own title sits under the button when it's open)
+@include media($md, max) {
+  .cms-container :is(.cms-content-header, .toolbar--north) > :first-child {
+    margin-left: 2.65rem;
+  }
+
+  // (a class deeper, menu-header.scss sets this padding after)
+  .cms-menu .cms-sitename {
+    padding-left: 4rem;
+  }
+}
+
+// The three line menu button
+.cms-mobile-menu-toggle {
+  @include button-reset;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0 .65rem;
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-surface);
+  border: 1px solid var(--cms-border);
+
+  span {
+    display: block;
+    height: 2px;
+    border-radius: 2px;
+    background-color: currentColor;
+  }
+}
+
+// Closes the menu when the content beside it is clicked
+.cms-menu-mobile-overlay {
+  display: none;
+  position: absolute;
+  z-index: $z-menu - 1;
+  border: 0;
+  background-color: var(--cms-overlay);
+
+  .cms-menu + & {
+    display: none;
+  }
+
+  @include media($md, max) {
+    .cms-menu--open + & {
+      display: block;
+    }
+  }
+}

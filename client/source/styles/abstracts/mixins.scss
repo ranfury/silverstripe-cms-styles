@@ -1,0 +1,500 @@
+@use 'sass:map';
+@use 'variables' as *;
+@use 'icons' as *;
+@use 'functions' as *;
+
+// ===============================
+// Media queries
+// ===============================
+
+@mixin media($width, $type: min) {
+  @if $type == max {
+    @media (max-width: ($width - .02px)) {
+      @content;
+    }
+  } @else {
+    @media (min-width: $width) {
+      @content;
+    }
+  }
+}
+
+// ===============================
+// Accessibility
+// ===============================
+
+// Text for screen readers only
+@mixin visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// The focus ring used on everything that can be focused
+@mixin focus-ring($offset: 2px) {
+  outline: 2px solid var(--cms-focus);
+  outline-offset: $offset;
+}
+
+// ===============================
+// Resets
+// ===============================
+
+@mixin button-reset {
+  appearance: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  color: inherit;
+  background: none;
+  cursor: pointer;
+}
+
+@mixin list-reset {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// ===============================
+// Icons
+// ===============================
+
+// Use the silverstripe icon font on a pseudo element, e.g. @include icon('right-open-big')
+@mixin icon-font {
+  font-family: $font-icons;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  speak: never;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// An icon's character, e.g. content: icon-char('tick')
+@function icon-char($name) {
+  @if not map.has-key($icons, $name) {
+    @error 'There is no "#{$name}" icon (see abstracts/icons.scss)';
+  }
+
+  @return map.get($icons, $name);
+}
+
+@mixin icon($name) {
+  @include icon-font;
+  content: icon-char($name);
+}
+
+// ===============================
+// Form controls
+// ===============================
+
+// The look every input / select / picker shares
+@mixin control {
+  display: block;
+  width: 100%;
+  min-height: 2.5rem;
+  padding: .5rem .8rem;
+  border: 1px solid var(--cms-border-strong);
+  border-radius: var(--cms-radius);
+  font: inherit;
+  font-size: .95rem;
+  line-height: 1.4;
+  color: var(--cms-text);
+  background-color: var(--cms-surface);
+  box-shadow: var(--cms-shadow-inset);
+  transition:
+    border-color $fast ease,
+    box-shadow $fast ease;
+
+  &::placeholder {
+    color: var(--cms-text-faint);
+    opacity: 1;
+  }
+
+  &:hover:not(:disabled, [readonly]) {
+    @include control-hover;
+  }
+
+  &:disabled,
+  &[readonly] {
+    color: var(--cms-text-muted);
+    background-color: var(--cms-sunken);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+
+@mixin control-hover {
+  border-color: color-mix(in srgb, var(--cms-border-strong), var(--cms-text) 15%);
+}
+
+// A soft accent glow instead of an outline
+@mixin control-focus {
+  outline: 0;
+  border-color: var(--cms-focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cms-focus), transparent 75%);
+}
+
+// A chevron drawn with a mask, so it takes currentColor
+@mixin chevron($size: 1rem) {
+  content: '';
+  display: block;
+  flex: 0 0 auto;
+  width: $size;
+  height: $size;
+  background-color: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m4 6 4 4 4-4'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+// A plain folder drawn with a mask, so it takes currentColor (the icon font's folders are "folder-add" and "folder-move")
+@mixin folder-icon($size: 1.35rem) {
+  content: '';
+  display: block;
+  flex: 0 0 auto;
+  width: $size;
+  height: $size;
+  background-color: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 3.5A1.5 1.5 0 0 1 3 2h3.1c.4 0 .8.2 1.1.5L8.4 4H13a1.5 1.5 0 0 1 1.5 1.5v7A1.5 1.5 0 0 1 13 14H3a1.5 1.5 0 0 1-1.5-1.5z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+// A button in the accent (sets the variables components/buttons.scss reads)
+@mixin button-accent {
+  --btn-color: var(--cms-on-accent);
+  --btn-bg: var(--cms-accent);
+  // An edge a shade deeper than the button, so a pale accent still holds its shape
+  --btn-border: hsl(from var(--cms-accent) h calc(s * 1.05) calc(l * .86));
+  // A deeper shade of the accent (mixing in black greys it)
+  --btn-hover-bg: hsl(from var(--cms-accent) h calc(s * 1.1) calc(l * .9));
+  // A light catching the top edge, and the accent glowing underneath once it's hovered
+  --btn-gloss: linear-gradient(to bottom, rgb(255 255 255 / .28), rgb(255 255 255 / 0) 65%);
+  --btn-shadow: inset 0 1px 0 rgb(255 255 255 / .35), 0 1px 2px var(--cms-glow);
+  --btn-hover-shadow: inset 0 1px 0 rgb(255 255 255 / .35), 0 4px 14px -3px var(--cms-glow);
+}
+
+// A row that scrolls sideways, an edge fades while there's more to scroll to that way
+// (scripts/components/header-tabs.js adds .has-more-start / .has-more-end, the variables are in base/utilities)
+@mixin scroll-fade {
+  overflow-x: auto;
+  scrollbar-width: none;
+  mask-image: linear-gradient(to right, transparent, #000 var(--scroll-fade-start), #000 calc(100% - var(--scroll-fade-end)), transparent);
+  transition:
+    --scroll-fade-start $fast ease,
+    --scroll-fade-end $fast ease;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &.has-more-start {
+    --scroll-fade-start: 2.5rem;
+  }
+
+  &.has-more-end {
+    --scroll-fade-end: 2.5rem;
+  }
+}
+
+// scroll-fade, for the browsers that can follow the scrolling in css (base/utilities: scroll-fade), so it needs no javascript
+@mixin scroll-fade-auto {
+  @include scroll-fade;
+
+  @supports (animation-timeline: scroll()) {
+    animation: scroll-fade linear both;
+    animation-timeline: scroll(self inline);
+  }
+}
+
+// A page type's icon (the tree, the pages list)
+@mixin record-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  font-size: 1.05rem;
+  color: color-mix(in srgb, var(--cms-link), var(--cms-text-muted) 45%);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+// ===============================
+// Surfaces
+// ===============================
+
+// A raised surface: dropdowns, popovers, menus
+@mixin floating {
+  color: var(--cms-text);
+  background-color: var(--cms-surface-raised);
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius);
+  box-shadow: var(--cms-shadow);
+}
+
+// A row inside a floating menu
+@mixin menu-item {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  width: 100%;
+  padding: .55rem .8rem;
+  border: 0;
+  border-radius: var(--cms-radius-sm);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--cms-text);
+  background-color: transparent;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--cms-text);
+    background-color: var(--cms-hover);
+  }
+}
+
+// Thin scrollbars in the theme colour
+@mixin scrollbars {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cms-scrollbar) transparent;
+
+  // Browsers without scrollbar-color
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: var(--cms-scrollbar) padding-box;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: var(--cms-scrollbar-hover);
+  }
+}
+
+// ===============================
+// Check boxes
+// ===============================
+
+// The tick / dash are inline svgs, dark or light to suit the accent (html[data-accent-contrast], set by the appearance script)
+$-tick: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='none' stroke='COLOUR' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3E%3C/svg%3E";
+$-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath stroke='COLOUR' stroke-linecap='round' stroke-width='3' d='M6 10h8'/%3E%3C/svg%3E";
+
+@function -svg($svg, $colour) {
+  @return url(str-replace($svg, 'COLOUR', $colour));
+}
+
+// An empty box (for inputs, and the spans the tree / files use as checkboxes)
+@mixin check-box {
+  flex: 0 0 auto;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0;
+  border: 1.5px solid var(--cms-border-strong);
+  border-radius: 5px;
+  background-color: var(--cms-surface);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  transition:
+    background-color $fast ease,
+    border-color $fast ease;
+}
+
+// Ticked ($mark: tick or dash)
+@mixin check-box-checked($mark: tick) {
+  $svg: $-tick;
+
+  @if $mark == dash {
+    $svg: $-dash;
+  }
+
+  border-color: var(--cms-accent);
+  background-color: var(--cms-accent);
+  background-image: -svg($svg, '%23000');
+
+  :root[data-accent-contrast="light"] & {
+    background-image: -svg($svg, '%23fff');
+  }
+}
+
+// ===============================
+// React select (one for each field's class prefix: forms/react-select.scss, and the modules with their own)
+// ===============================
+
+@mixin react-select($p) {
+  // The field
+  .#{$p}__control.#{$p}__control {
+    min-height: 2.5rem;
+    border: 1px solid var(--cms-border-strong);
+    border-radius: var(--cms-radius);
+    background-color: var(--cms-surface);
+    box-shadow: var(--cms-shadow-sm);
+    cursor: pointer;
+    transition:
+      border-color $fast ease,
+      box-shadow $fast ease;
+
+    &:hover {
+      border-color: color-mix(in srgb, var(--cms-border-strong), var(--cms-text) 15%);
+    }
+  }
+
+  .#{$p}__control--is-focused.#{$p}__control--is-focused {
+    border-color: var(--cms-focus);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--cms-focus), transparent 75%);
+  }
+
+  .#{$p}__control--is-disabled.#{$p}__control--is-disabled {
+    background-color: var(--cms-sunken);
+    box-shadow: none;
+    opacity: .7;
+  }
+
+  .#{$p}__value-container.#{$p}__value-container {
+    gap: .3rem;
+    padding: .2rem .6rem;
+  }
+
+  .#{$p}__single-value.#{$p}__single-value,
+  .#{$p}__input-container.#{$p}__input-container {
+    margin: 0;
+    color: var(--cms-text);
+  }
+
+  .#{$p}__placeholder.#{$p}__placeholder {
+    margin: 0;
+    color: var(--cms-text-faint);
+  }
+
+  // The typing area is a bare input inside the field (not a field of its own, the global text input styles are more specific)
+  input.#{$p}__input.#{$p}__input,
+  input.#{$p}__input.#{$p}__input:focus {
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  // Clear (×) and open (▾)
+  .#{$p}__indicator.#{$p}__indicator {
+    padding: 0 .55rem;
+    color: var(--cms-text-faint);
+
+    &:hover {
+      color: var(--cms-text);
+    }
+  }
+
+  .#{$p}__indicator-separator.#{$p}__indicator-separator {
+    margin: .55rem 0;
+    background-color: var(--cms-border);
+  }
+
+  // ===============================
+  // Chosen values (multiple)
+  // ===============================
+
+  .#{$p}__multi-value.#{$p}__multi-value {
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--cms-radius-sm);
+    background-color: var(--cms-active);
+  }
+
+  .#{$p}__multi-value__label.#{$p}__multi-value__label {
+    padding: .15rem .25rem .15rem .55rem;
+    font-size: .88rem;
+    color: var(--cms-text);
+  }
+
+  .#{$p}__multi-value__remove.#{$p}__multi-value__remove {
+    padding: 0 .35rem;
+    border-radius: 0;
+    color: var(--cms-text-muted);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--cms-danger);
+      background-color: var(--cms-danger-soft);
+    }
+  }
+
+  // ===============================
+  // The open list
+  // ===============================
+
+  .#{$p}__menu.#{$p}__menu {
+    @include floating;
+    z-index: $z-dropdown;
+    margin: .35rem 0;
+    overflow: hidden;
+  }
+
+  .#{$p}__menu-list.#{$p}__menu-list {
+    padding: .35rem;
+  }
+
+  .#{$p}__option.#{$p}__option {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .45rem .65rem;
+    border-radius: var(--cms-radius-sm);
+    color: var(--cms-text);
+    background-color: transparent;
+    cursor: pointer;
+
+    &:active {
+      background-color: var(--cms-active);
+    }
+  }
+
+  .#{$p}__option--is-focused.#{$p}__option--is-focused {
+    background-color: var(--cms-hover);
+  }
+
+  .#{$p}__option--is-selected.#{$p}__option--is-selected {
+    font-weight: $medium;
+    color: var(--cms-link);
+    background-color: var(--cms-accent-soft);
+  }
+
+  .#{$p}__option--is-disabled.#{$p}__option--is-disabled {
+    color: var(--cms-text-faint);
+    cursor: default;
+  }
+
+  .#{$p}__menu-notice.#{$p}__menu-notice {
+    padding: .65rem;
+    color: var(--cms-text-muted);
+  }
+
+  .#{$p}__group-heading.#{$p}__group-heading {
+    padding: .5rem .65rem .25rem;
+    font-size: .75rem;
+    font-weight: $semibold;
+    letter-spacing: .04em;
+    color: var(--cms-text-muted);
+  }
+}

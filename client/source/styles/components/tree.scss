@@ -1,0 +1,522 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Tree (jstree: the pages tree, tree dropdown fields)
+// ===============================
+
+// Laid out like a code editor's file tree: rows span the whole panel and are indented by their depth (padding,
+// not nested margins), with a guide line down each open branch. The branch holding the page being edited
+// has its guide in the theme colour
+$row: 2.25rem;
+$indent: 1.15rem;
+$arrow: 1.4rem;
+
+.cms-tree,
+.tree-holder {
+  --depth: 0;
+
+  padding-bottom: 1.5rem;
+  font-size: .93rem;
+
+  ul,
+  li {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: none;
+  }
+
+  li {
+    position: relative;
+    min-width: 0;
+    white-space: nowrap;
+
+    // The children open / closed
+    &.jstree-open > ul {
+      display: block;
+    }
+
+    &.jstree-closed > ul {
+      display: none;
+    }
+  }
+
+  // ===============================
+  // Rows
+  // ===============================
+
+  a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: .55rem;
+    min-height: $row;
+    margin: 1px 0;
+    padding: .25rem .6rem .25rem calc(var(--depth) * #{$indent} + #{$arrow} + .35rem);
+    overflow: hidden;
+    border-radius: var(--cms-radius-sm);
+    line-height: 1.3;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    color: var(--cms-text);
+    transition:
+      background-color $fast ease,
+      box-shadow $fast ease;
+
+    &:hover,
+    &.jstree-hovered {
+      text-decoration: none;
+      background-color: var(--cms-hover);
+    }
+
+    &:focus-visible {
+      z-index: 10;
+      outline-offset: -2px;
+    }
+
+    // The page being edited: tinted (the indent guides run over it, like a code editor's tree)
+    &.jstree-clicked {
+      font-weight: $medium;
+      background-color: var(--cms-accent-soft);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cms-accent), transparent 80%);
+
+      .jstree-recordicon {
+        color: var(--cms-link);
+      }
+    }
+
+    .text {
+      display: flex;
+      flex: 1 1 auto;
+      align-items: center;
+      gap: .55rem;
+      min-width: 0;
+    }
+
+    .item {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  // The root ("Your Site Name"), a heading over the tree
+  li.Root {
+    > strong {
+      display: block;
+      padding: .25rem .6rem .6rem;
+      font-size: .74rem;
+      font-weight: $semibold;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--cms-text-muted);
+    }
+
+    // It's always open
+    > .jstree-icon--arrow {
+      display: none;
+    }
+  }
+
+  // ===============================
+  // Indent guides
+  // ===============================
+
+  li:not(.Root) > ul::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: calc(#{$row} + 2px);
+    bottom: .2rem;
+    left: calc(var(--depth) * #{$indent} + #{$arrow} * .5);
+    width: 1px;
+    background-color: var(--cms-border);
+    pointer-events: none;
+    transition: background-color $fast ease;
+  }
+
+  // The branch the page being edited is in
+  li:not(.Root):has(> ul > li > a.jstree-clicked) > ul::before {
+    background-color: color-mix(in srgb, var(--cms-accent), transparent 65%);
+  }
+
+  // Guides show a little stronger while the tree is hovered
+  &:hover li:not(.Root) > ul::before {
+    background-color: var(--cms-border-strong);
+  }
+
+  &:hover li:not(.Root):has(> ul > li > a.jstree-clicked) > ul::before {
+    background-color: color-mix(in srgb, var(--cms-accent), transparent 40%);
+  }
+
+  // ===============================
+  // Icons
+  // ===============================
+
+  .jstree-icon {
+    display: inline-block;
+    flex: 0 0 auto;
+    text-decoration: none;
+    background: none;
+  }
+
+  // Open / close chevron, only on items with children
+  li > .jstree-icon--arrow {
+    position: absolute;
+    z-index: 2;
+    top: 1px;
+    left: calc(var(--depth) * #{$indent});
+    // (a flex row: the template puts a &nbsp; beside the icon, as a grid it'd be a second row)
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $arrow;
+    height: $row;
+    visibility: hidden;
+    font-size: 0;
+    color: var(--cms-text-faint);
+    cursor: pointer;
+    transition:
+      rotate $fast ease,
+      color $fast ease;
+
+    // A chevron in place of the font's triangle
+    &::before {
+      @include chevron(.85rem);
+      rotate: -90deg;
+    }
+
+    > * {
+      display: none;
+    }
+
+    &:hover {
+      color: var(--cms-text);
+    }
+  }
+
+  .jstree-closed > .jstree-icon--arrow,
+  .jstree-open > .jstree-icon--arrow {
+    visibility: visible;
+  }
+
+  .jstree-open > .jstree-icon--arrow {
+    rotate: 90deg;
+  }
+
+  // The page type's icon
+  .record-icon,
+  .jstree-recordicon {
+    @include record-icon;
+  }
+
+  // Pages are dragged by their whole row, so the template's drag handle isn't shown
+  // (it would crowd the row's title and badges)
+  .jstree-icon--drag-handle {
+    display: none;
+  }
+
+  // ===============================
+  // Batch actions (checkboxes)
+  // ===============================
+
+  .jstree-checkbox {
+    @include check-box;
+    display: none;
+  }
+
+  // Batch actions take jstree-no-checkboxes off the tree's top list
+  &.multiple .jstree-checkbox,
+  > ul:not(.jstree-no-checkboxes) .jstree-checkbox {
+    display: inline-block;
+  }
+
+  .jstree-checked > a {
+    background-color: var(--cms-accent-soft);
+
+    .jstree-checkbox {
+      @include check-box-checked;
+    }
+  }
+
+  .jstree-undetermined > a .jstree-checkbox {
+    @include check-box-checked(dash);
+  }
+
+  .jstree-real-checkbox {
+    display: none;
+  }
+
+  // ===============================
+  // States
+  // ===============================
+
+  // No permission to edit / not selectable in batch actions
+  li.disabled > a,
+  li.edit-disabled > a {
+    color: var(--cms-text-faint);
+    cursor: default;
+
+    > .jstree-checkbox {
+      opacity: .4;
+    }
+  }
+
+  li.readonly {
+    color: var(--cms-text-muted);
+
+    .jstree-icon {
+      display: none;
+    }
+  }
+
+  // Archived / deleted from live pages are crossed out
+  li.status-deletedonlive > a .text,
+  li.status-archived > a .text,
+  li.status-removedfromdraft > a .text {
+    text-decoration: line-through;
+    color: var(--cms-text-muted);
+  }
+
+  // A dot on the page icon: draft only / modified
+  li.status-addedtodraft > a .jstree-recordicon,
+  li.status-modified > a .jstree-recordicon {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      right: -3px;
+      bottom: -2px;
+      width: 7px;
+      height: 7px;
+      border: 1.5px solid var(--cms-bg);
+      border-radius: 50%;
+      background-color: var(--cms-warning);
+    }
+  }
+
+  li.status-addedtodraft > a .jstree-recordicon::after {
+    background-color: var(--cms-info);
+  }
+
+  // Status badges ("Draft", "Modified") right after the title
+  .badge {
+    flex: 0 0 auto;
+  }
+
+  .badge ~ .badge {
+    display: none;
+  }
+
+  // Loading children
+  a.jstree-loading::after {
+    content: '';
+    width: .8rem;
+    height: .8rem;
+    margin-left: auto;
+    border: 2px solid var(--cms-border-strong);
+    border-top-color: var(--cms-accent);
+    border-radius: 50%;
+    animation: tree-loading .7s linear infinite;
+  }
+
+  // Search results: the pages that matched stand out, their parents are greyed
+  &.filtered-list li:not(.filtered-item) > a {
+    color: var(--cms-text-faint);
+  }
+}
+
+// Each level's depth, for its indent (the root's pages are depth 0)
+$level: '> ul > li > ul > li';
+
+@for $depth from 1 through 12 {
+  $level: '#{$level} > ul > li';
+
+  .cms-tree #{$level},
+  .tree-holder #{$level} {
+    --depth: #{$depth};
+  }
+}
+
+@keyframes tree-loading {
+  to {
+    rotate: 360deg;
+  }
+}
+
+// A searched tree's "showing results for" bar
+.cms-tree-filtered {
+  margin: 0 -1.75rem 1rem;
+  padding: .75rem 1.75rem;
+  font-size: .9rem;
+  background-color: var(--cms-info-soft);
+}
+
+// ===============================
+// Drag and drop markers
+// ===============================
+
+#jstree-marker {
+  position: absolute;
+  z-index: 10001;
+  display: none;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  line-height: 10px;
+  color: var(--cms-accent);
+}
+
+#jstree-marker-line {
+  position: absolute;
+  z-index: 10000;
+  display: none;
+  height: 3px;
+  margin: 0;
+  padding: 0;
+  border-radius: 3px;
+  background-color: var(--cms-accent);
+  box-shadow: 0 0 0 2px var(--cms-bg);
+  cursor: pointer;
+}
+
+// jstree's "whole row" plugin (not used by the CMS's own trees, but keeps them from breaking if a module turns it on)
+.jstree-wholerow {
+  position: relative;
+  z-index: 0;
+  height: 0;
+}
+
+// ===============================
+// Loading / batch actions
+// ===============================
+
+// Hidden until jstree has built it (the javascript shows it)
+.cms-tree {
+  visibility: hidden;
+
+  // Batch actions: checkboxes only, no drag handles, and the root can't be picked
+  &.multiple li > a > .jstree-icon:not(.jstree-checkbox) {
+    display: none;
+  }
+
+  &.multiple li#record-0 > a .jstree-checkbox {
+    display: none;
+  }
+}
+
+#cms-content-treeview .cms-tree-expand-trigger,
+#cms-content-listview .cms-tree-expand-trigger {
+  display: none;
+}
+
+// ===============================
+// Right click menu (jstree's context menu) and dragged item
+// ===============================
+
+#vakata-contextmenu {
+  @include floating;
+  position: absolute;
+  z-index: 10000;
+  top: -200px;
+  left: 0;
+  display: block;
+  visibility: hidden;
+  min-width: 12rem;
+  margin: 0;
+  padding: .35rem;
+
+  ul,
+  li {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+
+    a {
+      @include menu-item;
+    }
+
+    &.vakata-hover > a {
+      background-color: var(--cms-hover);
+    }
+
+    &.vakata-separator {
+      height: 1px;
+      margin: .35rem -.35rem;
+      background-color: var(--cms-border);
+    }
+
+    .jstree-icon {
+      display: none;
+    }
+
+    // Sub menus
+    ul {
+      @include floating;
+      position: absolute;
+      top: -.4rem;
+      left: 100%;
+      display: none;
+      min-width: 12rem;
+      padding: .35rem;
+
+      &.vakata-col-2 {
+        column-count: 2;
+      }
+
+      &.vakata-col-3 {
+        column-count: 3;
+      }
+    }
+  }
+
+  .right,
+  .end {
+    right: 100%;
+    left: auto;
+  }
+
+  .bottom {
+    top: auto;
+    bottom: -1px;
+  }
+}
+
+#vakata-dragged {
+  position: absolute;
+  z-index: 10000;
+  top: -2000px;
+  display: block;
+  margin: 0;
+  padding: .35rem .65rem .35rem 1.75rem;
+  border-radius: var(--cms-radius-sm);
+  font-size: .9rem;
+  background-color: var(--cms-surface-raised);
+  box-shadow: var(--cms-shadow);
+
+  .jstree-icon {
+    position: absolute;
+    top: 50%;
+    left: .45rem;
+    display: block;
+    width: .85rem;
+    height: .85rem;
+    border-radius: 50%;
+    translate: 0 -50%;
+  }
+
+  .jstree-ok {
+    background-color: var(--cms-success);
+  }
+
+  .jstree-invalid {
+    background-color: var(--cms-danger);
+  }
+}

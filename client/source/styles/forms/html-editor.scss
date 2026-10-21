@@ -1,0 +1,199 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// HTML editor (TinyMCE)
+// ===============================
+
+// TinyMCE loads its own skin (silverstripe/htmleditor-tinymce, it can't be blocked like the CMS's stylesheets).
+// Its toolbar, buttons and menus take the CMS's colours here so it fits in, light or dark.
+// The editing area itself shows the site's own editor styles
+.htmleditor {
+  // The textarea is hidden until TinyMCE replaces it
+  textarea {
+    visibility: hidden;
+  }
+
+  .tox.tox-tinymce {
+    overflow: hidden;
+    border: 1px solid var(--cms-border-strong);
+    border-radius: var(--cms-radius);
+    box-shadow: var(--cms-shadow-sm);
+  }
+
+  .tox.tox-tinymce--toolbar-sticky-on .tox-editor-header {
+    box-shadow: var(--cms-shadow);
+  }
+
+  // (.tox-tinymce: over the skin's own background for the header)
+  .tox.tox-tinymce {
+    // The toolbar and status bar: a step off the page in the light, a step up from it in the dark
+    // (the editing area between them stays light, a near black bar around it looked harsh)
+    --tox-chrome: light-dark(var(--cms-sunken), var(--cms-surface-raised));
+
+    // The toolbar
+    .tox-editor-header,
+    .tox-toolbar,
+    .tox-toolbar__primary,
+    .tox-toolbar__overflow,
+    .tox-toolbar-overlord {
+      border-color: var(--cms-border);
+      background: var(--tox-chrome);
+    }
+
+    .tox-editor-header {
+      padding: .15rem .25rem;
+      border-bottom: 1px solid var(--cms-border);
+      box-shadow: none;
+    }
+
+    .tox-toolbar__group:not(:last-of-type) {
+      border-color: var(--cms-border);
+    }
+
+    // Buttons
+    .tox-tbtn,
+    .tox-split-button {
+      border-radius: var(--cms-radius-sm);
+      color: var(--cms-text);
+      background: transparent;
+
+      svg {
+        fill: currentColor;
+      }
+
+      &:hover,
+      &:focus {
+        color: var(--cms-text);
+        background: var(--cms-hover);
+      }
+
+      &--enabled,
+      &--enabled:hover {
+        color: var(--cms-link);
+        background: var(--cms-accent-soft);
+      }
+
+      &--disabled,
+      &--disabled:hover {
+        color: var(--cms-text-faint);
+        background: transparent;
+      }
+    }
+
+    .tox-tbtn--select {
+      padding: 0 .4rem;
+    }
+
+    .tox-tbtn__select-label {
+      font-family: inherit;
+      color: inherit;
+    }
+
+    .tox-split-button:hover {
+      box-shadow: inset 0 0 0 1px var(--cms-border);
+    }
+
+    // Under the content: the element path and word count
+    .tox-statusbar {
+      border-color: var(--cms-border);
+      color: var(--cms-text-muted);
+      background: var(--tox-chrome);
+
+      a,
+      .tox-statusbar__path-item,
+      .tox-statusbar__wordcount {
+        color: var(--cms-text-muted);
+      }
+    }
+
+    .tox-edit-area::before {
+      border-color: var(--cms-focus);
+    }
+  }
+}
+
+// ===============================
+// TinyMCE's popups (menus, dialogs)
+// ===============================
+
+.tox.tox-silver-sink {
+  z-index: $z-popover;
+
+  .tox-menu,
+  .tox-collection--list {
+    @include floating;
+  }
+
+  .tox-collection__group {
+    border-color: var(--cms-border);
+  }
+
+  .tox-collection__item {
+    border-radius: var(--cms-radius-sm);
+    color: var(--cms-text);
+
+    svg {
+      fill: currentColor;
+    }
+  }
+
+  .tox-collection--list .tox-collection__item--active,
+  .tox-collection--list .tox-collection__item--enabled {
+    color: var(--cms-text);
+    background: var(--cms-hover);
+  }
+
+  // The skin makes the highlighted item's text white (on its own blue), which is lost on this light highlight.
+  // (its rules are one :not() more specific, and put !important on the label)
+  .tox-collection--list .tox-collection__item--active:not(.tox-collection__item--state-disabled) {
+    color: var(--cms-text);
+
+    .tox-collection__item-accessory,
+    .tox-collection__item-label * {
+      color: var(--cms-text) !important;
+    }
+
+    .tox-collection__item-caret svg {
+      fill: currentColor;
+    }
+  }
+
+  .tox-collection__item-accessory,
+  .tox-collection__group-heading {
+    color: var(--cms-text-muted);
+    background: transparent;
+  }
+
+  .tox-dialog {
+    border: 1px solid var(--cms-border);
+    border-radius: var(--cms-radius-lg);
+    color: var(--cms-text);
+    background: var(--cms-bg);
+    box-shadow: var(--cms-shadow-lg);
+  }
+
+  .tox-dialog__header,
+  .tox-dialog__footer {
+    border-color: var(--cms-border);
+    color: var(--cms-text);
+    background: var(--cms-bg);
+  }
+
+  .tox-textfield,
+  .tox-textarea,
+  .tox-listboxfield .tox-listbox--select,
+  .tox-selectfield select {
+    @include control;
+  }
+}
+
+// ===============================
+// Format previews (the Styles menu: font sizes, headings, colours...)
+// ===============================
+
+// TinyMCE styles each item as the format looks in the editor (size, weight, font and text colour). The editor's text is
+// the site's own colour, which can't be read on the CMS's menu in dark mode (or the palette's white, in light mode),
+// so they're all the menu's text colour: the size and font are the preview
+.tox .tox-collection__item-label [style] {
+  color: var(--cms-text) !important;
+}

@@ -1,0 +1,63 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Pagination (react lists: history, the files table)
+// ===============================
+
+.history-viewer__pagination,
+.paginator-footer {
+  padding: .75rem 0;
+}
+
+.paginator-footer > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+}
+
+.paginator-page {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .9rem;
+  color: var(--cms-text-muted);
+
+  select {
+    width: auto;
+    min-height: 2rem;
+    padding-block: .2rem;
+  }
+}
+
+.paginator-prev,
+.paginator-next {
+  // (empty on the first / last page, the page number doesn't move)
+  min-width: 2rem;
+
+  button {
+    @include button-reset;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--cms-radius-sm);
+    color: var(--cms-text-muted);
+
+    &:hover {
+      color: var(--cms-text);
+      background-color: var(--cms-hover);
+    }
+
+    &:disabled {
+      opacity: .35;
+    }
+
+    // The button already holds its own icon (a .paginator-icon)
+    .paginator-icon {
+      display: block;
+      font-size: 1.05rem;
+      line-height: 1;
+    }
+  }
+}

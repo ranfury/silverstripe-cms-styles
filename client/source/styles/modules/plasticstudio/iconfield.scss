@@ -1,0 +1,110 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Icon field (plasticstudio/iconfield): pick an icon from a grid
+// ===============================
+
+.field.IconField ul,
+ul.IconField {
+  @include list-reset;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
+  gap: .5rem;
+  max-width: 46rem;
+  padding: .75rem;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius);
+  background: var(--cms-sunken);
+}
+
+.field.IconField .option,
+ul.IconField .option {
+  position: relative;
+  list-style: none;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  // A square tile
+  label {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 1;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--cms-border);
+    border-radius: var(--cms-radius);
+    color: var(--cms-text);
+    background-color: var(--cms-surface);
+    cursor: pointer;
+    transition:
+      border-color $fast ease,
+      background-color $fast ease,
+      color $fast ease;
+
+    &:hover {
+      border-color: var(--cms-border-strong);
+      background-color: color-mix(in srgb, var(--cms-surface), var(--cms-text) 4%);
+    }
+  }
+
+  input:focus-visible + label {
+    @include focus-ring;
+  }
+
+  input:checked + label {
+    border-color: var(--cms-accent);
+    color: var(--cms-on-accent);
+    background-color: var(--cms-accent);
+  }
+
+  img,
+  svg {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+  }
+
+  // Inline svgs (scripts/components/media.js) take the text colour
+  svg {
+    [fill^="#"] {
+      fill: currentColor;
+    }
+
+    [stroke^="#"] {
+      stroke: currentColor;
+    }
+  }
+
+  .cms-inline-svg {
+    display: grid;
+    place-items: center;
+    width: 60%;
+    height: 60%;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  // "None"
+  input[value=""] + label::before {
+    content: 'None';
+    font-size: .72rem;
+    font-weight: $semibold;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--cms-text-muted);
+  }
+
+  input[value=""]:checked + label::before {
+    color: inherit;
+  }
+}

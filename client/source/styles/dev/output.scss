@@ -1,0 +1,170 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Output (dev/build's progress, options lists, backtraces)
+// ===============================
+
+.build,
+.options,
+.trace {
+  position: relative;
+  max-width: 64rem;
+  margin: 0 auto 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--dev-border);
+  border-radius: 14px;
+  background-color: var(--dev-surface);
+
+  a {
+    font-weight: $medium;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // dev/build: a line per table / class, coloured by what happened
+  li {
+    font-family: $font-mono;
+    font-size: .85rem;
+
+    &.success {
+      color: var(--dev-success);
+    }
+
+    &.warning {
+      color: var(--dev-warning);
+    }
+
+    &.error {
+      color: var(--dev-error);
+    }
+
+    &.info {
+      color: var(--dev-accent);
+    }
+  }
+}
+
+.options {
+  .description {
+    display: block;
+    font-size: .88rem;
+    line-height: 1.4;
+    color: var(--dev-muted);
+  }
+
+  .success {
+    color: var(--dev-success);
+  }
+
+  .error {
+    color: var(--dev-error);
+  }
+
+  .warning {
+    color: var(--dev-warning);
+  }
+
+  .info {
+    color: var(--dev-accent);
+  }
+
+  .more-details {
+    width: fit-content;
+    padding: .35rem .6rem;
+    border: 1px dashed var(--dev-border);
+    border-radius: 8px;
+  }
+}
+
+// Code, backtraces
+pre {
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  border: 1px solid var(--dev-border);
+  border-radius: 10px;
+  font-family: $font-mono;
+  font-size: .85rem;
+  line-height: 1.6;
+  color: var(--dev-text);
+  background-color: var(--dev-bg);
+
+  span {
+    color: var(--dev-muted);
+  }
+
+  .error {
+    color: var(--dev-error);
+  }
+
+  .success {
+    color: var(--dev-success);
+  }
+
+  .warning {
+    color: var(--dev-warning);
+  }
+}
+
+// A task's parameters
+.params {
+  margin: 0 0 0 .75rem;
+}
+
+.param {
+  display: flex;
+  align-items: baseline;
+  gap: .5rem;
+}
+
+.param__name {
+  font-family: $font-mono;
+  font-size: .88rem;
+
+  &::after {
+    content: ':';
+  }
+}
+
+.param__description {
+  color: var(--dev-muted);
+}
+
+// Forms on dev pages (e.g. confirmations)
+form {
+  fieldset {
+    margin: 0 0 1.5rem;
+    padding: 0;
+    border: 0;
+  }
+
+  input[type="submit"] {
+    @extend %dev-button;
+    margin-right: .5rem;
+  }
+}
+
+%dev-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 10px;
+  font: inherit;
+  font-size: .9rem;
+  font-weight: $semibold;
+  text-decoration: none;
+  color: #fff;
+  background-color: var(--dev-accent);
+  cursor: pointer;
+  transition: filter .15s ease;
+
+  &:hover {
+    text-decoration: none;
+    filter: brightness(1.1);
+  }
+}

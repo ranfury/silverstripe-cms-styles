@@ -1,0 +1,87 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Header (the page's title bar: "Environment builder", the url...)
+// ===============================
+
+.info {
+  position: relative;
+  z-index: 10;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 1.25rem 1.5rem 0;
+
+  h1 {
+    margin: 0 0 .25rem;
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: .9rem;
+    font-weight: $regular;
+    color: var(--dev-muted);
+  }
+}
+
+// The bar along the top, it stays in view
+.header {
+  position: sticky;
+  top: 0;
+  max-width: none;
+  margin: 0 0 1.5rem;
+  padding: 1rem max(1.5rem, calc((100% - 64rem) / 2 + 1.5rem));
+  border-bottom: 1px solid var(--dev-border);
+  color: var(--dev-text);
+  background-color: color-mix(in srgb, var(--dev-surface), transparent 10%);
+  backdrop-filter: blur(10px);
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+
+    // A dot in place of the silverstripe logo
+    &::before {
+      content: '';
+      width: .65rem;
+      height: .65rem;
+      border-radius: 50%;
+      background-color: var(--dev-theme);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--dev-theme), transparent 80%);
+    }
+  }
+
+  p,
+  h3 {
+    color: var(--dev-muted);
+  }
+
+  a {
+    color: inherit;
+  }
+
+  // An error page's header
+  &.error {
+    max-width: 64rem;
+    margin: 2rem auto;
+    padding: 1.25rem 1.5rem;
+    border: 1px solid color-mix(in srgb, var(--dev-error), transparent 60%);
+    border-radius: 14px;
+    background-color: color-mix(in srgb, var(--dev-error), transparent 88%);
+
+    h1::before {
+      background-color: var(--dev-error);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--dev-error), transparent 80%);
+    }
+  }
+}
+
+// A message under the header ("Database build completed!")
+.header ~ .info {
+  padding: 1rem 1.5rem;
+  color: var(--dev-warning);
+}
+
+.build-info-before {
+  color: var(--dev-muted);
+}

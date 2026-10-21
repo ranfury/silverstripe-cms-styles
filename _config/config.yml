@@ -1,0 +1,54 @@
+---
+Name: cms-styles
+After:
+  - '#modules-admin'
+  - '#cmsscripts'
+---
+
+SilverStripe\Admin\LeftAndMain:
+  extensions:
+    - Ranfury\CMSStyles\Extensions\LeftAndMainExtension
+  extra_requirements_javascript:
+    'ranfury/silverstripe-cms-styles: client/dist/scripts/cms.js':
+      defer: true
+
+Ranfury\CMSStyles\Extensions\LeftAndMainExtension:
+  # Stylesheets of other modules to block, 'vendor/package: path'. Only the javascript of those modules is kept.
+  # A module with styles in client/source/styles/modules/<vendor>/<package> also has its client/dist/styles/bundle.css
+  # blocked without being listed here, so this is for the CMS itself (its styles are cms.css) and the others
+  blocked_stylesheets:
+    - 'silverstripe/admin: client/dist/styles/bundle.css'
+    - 'silverstripe/cms: client/dist/styles/bundle.css'
+    - 'silverstripe/lumberjack: client/dist/styles/lumberjack.css'
+    - 'symbiote/silverstripe-grouped-cms-menu: client/dist/css/GroupedCmsMenu.css'
+    - 'symbiote/silverstripe-gridfieldextensions: css/GridFieldExtensions.css'
+    - 'plasticstudio/iconfield: css/IconField.css'
+    - 'jonom/focuspoint: client/dist/styles/main.css'
+    - 'bummzack/sortablefile: client/dist/styles/main.css'
+
+  # Also available, empty by default (see LeftAndMainExtension and the README):
+  #   ignored_modules: modules to keep the styles of
+  #   module_overrides: styles that another package brings itself
+
+  # The colours offered in the appearance menu (any colour can be picked as well), the first is the default
+  theme_colours:
+    - '#2D9CDB'
+    - '#2dd4bf'
+    - '#A78BFA'
+    - '#F87171'
+
+# The dev pages (dev/build, dev/tasks) in the module's style
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\Dev\DebugView:
+    class: Ranfury\CMSStyles\Dev\DebugView
+
+---
+Name: cms-styles-preview
+Only:
+  moduleexists: silverstripe/cms
+---
+# The page shown in the CMS preview checks its headings (add {$CMSStylesPreviewScripts} to its <head>). Only with
+# silverstripe/cms, which this module doesn't require: the controller is the CMS's
+SilverStripe\CMS\Controllers\ContentController:
+  extensions:
+    - Ranfury\CMSStyles\Extensions\ContentControllerExtension

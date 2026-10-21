@@ -1,0 +1,297 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Search box (the React search above the pages tree / a grid field)
+// ===============================
+
+// The javascript measures the tags and buttons and pads the input to fit around them,
+// so they sit over the input (absolutely positioned) on top of a full width field
+.search-holder {
+  position: relative;
+}
+
+.search-box {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  height: var(--search-height);
+  --search-height: #{$header-height};
+
+  // In a narrow panel (the tree beside an edit form) the box is shorter, it's only a search
+  &--compact {
+    --search-height: 2.75rem;
+  }
+}
+
+.search-box__group {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+
+  // The magnifying glass
+  > .font-icon-search {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 1.25rem;
+    display: grid;
+    place-items: center;
+    margin: auto 0;
+    font-size: 1.15rem;
+    color: var(--cms-text-muted);
+    pointer-events: none;
+
+    .search-box--compact & {
+      display: none;
+    }
+  }
+}
+
+// (.search-box in front so these beat the global text input styles, which are more specific than a class alone)
+.search-box .search-box__content-field {
+  float: right;
+  width: 100%;
+  height: var(--search-height);
+  min-height: var(--search-height);
+  padding: 0 13rem 0 3.25rem;
+  border: 0;
+  border-bottom: 1px solid var(--cms-border);
+  border-radius: 0;
+  font-size: 1rem;
+  font-weight: $medium;
+  background-color: var(--cms-bg);
+  box-shadow: none;
+
+  &:hover:not(:disabled, [readonly]),
+  &:focus,
+  &:focus-visible {
+    border-color: var(--cms-border);
+  }
+
+  &:focus,
+  &:focus-visible {
+    box-shadow: inset 0 -2px 0 var(--cms-focus);
+  }
+
+  &::placeholder {
+    font-weight: $regular;
+  }
+
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  &--left-border {
+    border-left: 1px solid var(--cms-border);
+  }
+
+  &--top-border {
+    border-top: 1px solid var(--cms-border);
+  }
+}
+
+// Search filters chosen so far, shown as tags in the field
+.search-box__tags {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: 3.25rem;
+  display: flex;
+  align-items: center;
+
+  .search-box--compact & {
+    left: 1.25rem;
+  }
+}
+
+// "Enter ↵", a hint while typing
+.search-box__enter {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 6.5rem;
+  display: flex;
+  align-items: center;
+  height: 1.5rem;
+  margin: auto 0;
+  padding: 0 .45rem;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-sm);
+  font-family: $font-mono;
+  font-size: .75rem;
+  color: var(--cms-text-muted);
+  user-select: none;
+  cursor: pointer;
+
+  .search-box--has-filters &,
+  .search-box--hideable & {
+    right: 9.5rem;
+  }
+
+  // No room beside the "Search options" button
+  .search-box--compact &,
+  .search-box--has-filters & {
+    display: none;
+  }
+}
+
+// The filters (▾) and close (×) buttons
+.search-box :is(.search-box__filter-trigger, .search-box__cancel) {
+  --btn-bg: transparent;
+  --btn-border: transparent;
+  --btn-shadow: none;
+  --btn-color: var(--cms-text-muted);
+  --btn-hover-color: var(--cms-text);
+  --btn-hover-bg: var(--cms-hover);
+  --btn-height: 2rem;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: var(--btn-height);
+  margin: auto 0;
+}
+
+.search-box__filter-trigger:not(.collapsed) {
+  --btn-color: var(--cms-link);
+  --btn-bg: var(--cms-accent-soft);
+}
+
+.search-box__filter-trigger {
+  right: .75rem;
+
+  .search-box--hideable & {
+    right: calc(#{$header-height} + .25rem);
+  }
+
+  .btn__icon {
+    transition: rotate $normal $ease;
+  }
+
+  &:not(.collapsed) .btn__icon {
+    rotate: 180deg;
+  }
+}
+
+.search-box__cancel {
+  right: .5rem;
+  width: 2.5rem;
+  padding: 0;
+}
+
+.search-box__clear {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto 0;
+
+  .search-box--compact & {
+    display: none;
+  }
+}
+
+// ===============================
+// Search filters (the form that drops down)
+// ===============================
+
+.search-form {
+  @include floating;
+  position: absolute;
+  z-index: $z-dropdown;
+  top: calc(var(--search-height) + .5rem);
+  right: .75rem;
+  width: calc(100% - 1.5rem);
+  max-width: 26rem;
+  margin: 0;
+
+  .search-box--hideable & {
+    right: calc(#{$header-height} + .5rem);
+  }
+
+  // Stacked fields
+  .form-group {
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  // Dates stack, so they have the room to show the whole date
+  .fieldgroup .field.date {
+    max-width: none;
+  }
+
+  .form__fieldgroup {
+    flex-wrap: nowrap;
+    gap: .75rem;
+  }
+}
+
+.search-form__wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+
+  > .form > fieldset {
+    flex: 1 0 auto;
+  }
+}
+
+.search-form__submit {
+  align-self: flex-end;
+}
+
+// ===============================
+// Tags (a chosen filter, or "+3" when they don't fit)
+// ===============================
+
+.tag-list {
+  @include list-reset;
+}
+
+.compact-tag-list {
+  position: relative;
+  overflow: hidden;
+
+  .tag-list {
+    display: flex;
+    gap: .35rem;
+    white-space: nowrap;
+  }
+}
+
+// Hidden copy the javascript measures
+.compact-tag-list__placeholder {
+  position: absolute;
+  margin-left: -9999px;
+  opacity: 0;
+}
+
+.tag-component {
+  position: relative;
+  display: inline-flex;
+  max-width: 14rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  list-style: none;
+
+  &--deletable {
+    padding-left: 1.6rem;
+  }
+}
+
+.tag-component__delete {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: .15rem;
+  margin: auto 0;
+  min-height: 0;
+  height: 1.4rem;
+  min-width: 1.4rem;
+  --btn-bg: transparent;
+  --btn-border: transparent;
+  --btn-shadow: none;
+}

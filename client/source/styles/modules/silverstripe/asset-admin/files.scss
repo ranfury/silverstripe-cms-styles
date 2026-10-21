@@ -1,0 +1,1584 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Files (asset-admin)
+// ===============================
+
+// The files area fills the CMS's content (without it, it's as tall as its content: the editor panel's foot, with its
+// actions, ends below the window)
+.cms-content.AssetAdmin > .app {
+  height: 100%;
+}
+
+.asset-admin {
+  position: relative;
+  min-height: 0;
+}
+
+.asset-admin__toolbar-extra {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .25rem;
+  width: auto;
+  margin-left: auto;
+}
+
+// ===============================
+// Gallery
+// ===============================
+
+.gallery {
+  position: relative;
+  min-height: 0;
+}
+
+.gallery__outer {
+  position: relative;
+  min-width: 0;
+}
+
+.gallery__main {
+  position: relative;
+  height: 100%;
+
+  // On smaller screens the file editor takes the whole panel
+  @include media($lg, max) {
+    &--has-opened-item {
+      display: none;
+    }
+  }
+
+  &--selectable {
+    user-select: none;
+  }
+}
+
+// Upload / Add folder, sort, view buttons
+.gallery__main > .toolbar--content > .fill-width {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+}
+
+.gallery__btn-toolbar {
+  .btn-toolbar {
+    margin: 0;
+  }
+}
+
+.gallery__state-buttons {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-left: auto;
+}
+
+// Sort: a quiet select (forms/select.scss)
+.gallery__sort {
+  display: inline-flex;
+}
+
+.gallery__view-change-button .icon::before {
+  vertical-align: middle;
+}
+
+// Folders, then files, in a grid of cards
+.gallery__folders,
+.gallery__files {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  // The drag / drop wrappers around each item
+  > div,
+  .gallery-item__droppable,
+  .gallery-item__draggable {
+    min-width: 0;
+    margin: 0;
+  }
+}
+
+.gallery__folders {
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  gap: .65rem;
+}
+
+.gallery__files {
+  @include media($lg, max) {
+    margin-bottom: $toolbar-height;
+  }
+}
+
+// Load more / messages / errors
+.gallery__load {
+  display: block;
+  width: 100%;
+}
+
+.gallery__load-more {
+  @include button-reset;
+  display: block;
+  margin: .5rem auto 1.5rem;
+  padding: .55rem 1.5rem;
+  border-radius: var(--cms-radius-pill);
+  font-weight: $semibold;
+  color: var(--cms-on-accent);
+  background-color: var(--cms-accent);
+}
+
+.gallery__no-item-notice {
+  margin-top: 2rem;
+  font-size: 1.05rem;
+  text-align: center;
+  color: var(--cms-text-muted);
+}
+
+.gallery__error {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.gallery__error-message {
+  text-align: center;
+}
+
+.gallery__search-message-clear {
+  padding-left: .5rem;
+}
+
+// Back to the parent folder (a drop target too)
+.gallery__back-container {
+  display: inline-block;
+}
+
+.gallery__back {
+  position: relative;
+
+  &--droppable-hover {
+    outline: 2px solid var(--cms-accent);
+    scale: 1.1;
+  }
+
+  .gallery__back-badge {
+    position: absolute;
+    top: -.5rem;
+    right: -1rem;
+  }
+}
+
+// Files dragged in from the desktop
+.gallery__outer .asset-dropzone.dragging::after {
+  border-radius: var(--cms-radius-lg);
+}
+
+// ===============================
+// Gallery items
+// ===============================
+
+.gallery-item {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto auto;
+  overflow: hidden;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-surface);
+  box-shadow: var(--cms-shadow-sm);
+  cursor: pointer;
+  transition:
+    border-color $fast ease,
+    box-shadow $fast ease,
+    translate $fast ease;
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--cms-accent), var(--cms-border) 55%);
+    box-shadow: var(--cms-shadow);
+    translate: 0 -1px;
+  }
+
+  &:focus-visible {
+    outline-offset: 2px;
+  }
+
+  &--selected,
+  &--highlighted {
+    border-color: var(--cms-accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--cms-accent), transparent 50%);
+  }
+
+  &--dropping {
+    border-color: var(--cms-accent);
+    background-color: var(--cms-accent-soft);
+  }
+
+  &--max-selected {
+    opacity: .35;
+
+    .gallery-item__checkbox-label {
+      cursor: not-allowed;
+    }
+  }
+
+  &--dragging {
+    opacity: .3;
+  }
+
+  // Folders are a row: an icon then the name
+  &--folder {
+    display: flex;
+    align-items: center;
+    height: 3.25rem;
+  }
+}
+
+.gallery-item__thumbnail {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin: 0;
+  background-color: var(--cms-sunken);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  // Small images aren't stretched
+  &--small {
+    background-size: auto;
+  }
+
+  // Files without a preview (documents, video...): an icon
+  &--no-preview {
+    &::before {
+      @include icon('p-document');
+      grid-area: 1 / 1 / 2 / 3;
+      place-self: center;
+      font-size: 2.75rem;
+      color: var(--cms-text-faint);
+    }
+  }
+
+  .gallery-item--archive &--no-preview::before {
+    content: icon-char('p-archive');
+  }
+
+  .gallery-item--audio &--no-preview::before {
+    content: icon-char('block-microphone');
+  }
+
+  .gallery-item--video &--no-preview::before {
+    content: icon-char('block-video');
+  }
+
+  &--folder {
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 100%;
+    aspect-ratio: auto;
+    background: none;
+
+    &::before {
+      @include folder-icon(1.35rem);
+      color: var(--cms-link);
+    }
+  }
+
+  &--error {
+    background-color: var(--cms-danger-soft);
+  }
+}
+
+// "View", shown over the thumbnail on hover
+.gallery-item--overlay {
+  grid-area: 1 / 1 / 2 / 3;
+  display: none;
+  place-content: center;
+  gap: .35rem;
+  font-weight: $semibold;
+  color: #fff;
+  background-color: hsl(220 30% 10% / .45);
+  opacity: 0;
+  transition: opacity $normal ease;
+
+  .gallery-item:not(.gallery-item--error, .gallery-item--folder):is(:hover, .gallery-item--focussed) & {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+  }
+}
+
+// Draft / modified dots, and status icons in the corner
+.gallery-item__status-flags {
+  grid-area: 1 / 1;
+  align-self: start;
+  justify-self: start;
+  padding: .5rem;
+
+  .gallery-item--folder & {
+    display: none;
+  }
+}
+
+.gallery-item--draft,
+.gallery-item--modified {
+  display: block;
+  width: .6rem;
+  height: .6rem;
+  border: 2px solid var(--cms-surface);
+  border-radius: 50%;
+  background-color: var(--cms-warning);
+  box-shadow: var(--cms-shadow-sm);
+}
+
+.gallery-item--draft {
+  background-color: var(--cms-info);
+}
+
+.gallery-item__status-icons {
+  grid-area: 1 / 2;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  margin: .5rem .5rem 0 auto;
+  text-align: right;
+
+  .gallery-item--folder & {
+    display: none;
+  }
+}
+
+.gallery-item__title {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  margin: 0;
+  padding: .6rem 2.4rem .6rem .75rem;
+  overflow: hidden;
+  font-size: .9rem;
+  font-weight: $medium;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  .gallery-item--folder & {
+    flex: 1 1 auto;
+    padding-left: 0;
+  }
+}
+
+// The select box in the corner of the title
+.gallery-item__checkbox {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.gallery-item__checkbox-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.gallery-item__checkbox-icon {
+  display: grid;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 1.5px solid var(--cms-border-strong);
+  border-radius: 5px;
+  font-size: .7rem;
+  color: transparent;
+  background-color: var(--cms-surface);
+  transition:
+    border-color $fast ease,
+    background-color $fast ease;
+
+  // Only the select box shows on selectable items
+  .gallery-item:not(.gallery-item--selectable) & {
+    display: none;
+  }
+
+  .gallery-item__checkbox-label:hover & {
+    border-color: var(--cms-focus);
+  }
+
+  .gallery-item--selected & {
+    border-color: var(--cms-accent);
+    color: var(--cms-on-accent);
+    background-color: var(--cms-accent);
+  }
+}
+
+// Uploading / failed
+.gallery-item__upload-progress {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 70%;
+  height: .5rem;
+  overflow: hidden;
+  border-radius: var(--cms-radius-pill);
+  background-color: var(--cms-border);
+  translate: -50% -50%;
+}
+
+.gallery-item__progress-bar,
+.gallery__progress-bar-progress {
+  width: 0%;
+  height: 100%;
+  border-radius: inherit;
+  background-color: var(--cms-accent);
+  transition: width .5s ease;
+}
+
+.gallery-item__error-message {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 90%;
+  max-height: calc(100% - 3rem);
+  padding: .5rem;
+  overflow: hidden;
+  border-radius: var(--cms-radius-sm);
+  font-size: .8rem;
+  text-align: center;
+  color: #fff;
+  background-color: var(--cms-danger);
+  translate: -50% -50%;
+}
+
+.gallery-item--error {
+  cursor: not-allowed;
+
+  .gallery-item__checkbox-icon {
+    border-color: var(--cms-danger);
+    color: var(--cms-danger);
+  }
+}
+
+// Dragging several files: a stack of cards and a count
+.gallery-item__drag-layer {
+  position: relative;
+  z-index: 100;
+  display: inline-block;
+  scale: .4;
+  transform-origin: 0 0;
+  cursor: grabbing;
+
+  .gallery-item {
+    z-index: 104;
+    border-width: 2px;
+  }
+
+  .gallery-item--dragging {
+    opacity: 1;
+  }
+
+  .gallery-item__title {
+    display: none;
+  }
+}
+
+.gallery-item__drag-layer-count,
+.gallery-item__badge {
+  position: absolute;
+  z-index: 105;
+  top: -.5rem;
+  right: -.5rem;
+  font-size: 1rem;
+}
+
+.gallery-item__drag-shadow {
+  position: absolute;
+  z-index: 103;
+  inset: 0;
+  border: 2px solid var(--cms-accent);
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-surface);
+  translate: .75rem -.75rem;
+
+  &--second {
+    z-index: 102;
+    translate: 1.5rem -1.5rem;
+  }
+}
+
+// ===============================
+// Table view
+// ===============================
+
+.gallery__table {
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--cms-border);
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-surface);
+
+  th,
+  td {
+    padding: .5rem 1rem;
+    border-bottom: 1px solid var(--cms-border);
+    text-align: left;
+    vertical-align: middle;
+    word-wrap: break-word;
+  }
+
+  thead th {
+    height: 2.5rem;
+    font-size: .75rem;
+    font-weight: $semibold;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--cms-text-muted);
+    background-color: var(--cms-sunken);
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  @include media($md, max) {
+    th:nth-child(n + 4),
+    td:nth-child(n + 4) {
+      display: none;
+    }
+  }
+
+  // Sortable headings
+  th.gallery__table-column__header--sortable {
+    padding: 0;
+  }
+
+  // (also a .btn: its centring, shadow and press are switched off, it's a heading that sorts)
+  .gallery__table-column__sort-button {
+    @include button-reset;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: .35rem;
+    width: 100%;
+    min-height: 0;
+    padding: .5rem 1rem;
+    border-radius: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    color: inherit;
+    box-shadow: none;
+    scale: none;
+
+    &:hover {
+      color: var(--cms-text);
+      background: none;
+    }
+  }
+
+  .gallery__table-column__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .gallery__table-column__sort-icon::before {
+    @include icon('sort');
+    font-size: .75rem;
+    opacity: .4;
+  }
+
+  .sort-ascending,
+  .sort-descending {
+    color: var(--cms-text);
+
+    .gallery__table-column__sort-icon::before {
+      color: var(--cms-link);
+      opacity: 1;
+    }
+  }
+
+  .sort-ascending .gallery__table-column__sort-icon::before {
+    content: '(';
+  }
+
+  .sort-descending .gallery__table-column__sort-icon::before {
+    content: '*';
+  }
+
+  th.sort--disabled > span::after {
+    content: '';
+  }
+
+  .footer-container {
+    border-bottom: 0;
+    background-color: var(--cms-surface);
+  }
+}
+
+.gallery__table-row {
+  cursor: pointer;
+
+  &:hover td {
+    background-color: var(--cms-hover);
+  }
+
+  &--highlighted td,
+  &--selected td {
+    background-color: var(--cms-accent-soft);
+  }
+
+  .badge {
+    margin-left: .35rem;
+  }
+}
+
+.gallery__table-column--title .flexbox-area-grow {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.gallery__table-column--select {
+  position: relative;
+  width: 1%;
+}
+
+.gallery__table .gallery__table-column--image {
+  width: 3.75rem;
+  padding: .35rem .5rem;
+  text-align: center;
+}
+
+.gallery__table-image {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: auto;
+  border-radius: var(--cms-radius-sm);
+  background-color: var(--cms-sunken);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &:not(.gallery__table-image--image)::before {
+    @include icon('p-document');
+    font-size: 1.25rem;
+    color: var(--cms-text-faint);
+  }
+
+  &.gallery__table-image--folder::before {
+    @include folder-icon(1.25rem);
+    color: var(--cms-link);
+  }
+
+  &.gallery__table-image--archive::before {
+    content: icon-char('p-archive');
+  }
+
+  &.gallery__table-image--audio::before {
+    content: icon-char('block-microphone');
+  }
+
+  &.gallery__table-image--video::before {
+    content: icon-char('block-video');
+  }
+
+  &--error {
+    background-color: var(--cms-danger-soft);
+
+    &.gallery__table-image::before {
+      content: icon-char('attention');
+      color: var(--cms-danger);
+    }
+  }
+}
+
+// The row's select box
+.gallery__table-row__checkbox {
+  --checkbox-size: 1.15rem;
+
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  opacity: 0;
+
+  .asset-admin--single-select & {
+    display: none;
+  }
+}
+
+.gallery__table-row__checkbox-icon {
+  display: grid;
+  place-items: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: auto;
+  border: 1.5px solid var(--cms-border-strong);
+  border-radius: 5px;
+  font-size: .7rem;
+  color: transparent;
+
+  .gallery__table-row--selected & {
+    border-color: var(--cms-accent);
+    color: var(--cms-on-accent);
+    background-color: var(--cms-accent);
+  }
+}
+
+.gallery__progress-bar {
+  width: 30%;
+  height: .5rem;
+  overflow: hidden;
+  border-radius: var(--cms-radius-pill);
+  background-color: var(--cms-border);
+
+  &--complete::after {
+    @include icon('tick');
+    font-size: 1.1rem;
+    color: var(--cms-success);
+  }
+}
+
+// ===============================
+// Bulk actions (shown along the bottom when files are selected)
+// ===============================
+
+.bulk-actions {
+  position: absolute;
+  z-index: 2;
+  bottom: 1rem;
+  left: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .35rem;
+  width: max-content;
+  max-width: calc(100% - 2rem);
+  margin: 0;
+  padding: .4rem;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-lg);
+  background-color: var(--cms-surface-raised);
+  box-shadow: var(--cms-shadow-lg);
+  translate: -50% 0;
+
+  // A floating bar that slides up into view
+  &-enter {
+    translate: -50% calc(100% + 2rem);
+  }
+
+  &-enter-active {
+    translate: -50% 0;
+    transition: translate $normal $ease;
+  }
+
+  &-leave {
+    translate: -50% 0;
+  }
+
+  &-leave-active {
+    translate: -50% calc(100% + 2rem);
+    transition: translate $normal $ease;
+  }
+
+  // "3 selected ×"
+  .bulk-actions-counter {
+    @include button-accent;
+
+    flex-direction: row-reverse;
+    font-weight: $semibold;
+  }
+
+  .bulk-actions-select-all .btn {
+    --btn-color: var(--cms-link);
+  }
+
+  .search-choice-close {
+    display: none;
+  }
+}
+
+// ===============================
+// File editor (the panel beside the gallery)
+// ===============================
+
+.editor {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  height: 100%;
+  background-color: var(--cms-bg);
+
+  @include media($lg) {
+    position: relative;
+    width: 22rem;
+    border-left: 1px solid var(--cms-border);
+  }
+
+  @include media($xl) {
+    width: 30rem;
+  }
+
+  .nav-tabs {
+    position: relative;
+    z-index: 1;
+  }
+
+  .editor__details {
+    transform: translateZ(0);
+
+    fieldset {
+      overflow-y: auto;
+    }
+
+    // The form fills the panel (the admin's form--fill-height): the fields scroll, the actions stay at the foot
+    .form--fill-height {
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
+      min-height: 0;
+
+      > fieldset {
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+
+      > .btn-toolbar {
+        flex: 0 0 auto;
+      }
+    }
+  }
+
+  h2 {
+    margin: 1.25rem 0 0;
+  }
+
+  // Stacked fields
+  .form-group {
+    display: block;
+  }
+
+  // The form's room inside the panel (the admin's form--padded): the fields scroll, the actions stay at the foot
+  .form--padded > fieldset {
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+
+  .form--padded > .btn-toolbar {
+    // (the buttons' group is a field, with a bottom margin that put it above the ⋯)
+    .field,
+    .form-group {
+      margin-bottom: 0 !important;
+    }
+
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    min-height: 3.5rem;
+    margin: 0;
+    padding: .6rem 1.5rem;
+    border-top: 1px solid var(--cms-border);
+    background-color: var(--cms-bg);
+  }
+
+  // Details / Permissions / Used on: the CMS's form tabs, an underline under the current one
+  .nav-tabs {
+    gap: 1.25rem;
+    margin: .5rem -1.5rem 1.25rem;
+    padding: 0 1.5rem;
+    box-shadow: inset 0 -1px 0 var(--cms-border);
+
+    .nav-link {
+      height: 2.6rem;
+      border-bottom: 2px solid transparent;
+      font-size: .93rem;
+
+      &:hover {
+        border-bottom-color: var(--cms-border-strong);
+      }
+
+      &.active {
+        color: var(--cms-text);
+        border-bottom-color: var(--cms-accent);
+      }
+    }
+  }
+}
+
+.editor-header {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: .5rem;
+  margin-bottom: .75rem;
+
+  &__back-button {
+    flex: 0 0 auto;
+    align-self: center;
+
+    &--md-below {
+      display: none;
+
+      @include media($lg, max) {
+        display: block;
+      }
+    }
+  }
+
+  &__edit {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+
+  &__field {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+
+    .field {
+      margin-bottom: 0;
+    }
+
+    .editor-header-folder {
+      display: flex;
+      width: 100%;
+
+      .field {
+        max-width: calc(100% - 2rem);
+      }
+    }
+  }
+
+  &__cancel-button {
+    flex: 0 0 auto;
+    align-self: center;
+    margin: 0;
+
+    &--lg-above {
+      display: none;
+
+      @include media($lg) {
+        display: block;
+      }
+    }
+  }
+}
+
+.editor__heading {
+  margin-bottom: .15rem;
+  overflow: hidden;
+  font-size: 1.2rem;
+  font-weight: $semibold;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.editor__specs {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .8rem;
+  color: var(--cms-text-muted);
+}
+
+.editor__status-flag {
+  margin-left: .25rem;
+}
+
+.editor__top-message {
+  margin: -.75rem -1.75rem 1.25rem;
+}
+
+// The file's preview, it zooms a little on hover
+.editor__file-preview {
+  position: relative;
+  display: block;
+  max-height: 22rem;
+  min-height: 4rem;
+  margin: 0 0 1rem;
+  overflow: hidden;
+  border-radius: var(--cms-radius);
+  text-align: center;
+  text-decoration: none;
+  background-color: var(--cms-sunken);
+
+  &--folder {
+    width: 100%;
+  }
+}
+
+.editor__thumbnail {
+  display: block;
+  max-width: 100%;
+  max-height: 22rem;
+  min-height: 5rem;
+  margin: auto;
+  transition: scale $normal $ease;
+
+  .editor__file-preview:not(.editor__file-preview--folder):hover & {
+    scale: 1.03;
+  }
+}
+
+// The link is what the magnifier is centred in (the preview's own box isn't positioned: something sets it static)
+.editor__file-preview-link {
+  position: relative;
+  display: block;
+}
+
+.editor__file-preview-link .editor__file-preview-icon::before {
+  position: absolute;
+  // (over the image: it's scaled on hover, which paints it above an icon that comes before it)
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  color: #fff;
+  background-color: hsl(220 30% 10% / .55);
+  opacity: 0;
+  translate: -50% -50%;
+  transition: opacity $fast ease;
+}
+
+.editor__file-preview-link:hover .editor__file-preview-icon::before {
+  opacity: 1;
+}
+
+.editor__file-preview-message--file-missing {
+  margin: 2rem 0 1rem;
+  font-size: 1.05rem;
+  text-align: center;
+  color: var(--cms-danger);
+}
+
+@include media($lg, max) {
+  .editor__heading,
+  .editor__specs {
+    justify-content: center;
+    margin-right: 2.25rem;
+    text-align: center;
+  }
+}
+
+// ===============================
+// File status icons (e.g. restricted access)
+// ===============================
+
+.file-status-icon {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.file-status-icon__icon::before {
+  font-size: 1rem;
+  color: var(--cms-link);
+}
+
+// ===============================
+// Image preview field (Replace file / link over the preview)
+// ===============================
+
+.preview-image-field__container {
+  position: relative;
+}
+
+.preview-image-field__toolbar {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  display: flex;
+  gap: .25rem;
+  height: auto;
+}
+
+.preview-image-field__toolbar-button {
+  @include button-reset;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--cms-radius-sm);
+  color: #fff;
+  background-color: hsl(220 30% 10% / .6);
+  backdrop-filter: blur(4px);
+
+  &:hover {
+    text-decoration: none;
+    background-color: hsl(220 30% 10% / .8);
+  }
+
+  &::before {
+    @include icon-font;
+    font-size: 1.1rem;
+  }
+
+  &--link::before {
+    content: '=';
+  }
+
+  &--replace::before {
+    content: 'b';
+  }
+}
+
+.preview-image-field__progress {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 75%;
+  height: .5rem;
+  overflow: hidden;
+  border-radius: var(--cms-radius-pill);
+  background-color: var(--cms-border);
+  translate: -50% -50%;
+}
+
+.preview-image-field__progress-bar {
+  width: 0;
+  height: 100%;
+  background-color: var(--cms-accent);
+  transition: width .5s ease;
+}
+
+.preview-image-field__message {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+
+  @include media($lg) {
+    display: flex;
+    align-items: center;
+  }
+
+  &--error {
+    color: #fff;
+    background-color: var(--cms-danger);
+  }
+
+  &--success {
+    color: #fff;
+    background-color: var(--cms-success);
+  }
+}
+
+.preview-image-field__message-button {
+  margin-left: .75rem;
+}
+
+// ===============================
+// File history (in the editor)
+// ===============================
+
+.history-list {
+  position: relative;
+  min-height: 50vh;
+
+  > form {
+    display: block;
+  }
+
+  .editor__file-preview-link,
+  .editor__file-preview-message--file-missing {
+    position: relative;
+    display: block;
+    max-width: 50%;
+    padding: .65rem;
+    border: 1px solid var(--cms-border);
+    border-radius: var(--cms-radius);
+    font-size: .75rem;
+    text-align: center;
+    background-color: var(--cms-sunken);
+  }
+}
+
+.history-list__back {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: -.75rem;
+}
+
+.history-item {
+  position: relative;
+  padding: .85rem 1rem;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    background-color: var(--cms-hover);
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.history-item__date,
+.history-item__version {
+  font-size: .8rem;
+  color: var(--cms-text-muted);
+}
+
+.history-item__date {
+  display: block;
+}
+
+.history-item__version {
+  position: absolute;
+  top: .85rem;
+  right: 1rem;
+}
+
+.history-item__status-flag {
+  font-size: .8rem;
+  font-weight: $semibold;
+  text-transform: uppercase;
+  color: var(--cms-success);
+}
+
+// ===============================
+// Popover field (the editor's ⋯ menu)
+// ===============================
+
+.asset-admin .popover-field {
+  .popover {
+    min-width: 14rem;
+    font-size: .93rem;
+  }
+
+  .popover-body {
+    padding: .35rem;
+
+    ul {
+      @include list-reset;
+    }
+
+    a,
+    .btn {
+      @include menu-item;
+      justify-content: flex-start;
+      min-height: 0;
+      box-shadow: none;
+      scale: 1;
+    }
+  }
+}
+
+// ===============================
+// Insert media (the files area in a modal)
+// ===============================
+
+.insert-media-modal {
+  &.modal-lg {
+    width: calc(100% - 2rem);
+    max-width: 100rem;
+    height: calc(100% - 3rem);
+    margin: 1.5rem auto;
+
+    @include media($md, max) {
+      width: calc(100% - 1rem);
+      height: calc(100% - 1rem);
+      margin: .5rem auto;
+    }
+  }
+
+  .modal-content {
+    height: 100%;
+  }
+
+  .modal-body {
+    height: 100%;
+    padding: 0;
+  }
+
+  .tab-content {
+    margin-bottom: 1.25rem;
+  }
+
+  .btn--close-panel {
+    @include media($lg) {
+      display: none;
+    }
+  }
+
+  @include media($xl, max) {
+    .editor__details {
+      height: 100%;
+    }
+  }
+
+  .fieldgroup.fill-width .field.flexbox-area-grow:first-child {
+    margin-right: 1.25rem;
+  }
+
+  // Insert button: the javascript decides which one shows
+  .asset-admin--multi-select [name="action_insert"] {
+    display: none;
+
+    @include media($lg, max) {
+      display: block;
+    }
+  }
+
+  .asset-admin--single-select [name="action_insert"] {
+    @include media($lg) {
+      display: none;
+    }
+  }
+}
+
+.insert-media-modal__main {
+  height: calc(100vh - 7rem);
+}
+
+.insert-media-modal__close-button {
+  float: right;
+}
+
+// The insert form's size fields
+#Form_fileInsertForm .tab-pane .show {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+
+  > div {
+    width: 100%;
+  }
+
+  #Form_fileInsertForm_Dimensions_Holder {
+    width: calc(67% - 1rem);
+
+    .field-group-component {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+
+    .field {
+      margin-bottom: 0;
+    }
+  }
+
+  #Form_fileInsertForm_Loading_Holder {
+    width: 33%;
+  }
+}
+
+// Image size presets ("Small, Medium, Large")
+.image-size-preset-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.image-size-preset-list__list-item {
+  list-style: none;
+}
+
+// ===============================
+// Insert embed (media from the web)
+// ===============================
+
+.insert-embed-modal {
+  .modal-content {
+    height: auto;
+    max-height: 100%;
+  }
+
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &--edit {
+    width: 100%;
+
+    .btn-toolbar {
+      @include media($md) {
+        margin-left: 30%;
+      }
+    }
+  }
+
+  &--create {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+.insert-embed-modal__url-create .form-control {
+  min-height: 3rem;
+  font-size: 1.05rem;
+}
+
+.insert-embed-modal__fields--fill-width {
+  @include media($md) {
+    display: flex;
+    gap: 1.25rem;
+    width: 100%;
+  }
+}
+
+.insert-embed-modal__preview-container {
+  padding-bottom: 1.25rem;
+
+  @include media($md) {
+    order: 2;
+    width: 30%;
+  }
+}
+
+.insert-embed-modal__preview {
+  display: block;
+  max-width: 100%;
+  max-height: 12rem;
+  margin: 0 auto;
+  border-radius: var(--cms-radius);
+}
+
+// Placement: a segmented row of options
+.insert-embed-modal__placement {
+  .form__field-holder > div {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    border-radius: var(--cms-radius);
+    background-color: var(--cms-sunken);
+  }
+
+  .form-check {
+    flex: 1;
+    margin: 0;
+  }
+
+  .form-check-label {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+
+    span {
+      display: block;
+      padding: .45rem .5rem;
+      border-radius: calc(var(--cms-radius) - 3px);
+      font-size: .78rem;
+      font-weight: $medium;
+      letter-spacing: .03em;
+      text-align: center;
+      text-transform: uppercase;
+      color: var(--cms-text-muted);
+    }
+  }
+
+  .form-check-input {
+    position: absolute;
+    opacity: 0;
+
+    &.checked + span {
+      color: var(--cms-text);
+      background-color: var(--cms-surface);
+      box-shadow: var(--cms-shadow-sm);
+    }
+  }
+}
+
+// ===============================
+// Used on (where a file is used)
+// ===============================
+
+.used-on__table {
+  th {
+    padding: .5rem .65rem;
+  }
+
+  td {
+    padding: 0;
+
+    &.used-on__message {
+      padding: .65rem;
+    }
+  }
+}
+
+.used-on__col--index {
+  width: 1em;
+  border: 0;
+}
+
+.used-on__cell-link {
+  display: block;
+  padding: .65rem;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+    background-color: var(--cms-hover);
+  }
+}
+
+.used-on__title-items {
+  display: inline;
+  padding: 0;
+}
+
+.used-on__title-item {
+  display: inline;
+  list-style: none;
+
+  &::after {
+    content: '/';
+    margin: 0 .35rem;
+    color: var(--cms-text-faint);
+  }
+
+  &:last-of-type::after {
+    display: none;
+  }
+}
+
+.used-on__type {
+  display: block;
+  font-size: .75rem;
+  color: var(--cms-text-muted);
+}
+
+.used-on__badge {
+  color: var(--cms-warning);
+  background-color: var(--cms-warning-soft);
+}
+
+.used-on__message--loading,
+.used-on__message--empty {
+  text-align: center;
+  color: var(--cms-text-muted);
+}

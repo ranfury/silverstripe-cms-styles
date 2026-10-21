@@ -1,0 +1,145 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Loading
+// ===============================
+
+// The whole CMS loading (first load)
+.ss-loading-screen {
+  position: absolute;
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  color: var(--cms-text-muted);
+  background-color: var(--cms-sunken);
+
+  .nojs-warning {
+    margin-top: 1rem;
+    text-align: center;
+  }
+}
+
+.ss-loading-screen__text {
+  // (the spinner is centred, over where the text would be: the text goes below it)
+  margin-top: 8rem;
+  font-size: 1rem;
+  font-weight: $medium;
+  color: var(--cms-text-muted);
+}
+
+.ss-loading-screen__dots {
+  display: inline-block;
+  margin-left: .1em;
+  overflow: visible;
+}
+
+.ss-loading-screen__dot {
+  fill: currentColor;
+  animation: loading-dot .5s ease-in-out infinite alternate both;
+
+  &--2 {
+    animation-delay: .165s;
+  }
+
+  &--3 {
+    animation-delay: .33s;
+  }
+}
+
+@keyframes loading-dot {
+  to {
+    opacity: .2;
+  }
+}
+
+// A panel loading (the cms-content area while ajax loads a page)
+.cms-content-loading-overlay {
+  position: absolute;
+  z-index: $z-loading - 1;
+  inset: 0;
+  background-color: color-mix(in srgb, var(--cms-bg), transparent 40%);
+  backdrop-filter: blur(1px);
+}
+
+.cms-content-loading-spinner {
+  position: absolute;
+  z-index: $z-loading;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .spinner {
+    width: 3rem;
+    height: 3rem;
+    padding: .5rem;
+    border-radius: var(--cms-radius);
+    background-color: var(--cms-surface-raised);
+    box-shadow: var(--cms-shadow);
+
+    .ss-loading-screen & {
+      width: 6rem;
+      height: 6rem;
+      background: none;
+      box-shadow: none;
+    }
+  }
+
+  .spinner__animation {
+    width: 100%;
+    height: 100%;
+  }
+
+  .spinner__animation__empty {
+    fill: transparent;
+  }
+
+  .spinner__animation__fill-left,
+  .spinner__animation__fill-right {
+    fill: none;
+    stroke: var(--cms-accent);
+    stroke-width: 70;
+    stroke-dasharray: 750;
+  }
+
+  .spinner__animation__fill-left {
+    animation: spinner-left 3s infinite cubic-bezier(.445, .05, .55, .95) forwards;
+  }
+
+  .spinner__animation__fill-right {
+    animation: spinner-right 3s infinite cubic-bezier(.445, .05, .55, .95) forwards;
+  }
+}
+
+@keyframes spinner-left {
+  0% {
+    stroke-dashoffset: 750;
+  }
+
+  50% {
+    stroke-dashoffset: 0;
+  }
+
+  100% {
+    stroke-dashoffset: -750;
+  }
+}
+
+@keyframes spinner-right {
+  0% {
+    stroke-dashoffset: -750;
+  }
+
+  50% {
+    stroke-dashoffset: 0;
+  }
+
+  100% {
+    stroke-dashoffset: 750;
+  }
+}

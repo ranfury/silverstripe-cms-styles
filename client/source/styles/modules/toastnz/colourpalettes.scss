@@ -1,0 +1,53 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Colour swatches (toastnz/colourpalettes)
+// ===============================
+
+.colourpalette ul {
+  // (contains the floated swatches without clipping the selected one's ring)
+  display: flow-root;
+  overflow: visible !important;
+  padding: 4px !important;
+}
+
+.colourpalette li label {
+  border-radius: var(--cms-radius-sm) !important;
+  transition: box-shadow $fast ease;
+}
+
+.colourpalette li input:checked + label {
+  box-shadow:
+    inset 0 0 0 1px var(--cms-border),
+    0 0 0 2px var(--cms-surface),
+    0 0 0 4px var(--cms-accent) !important;
+}
+
+.colourpalette li input:focus-visible + label {
+  @include focus-ring;
+}
+
+// ===============================
+// Colour palettes (toastnz/colourpalettes): a colour's text contrast, two swatches side by side
+// ===============================
+
+#Form_ItemEditForm_ContrastColour_Holder {
+  .optionset {
+    flex-direction: row;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .radio {
+    margin: 0;
+  }
+
+  .radio label {
+    border-radius: var(--cms-radius);
+  }
+
+  // The radio covers the whole swatch
+  .radio input {
+    border: 0;
+  }
+}

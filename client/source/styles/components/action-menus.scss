@@ -1,0 +1,135 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Action menus ("More options" beside Save / Publish)
+// ===============================
+
+// A jQuery UI tabset whose one tab is a ⋯ button and whose panel is a menu of actions.
+// The javascript positions the panel (an inline top when it opens upwards)
+.ss-ui-action-tabset {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+
+  > .ui-tabs-nav {
+    margin: 0;
+    border: 0;
+
+    li {
+      display: inline-flex;
+      padding: 0;
+      border: 0;
+      background: none;
+    }
+  }
+
+  // The ⋯ button (a flex row: it has an empty title beside the icon)
+  .ui-tabs-anchor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border-radius: var(--cms-radius);
+    font-size: 0;
+    color: var(--cms-text-muted);
+
+    &:hover,
+    &.active {
+      color: var(--cms-text);
+      background-color: var(--cms-hover);
+    }
+
+    .tab__icon {
+      font-size: 1.25rem;
+      line-height: 1;
+      // (the icon font draws the dots high in their box, this puts them on the buttons' centre line)
+      translate: 0 .1rem;
+    }
+  }
+
+  .ui-tabs-active .ui-tabs-anchor {
+    color: var(--cms-text);
+    background-color: var(--cms-active);
+  }
+
+  // The menu
+  .ui-tabs-panel {
+    @include floating;
+    position: absolute;
+    z-index: $z-dropdown;
+    min-width: 15rem;
+    max-width: 20rem;
+    margin: .35rem 0;
+    padding: .35rem;
+
+    // Small screens: across the bottom, above the actions (it would run off the side)
+    @include media($md, max) {
+      position: fixed;
+      right: .5rem;
+      bottom: calc(#{$toolbar-height} + .5rem);
+      left: .5rem;
+      max-width: none;
+    }
+  }
+
+  // "Last saved 3 months ago"
+  .cms-sitetree-information {
+    margin: 0 0 .35rem;
+    padding: .4rem .65rem .6rem;
+    border-bottom: 1px solid var(--cms-border);
+
+    .meta-info {
+      margin: 0;
+      font-size: .8rem;
+      line-height: 1.5;
+      white-space: nowrap;
+      color: var(--cms-text-muted);
+    }
+  }
+
+  // Each action is a full width row
+  .ui-tabs-panel .btn,
+  .ui-tabs-panel button,
+  .ui-tabs-panel input[type="submit"] {
+    @include menu-item;
+    justify-content: flex-start;
+    min-height: 0;
+    box-shadow: none;
+    scale: 1;
+    white-space: normal;
+  }
+
+  .ui-tabs-panel .ss-ui-action-destructive,
+  .ui-tabs-panel .delete {
+    color: var(--cms-danger);
+
+    &:hover {
+      color: var(--cms-danger);
+      background-color: var(--cms-danger-soft);
+    }
+  }
+
+  // Fields in a menu (e.g. the add page form's options) are stacked
+  .ui-tabs-panel {
+    .form-group {
+      display: block;
+      margin: .5rem .65rem;
+    }
+
+    .cms-content-actions,
+    .cms-preview-controls {
+      height: auto;
+      padding: 0;
+      border: 0;
+    }
+  }
+}
+
+// The tree's view mode buttons
+.cms-tree-view-modes {
+  display: flex;
+  gap: .25rem;
+  margin-left: auto;
+}

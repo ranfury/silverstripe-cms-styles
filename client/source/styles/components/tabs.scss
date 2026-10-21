@@ -1,0 +1,347 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Tabs (jQuery UI tabsets)
+// ===============================
+
+// Inactive panels are hidden by the tabs javascript (an inline display: none)
+.ui-tabs {
+  position: relative;
+}
+
+.ui-tabs-nav,
+.nav-tabs,
+.nav {
+  @include list-reset;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.nav-item,
+.ui-tabs-tab {
+  position: relative;
+  list-style: none;
+}
+
+.nav-link,
+.ui-tabs-anchor {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-weight: $medium;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--cms-text-muted);
+  cursor: pointer;
+  transition:
+    color $fast ease,
+    background-color $fast ease,
+    box-shadow $fast ease;
+
+  &:hover {
+    text-decoration: none;
+    color: var(--cms-text);
+  }
+}
+
+// ===============================
+// Header tabs (Content / Settings / History), a segmented control
+// ===============================
+
+.cms-content-header-tabs {
+  .ui-tabs-nav {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    border-radius: var(--cms-radius);
+    background-color: var(--cms-sunken);
+  }
+
+  .ui-tabs-tab {
+    display: flex;
+  }
+
+  .nav-link,
+  .ui-tabs-anchor {
+    padding: .35rem .85rem;
+    border-radius: calc(var(--cms-radius) - 3px);
+    font-size: .9rem;
+    line-height: 1.4;
+  }
+
+  .ui-tabs-active .nav-link,
+  .ui-tabs-active .ui-tabs-anchor,
+  .nav-link.active {
+    color: var(--cms-text);
+    background-color: var(--cms-surface);
+    box-shadow: var(--cms-shadow-sm);
+  }
+
+  // The tabs' (empty) panels
+  .ui-tabs-panel {
+    display: none;
+  }
+
+  // A single tab (e.g. "Main", or a model admin's one model) has nothing to switch between
+  .ui-tabs-nav:has(> li:only-child) {
+    display: none;
+  }
+}
+
+// ===============================
+// Form tabs, an underlined nav along the top of the form
+// ===============================
+
+.cms-content-fields > fieldset > .ss-tabset > .ui-tabs-nav,
+.panel--padded > .ss-tabset > .ui-tabs-nav {
+  position: sticky;
+  z-index: 5;
+  top: -1.75rem;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
+  margin: -1.75rem -1.75rem 1.75rem;
+  padding: 0 1.75rem;
+  // The line is under the tabs (not the nav's border, which they overlapped), so the row can scroll without clipping their underline.
+  // Lots of tabs scroll sideways rather than wrap onto a second row
+  box-shadow: inset 0 -1px 0 var(--cms-border);
+  background-color: var(--cms-bg);
+  @include scroll-fade-auto;
+
+  .ui-tabs-tab {
+    flex: 0 0 auto;
+  }
+
+  .nav-link,
+  .ui-tabs-anchor {
+    height: 2.9rem;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+      border-bottom-color: var(--cms-border-strong);
+    }
+  }
+
+  .ui-tabs-active .nav-link,
+  .ui-tabs-active .ui-tabs-anchor,
+  .nav-link.active {
+    color: var(--cms-text);
+    border-bottom-color: var(--cms-accent);
+  }
+}
+
+$nested-tabs-width: 15.5rem;
+
+// ===============================
+// Nested tabs (a tabset inside a tab, e.g. Settings > Theme): a menu panel beside its tab's fields
+// when there's room, pills above them when there isn't
+// ===============================
+
+// The fields lay out by the room beside the menu (forms/layout.scss)
+.ss-tabset:not(.ss-ui-action-tabset) > .tab-content {
+  container: form / inline-size;
+}
+
+.tab-content .ss-tabset {
+  > .ui-tabs-nav {
+    gap: .25rem;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    border: 0;
+
+    .nav-link,
+    .ui-tabs-anchor {
+      padding: .4rem .8rem;
+      border-radius: var(--cms-radius-pill);
+      font-size: .9rem;
+
+      &:hover {
+        background-color: var(--cms-hover);
+      }
+    }
+
+    .ui-tabs-active .nav-link,
+    .ui-tabs-active .ui-tabs-anchor,
+    .nav-link.active {
+      color: var(--cms-text);
+      background-color: var(--cms-accent-soft);
+    }
+  }
+
+  // The menu is a column beside the fields, like the pages tree beside an edit form: a line down its side,
+  // rows like the tree's, the current one tinted
+  @container form (min-width: 52rem) {
+    &:has(> .ui-tabs-nav:not([style*="none"])) {
+      display: grid;
+      grid-template-columns: $nested-tabs-width minmax(0, 1fr);
+      align-items: start;
+    }
+
+    > .ui-tabs-nav {
+      position: sticky;
+      top: 1.5rem;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 0;
+      margin: 0;
+      padding: 0 .75rem 0 0;
+      border-right: 1px solid var(--cms-border);
+
+      .nav-link,
+      .ui-tabs-anchor {
+        position: relative;
+        display: flex;
+        align-items: center;
+        min-height: 2.25rem;
+        margin: 1px 0;
+        padding: .25rem .75rem .25rem .9rem;
+        border-radius: var(--cms-radius-sm);
+        font-size: .93rem;
+        line-height: 1.3;
+        white-space: normal;
+      }
+
+      .ui-tabs-active .nav-link,
+      .ui-tabs-active .ui-tabs-anchor,
+      .nav-link.active {
+        font-weight: $medium;
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cms-accent), transparent 80%);
+      }
+    }
+
+    > .tab-content {
+      padding-left: 1.75rem;
+    }
+  }
+}
+
+// The form's own nested tabs go edge to edge in the form's panel (past its padding), so the menu's line runs from the
+// header down to the toolbar, as the tree's does. The line is drawn behind the menu, which sticks as the fields scroll
+.cms-content-fields > fieldset > :is(.tabset, .ss-tabset) > .tab-content > .ss-tabset {
+  @container form (min-width: 52rem) {
+    &:has(> .ui-tabs-nav:not([style*="none"])) {
+      margin: -1.75rem 0 -1.75rem -1.75rem;
+      background: linear-gradient(var(--cms-border), var(--cms-border)) $nested-tabs-width 0 / 1px 100% no-repeat;
+    }
+
+    > .ui-tabs-nav {
+      // (the same space above the menu's rows as beside them)
+      top: -1.75rem;
+      padding: 1rem;
+      border-right: 0;
+    }
+
+    > .tab-content {
+      padding-top: 1.75rem;
+    }
+  }
+}
+
+// ...and the nested tabs fill the form's panel (so does their line), however short their fields are.
+// (the fieldset is a flex item of the panel, as its own min-height wouldn't stretch what's inside it)
+.cms-content-fields:has(> fieldset > :is(.tabset, .ss-tabset) > .tab-content > .ss-tabset > .ui-tabs-nav) {
+  display: flex;
+  flex-direction: column;
+
+  > fieldset {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+
+    > :is(.tabset, .ss-tabset),
+    > :is(.tabset, .ss-tabset) > .tab-content {
+      display: flex;
+      flex: 1 1 auto;
+      flex-direction: column;
+    }
+
+    > :is(.tabset, .ss-tabset) > .tab-content > .ss-tabset {
+      flex: 1 1 auto;
+    }
+  }
+}
+
+// ===============================
+// Bootstrap tab panes (react forms)
+// ===============================
+
+.tab-content > .tab-pane:not(.ui-tabs-panel) {
+  display: none;
+
+  &.active {
+    display: block;
+  }
+}
+
+// ===============================
+// Toggle composite fields (e.g. Metadata), an accordion card
+// ===============================
+
+.ss-toggle,
+.ui-accordion {
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-surface);
+
+  .ui-accordion-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    margin: 0;
+    padding: .8rem 1rem;
+    border-radius: var(--cms-radius);
+    font-size: 1rem;
+    font-weight: $semibold;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--cms-hover);
+    }
+
+    a {
+      flex: 1 1 auto;
+      color: inherit;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+      // The whole header opens it
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+      }
+    }
+
+    // A chevron in place of jQuery UI's triangle
+    .ui-icon {
+      order: 1;
+      font-size: .8rem;
+      color: var(--cms-text-muted);
+      transition: rotate $normal $ease;
+
+      &::before {
+        @include icon('down-open-big');
+      }
+    }
+
+    &.ui-state-active {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+
+      .ui-icon {
+        rotate: 180deg;
+      }
+    }
+  }
+
+  .ui-accordion-content {
+    padding: 1.25rem 1rem .25rem;
+    border-top: 1px solid var(--cms-border);
+  }
+}

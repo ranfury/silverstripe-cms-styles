@@ -1,0 +1,33 @@
+{
+    "name": "ranfury/silverstripe-cms-styles",
+    "description": "A fresh, modern style for the Silverstripe CMS. Blocks the core CMS styles and replaces them with its own",
+    "type": "silverstripe-vendormodule",
+    "keywords": [
+        "silverstripe",
+        "cms",
+        "admin",
+        "theme"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Ranfury",
+            "homepage": "https://github.com/ranfury"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "silverstripe/framework": "^6",
+        "silverstripe/admin": "^3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ranfury\\CMSStyles\\": "src/"
+        }
+    },
+    "extra": {
+        "expose": [
+            "client/dist"
+        ]
+    }
+}

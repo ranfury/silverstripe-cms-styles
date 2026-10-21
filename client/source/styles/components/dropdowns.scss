@@ -1,0 +1,317 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Dropdown menus (bootstrap / react: grid field row actions, file actions...)
+// ===============================
+
+.dropdown,
+.dropup,
+.dropend,
+.dropstart,
+.dropup-center,
+.dropdown-center {
+  position: relative;
+}
+
+// The caret on a toggle button
+.dropdown-toggle {
+  white-space: nowrap;
+
+  &:not(.btn--no-text, .no-text)::after {
+    @include icon('down-open-big');
+    margin-left: .1rem;
+    font-size: .65rem;
+    opacity: .7;
+  }
+}
+
+// Popper positions the menu with inline styles, so only its look is set here
+.dropdown-menu {
+  @include floating;
+  position: absolute;
+  z-index: $z-dropdown;
+  display: none;
+  min-width: 12rem;
+  margin: 0;
+  padding: .35rem;
+  font-size: .93rem;
+  text-align: left;
+  list-style: none;
+
+  &.show {
+    display: block;
+    animation: pop-in $fast $ease both;
+  }
+
+  &[data-bs-popper] {
+    top: 100%;
+    left: 0;
+    margin-top: .35rem;
+  }
+
+  &-end[data-bs-popper] {
+    right: 0;
+    left: auto;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    scale: .97;
+  }
+}
+
+.dropdown-item {
+  @include menu-item;
+
+  &.active,
+  &:active {
+    color: var(--cms-text);
+    background-color: var(--cms-active);
+  }
+
+  &.disabled,
+  &:disabled {
+    color: var(--cms-text-faint);
+    background: none;
+    pointer-events: none;
+  }
+
+  // Delete / archive actions
+  &.text-danger,
+  &--danger,
+  &.action--archive,
+  &.action--delete,
+  &.font-icon-trash-bin {
+    color: var(--cms-danger);
+
+    &:hover {
+      color: var(--cms-danger);
+      background-color: var(--cms-danger-soft);
+    }
+  }
+
+  &[class*="font-icon-"]::before,
+  [class*="font-icon-"]::before {
+    width: 1.1rem;
+    font-size: 1.05rem;
+    text-align: center;
+    color: inherit;
+    opacity: .8;
+  }
+}
+
+.dropdown-header {
+  display: block;
+  padding: .5rem .8rem .3rem;
+  font-size: .75rem;
+  font-weight: $semibold;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--cms-text-muted);
+}
+
+.dropdown-divider {
+  height: 0;
+  margin: .35rem -.35rem;
+  overflow: hidden;
+  border: 0;
+  border-top: 1px solid var(--cms-border);
+}
+
+.dropdown-item-text {
+  display: block;
+  padding: .55rem .8rem;
+  color: var(--cms-text-muted);
+}
+
+// The CMS's action menu (⋮ on grid field rows, the file editor...)
+// (a grid row's actions cell has the class too, it stays a cell)
+.action-menu:not(td) {
+  display: inline-flex;
+}
+
+.action-menu__toggle {
+  --btn-bg: transparent;
+  --btn-border: transparent;
+  --btn-shadow: none;
+  --btn-hover-bg: var(--cms-hover);
+}
+
+.action-menu__dropdown {
+  min-width: 13rem;
+}
+
+// ===============================
+// Popovers
+// ===============================
+
+.popover {
+  @include floating;
+  position: absolute;
+  z-index: $z-popover;
+  display: block;
+  max-width: 22rem;
+  font-size: .93rem;
+  word-wrap: break-word;
+  border-radius: var(--cms-radius-lg);
+}
+
+.popover-header {
+  margin: 0;
+  padding: .85rem 1rem .25rem;
+  border: 0;
+  font-size: 1rem;
+  font-weight: $semibold;
+
+  &:empty {
+    display: none;
+  }
+
+  + .popover-body {
+    padding-top: .25rem;
+  }
+}
+
+.popover-body {
+  padding: .85rem 1rem;
+  color: var(--cms-text);
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// The arrow is left out, the popover's shadow is enough
+.popover-arrow,
+.tooltip-arrow {
+  display: none;
+}
+
+// A popover of options to pick from (e.g. "Add block" with icons)
+.popover-option-set {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--cms-radius-lg);
+
+  > .popover {
+    width: calc(100% - .5rem);
+    overflow: hidden;
+
+    @include media($sm) {
+      max-width: 30rem;
+    }
+  }
+}
+
+.popover-option-set__search {
+  display: flex;
+  align-items: center;
+  height: 3.25rem;
+  border-bottom: 1px solid var(--cms-border);
+}
+
+.popover-option-set__search-input {
+  height: 100%;
+  padding-left: 1rem;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+
+  &:focus {
+    box-shadow: none;
+  }
+}
+
+// The search is the popover's top edge, not a field inside it: the form control's focus ring (a border and glow in
+// the accent) drew a second box within the popover's own. Focus is said by the line under it instead
+.popover-option-set__search {
+  &:focus-within {
+    border-bottom-color: var(--cms-focus);
+  }
+
+  .popover-option-set__search-input.form-control {
+    &,
+    &:hover,
+    &:focus {
+      border: 0;
+      outline: 0;
+      background-color: transparent;
+      box-shadow: none;
+    }
+  }
+}
+
+.popover-option-set__button-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: .35rem;
+  max-height: 25rem;
+  padding: .5rem;
+  overflow-y: auto;
+
+  .popover-option-set__no-results {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: .75rem;
+    text-align: center;
+    color: var(--cms-text-muted);
+  }
+}
+
+// The options are buttons (.btn, and Elemental's .btn--icon-xl), whose centring beat the menu row's: each option sat
+// in the middle of its cell, so the icons and names didn't line up. Left-aligned, an icon column and a name column
+.popover-option-set__button,
+.popover-option-set__button.btn {
+  @include menu-item;
+  justify-content: flex-start;
+  min-height: 3rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border: 0;
+  box-shadow: none;
+
+  .btn__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &::before,
+  .btn__icon::before {
+    font-size: 1.6rem;
+    color: var(--cms-text-muted);
+  }
+}
+
+// ===============================
+// Tooltips
+// ===============================
+
+.tooltip {
+  position: absolute;
+  z-index: $z-popover + 10;
+  display: block;
+  margin: 0;
+  font-size: .8rem;
+  font-weight: $medium;
+  line-height: 1.4;
+  word-wrap: break-word;
+  opacity: 0;
+  pointer-events: none;
+
+  &.show {
+    opacity: 1;
+  }
+}
+
+.tooltip-inner {
+  max-width: 16rem;
+  padding: .35rem .6rem;
+  border-radius: var(--cms-radius-sm);
+  text-align: center;
+  color: var(--cms-bg);
+  background-color: var(--cms-text);
+  box-shadow: var(--cms-shadow);
+}

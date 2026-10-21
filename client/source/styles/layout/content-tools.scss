@@ -1,0 +1,158 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Content tools (the tree / filter panel beside the edit form)
+// ===============================
+
+.cms-content-tools {
+  position: relative;
+  z-index: 80;
+  flex: 0 0 auto;
+  border-right: 1px solid var(--cms-border);
+  background-color: var(--cms-bg);
+
+  // The panel javascript measures these for the open / collapsed widths
+  .cms-panel-content {
+    width: $tree-width;
+  }
+
+  .cms-content-header-info {
+    float: none;
+    height: 100%;
+  }
+
+  .cms-panel-header {
+    margin: .75rem 0 .25rem;
+    padding-bottom: .35rem;
+    font-size: .8rem;
+    font-weight: $semibold;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--cms-text-muted);
+    border-bottom: 1px solid var(--cms-border);
+  }
+
+  @include media($lg, max) {
+    .cms-panel-content {
+      width: min(#{$tree-width}, 40vw);
+    }
+  }
+}
+
+// The search / filter form above the tree or a list, shown by the header's search button
+.cms-content-filters--hidden {
+  display: none;
+}
+
+// ===============================
+// Collapsible panels
+// ===============================
+
+.cms-panel {
+  &.collapsed {
+    cursor: pointer;
+  }
+
+  .cms-panel-header {
+    width: 100%;
+  }
+
+  // The collapsed state: just the panel's title, sideways
+  .cms-panel-content-collapsed {
+    display: none;
+    width: $panel-collapsed-width;
+    height: calc(100% - #{$toolbar-height});
+    overflow: hidden;
+
+    // Reads upwards, centred in the strip. The text is vertical, so the flex's cross axis (what align-items centres)
+    // is the strip's width. The box is only as tall as its text, so turning it half a turn leaves it where it is
+    .cms-panel-header {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      margin: 1.75rem 0 0;
+      padding: 0;
+      border: 0;
+      font-size: .86rem;
+      line-height: 1;
+      white-space: nowrap;
+      color: var(--cms-text-muted);
+      writing-mode: vertical-rl;
+      rotate: 180deg;
+    }
+  }
+
+  // The « / » button along the bottom of the panel
+  .cms-panel-toggle {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 .5rem;
+  }
+
+  .cms-panel-toggle__button {
+    @include button-reset;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--cms-radius-sm);
+    font-size: 1.15rem;
+    line-height: 1;
+    color: var(--cms-text-muted);
+
+    &:hover {
+      color: var(--cms-text);
+      background-color: var(--cms-hover);
+    }
+  }
+
+  &.collapsed .cms-panel-toggle {
+    justify-content: center;
+  }
+}
+
+// ===============================
+// Collapsed tree panel
+// ===============================
+
+.cms-content-tools.collapsed {
+  .cms-panel-content > * {
+    display: none;
+  }
+
+  .cms-content-header {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.cms-panel.collapsed .cms-panel-header * {
+  display: none;
+}
+
+.has-panel .cms-content-header.north.collapsed {
+  .cms-content-header-info {
+    width: $panel-collapsed-width;
+  }
+
+  .view-controls,
+  .section-label {
+    display: none;
+  }
+}
+
+// The edit page's tree panel just disappears when collapsed
+.cms-panel#cms-content-tools-CMSPageEditController .cms-panel-content-collapsed {
+  display: none;
+}
+
+// No room for the tree beside the form on smaller screens
+@include media($lg, max) {
+  .CMSMain.has-panel .cms-content-tools {
+    display: none;
+  }
+}
+
+.cms-container .column-hidden {
+  display: none;
+}

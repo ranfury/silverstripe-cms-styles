@@ -1,0 +1,11 @@
+//------------------------------------------------------------------
+// Dev pages (dev/build, dev/tasks, errors in dev mode)
+//
+// Replaces the framework's debug.css and task-runner.css (src/Dev/DebugView.php, _config.php),
+// they share the CMS's look and theme colour
+//------------------------------------------------------------------
+
+@use 'dev/page';
+@use 'dev/header';
+@use 'dev/output';
+@use 'dev/tasks';

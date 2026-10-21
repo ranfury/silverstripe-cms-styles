@@ -1,0 +1,58 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Groups in the menu (symbiote/silverstripe-grouped-cms-menu)
+// ===============================
+
+.cms-menu__list {
+  li.children {
+    > a::after {
+      @include icon('down-open-big');
+      font-size: .75rem;
+      opacity: .6;
+      transition: rotate $normal $ease;
+    }
+
+    &.opened > a::after {
+      rotate: 180deg;
+    }
+
+    // A group with the current section in it isn't highlighted itself, the current item inside it is
+    &.current > a {
+      background-color: transparent;
+      box-shadow: none;
+
+      .menu__icon {
+        color: var(--cms-text-muted);
+      }
+    }
+  }
+
+  // The group's own toggle (added by the menu javascript) covers its whole row
+  .toggle-children {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  .toggle-children-icon {
+    display: none;
+  }
+
+  .group {
+    @include list-reset;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 2px 0 .25rem 1.75rem;
+    padding-left: .6rem;
+    border-left: 1px solid var(--cms-border);
+
+    a {
+      min-height: 2.25rem;
+      padding-block: .4rem;
+      font-weight: $regular;
+    }
+  }
+}

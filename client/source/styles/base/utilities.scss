@@ -1,0 +1,169 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Utilities
+// ===============================
+
+// Only the helper classes the CMS's templates and javascript actually use
+// (the javascript adds / removes several of them to show and hide things)
+
+.visually-hidden,
+.visually-hidden-focusable:not(:focus, :focus-within) {
+  @include visually-hidden;
+}
+
+.d-none {
+  display: none !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+.d-md-block {
+  @include media($md) {
+    display: block !important;
+  }
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.flex-column {
+  flex-direction: column !important;
+}
+
+.ms-auto {
+  margin-left: auto !important;
+}
+
+.me-auto {
+  margin-right: auto !important;
+}
+
+.ms-2 {
+  margin-left: .5rem !important;
+}
+
+.me-2 {
+  margin-right: .5rem !important;
+}
+
+.mb-3 {
+  margin-bottom: 1rem !important;
+}
+
+.text-muted {
+  color: var(--cms-text-muted) !important;
+}
+
+.text-success {
+  color: var(--cms-success) !important;
+}
+
+.text-white {
+  color: #fff !important;
+}
+
+.rounded {
+  border-radius: var(--cms-radius) !important;
+}
+
+.rounded-pill {
+  border-radius: var(--cms-radius-pill) !important;
+}
+
+.clear,
+.clearfix::after {
+  clear: both;
+}
+
+.clearfix::after {
+  content: '';
+  display: block;
+}
+
+// jQuery UI helpers the CMS javascript relies on
+.ui-helper-hidden {
+  display: none;
+}
+
+.ui-helper-hidden-accessible {
+  @include visually-hidden;
+}
+
+.ui-helper-clearfix::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.ui-front {
+  z-index: $z-dropdown;
+}
+
+// ===============================
+// Show / hide (bootstrap javascript)
+// ===============================
+
+.fade {
+  transition: opacity $fast linear;
+
+  &:not(.show) {
+    opacity: 0;
+  }
+}
+
+.collapse:not(.show) {
+  display: none;
+}
+
+.collapsing {
+  height: 0;
+  overflow: hidden;
+  transition: height $normal ease;
+}
+
+// Hidden fields and holders
+.hide,
+.hidden,
+input[type="hidden"] {
+  display: none !important;
+}
+
+// ===============================
+// Scroll fade (abstracts/mixins: scroll-fade), registered so the fade can transition
+// ===============================
+
+@property --scroll-fade-start {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --scroll-fade-end {
+  syntax: '<length>';
+  inherits: false;
+  initial-value: 0px;
+}
+
+// Fades the edges of a row that scrolls sideways by how far it has scrolled, with no javascript
+// (abstracts/mixins: scroll-fade-auto). A row that doesn't overflow has no scroll timeline, so doesn't fade
+@keyframes scroll-fade {
+  0% {
+    --scroll-fade-start: 0px;
+    --scroll-fade-end: 2.5rem;
+  }
+
+  4%,
+  96% {
+    --scroll-fade-start: 2.5rem;
+    --scroll-fade-end: 2.5rem;
+  }
+
+  100% {
+    --scroll-fade-start: 2.5rem;
+    --scroll-fade-end: 0px;
+  }
+}

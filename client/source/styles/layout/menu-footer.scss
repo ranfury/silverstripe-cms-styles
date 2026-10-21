@@ -1,0 +1,135 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Menu footer
+// ===============================
+
+// Help links, the CMS version and the appearance menu (scripts/components/appearance.js)
+.cms-menu .cms-panel-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  height: auto;
+  // (as tall as the panels' toolbars plus the frame's gap below them, so its line carries on theirs)
+  min-height: $toolbar-height + 8px;
+  padding: 0 .75rem 8px;
+  border-top: 1px solid var(--cms-border);
+  background-color: transparent;
+
+  // The appearance swatch sits in the menu icons' column, and the help button's text starts where the menu's does
+  // (the list's padding and its rows' padding, then the icon, then the gap before the text)
+  .cms-appearance__toggle {
+    margin-left: .75rem;
+  }
+
+  // The menu always stays open, so its collapse and sticky controls aren't needed
+  .cms-panel-toggle__button,
+  .sticky-toggle {
+    display: none;
+  }
+}
+
+// ===============================
+// Help menu
+// ===============================
+
+.cms-help {
+  &__toggle {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__menu {
+    @include button-reset;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    width: 100%;
+    padding: .45rem .55rem .45rem .355rem;
+    border-radius: var(--cms-radius-sm);
+    color: var(--cms-text-muted);
+
+    &:hover {
+      color: var(--cms-text);
+      background-color: var(--cms-hover);
+    }
+  }
+
+  // (the menu's own icons are the only ones in its column)
+  &__logo {
+    display: none;
+  }
+
+  &__toggle-title {
+    min-width: 0;
+    overflow: hidden;
+    font-size: .86rem;
+    font-weight: $medium;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // Also a bootstrap .badge.text-bg-info, this keeps it in the menu's colours
+  &__badge.badge {
+    padding: .1rem .45rem;
+    border-radius: var(--cms-radius-pill);
+    font-family: $font-mono;
+    font-size: .72rem;
+    color: var(--cms-text-muted);
+    background-color: var(--cms-active);
+  }
+
+  // A chevron like the rest of the CMS's (not the icon font's solid caret), pointing up to the menu
+  &__caret {
+    margin-left: auto;
+    transition: rotate $normal $ease;
+
+    &::before {
+      @include chevron(.85rem);
+      rotate: 180deg;
+    }
+  }
+
+  // The links open upwards from the button
+  &__links {
+    @include floating;
+    position: absolute;
+    z-index: $z-dropdown;
+    bottom: calc(100% + .35rem);
+    left: 0;
+    width: max(100%, 14rem);
+    padding: .35rem;
+    visibility: hidden;
+    opacity: 0;
+    translate: 0 .35rem;
+    transition:
+      opacity $fast ease,
+      translate $fast $ease,
+      visibility 0s $fast;
+  }
+
+  &__link {
+    @include menu-item;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__toggle--show {
+    .cms-help__links {
+      visibility: visible;
+      opacity: 1;
+      translate: 0 0;
+      transition:
+        opacity $fast ease,
+        translate $fast $ease;
+    }
+
+    .cms-help__caret {
+      rotate: 180deg;
+    }
+  }
+}

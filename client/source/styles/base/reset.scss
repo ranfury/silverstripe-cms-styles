@@ -1,0 +1,140 @@
+@use 'cms/abstracts' as *;
+
+// Every scrolling area
+* {
+  @include scrollbars;
+}
+
+// ===============================
+// Elements
+// ===============================
+
+:where(h1, h2, h3, h4, h5, h6, p, ul, ol, dl, figure, blockquote, pre) {
+  margin-top: 0;
+}
+
+:where(p, ul, ol, dl, blockquote, pre) {
+  margin-bottom: 1rem;
+}
+
+:where(ul, ol) {
+  padding-left: 1.5rem;
+}
+
+:where(img, svg, video, canvas) {
+  vertical-align: middle;
+}
+
+:where(img, video) {
+  max-width: 100%;
+  height: auto;
+}
+
+:where(table) {
+  border-collapse: collapse;
+}
+
+:where(th) {
+  text-align: inherit;
+}
+
+:where(fieldset) {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+:where(legend) {
+  float: left;
+  width: 100%;
+  padding: 0;
+}
+
+:where(button, input, select, optgroup, textarea) {
+  margin: 0;
+  font: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+:where(button, [type="button"], [type="reset"], [type="submit"]) {
+  cursor: pointer;
+}
+
+:where(button:disabled, [disabled]) {
+  cursor: not-allowed;
+}
+
+:where(label) {
+  display: inline-block;
+}
+
+:where(textarea) {
+  resize: vertical;
+}
+
+:where(iframe) {
+  border: 0;
+}
+
+:where(hr) {
+  height: 0;
+  margin: 1.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--cms-border);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+// ===============================
+// Links
+// ===============================
+
+:where(a) {
+  color: var(--cms-link);
+  text-decoration: none;
+  text-underline-offset: .2em;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ===============================
+// Focus
+// ===============================
+
+:focus {
+  outline: 0;
+}
+
+:focus-visible {
+  @include focus-ring;
+}
+
+// ===============================
+// Selection
+// ===============================
+
+::selection {
+  color: var(--cms-on-accent);
+  background-color: var(--cms-accent);
+}
+
+// ===============================
+// Motion
+// ===============================
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

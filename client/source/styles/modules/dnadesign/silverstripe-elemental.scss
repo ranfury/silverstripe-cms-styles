@@ -1,0 +1,637 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Blocks (dnadesign/silverstripe-elemental)
+// ===============================
+
+// Its client/dist/styles/bundle.css is blocked (this stylesheet exists, see the README), and everything it drew is
+// here: the block list, each block's row, the bar between rows that adds a block, dragging, the inline form, the
+// history and the reports. Its buttons, badges, dropdowns and the add-a-block popover are the CMS's own (cms.css).
+// Its bundle painted the list white whatever the theme, and pulled the block's History tab up out of line with the
+// others with a negative margin.
+
+// ===============================
+// The toolbar (Add new block)
+// ===============================
+
+.element-editor__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  margin: 0 0 1rem;
+}
+
+.elemental-editor__add-new-block-control {
+  width: auto;
+}
+
+// ===============================
+// The list, a card like a grid field's table
+// ===============================
+
+.elemental-editor-list {
+  position: relative;
+  min-height: 5rem;
+  margin: 0 0 1.75rem;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius);
+  color: var(--cms-text);
+  background-color: var(--cms-surface);
+  box-shadow: var(--cms-shadow-sm);
+
+  // No blocks yet
+  &--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    color: var(--cms-text-muted);
+  }
+}
+
+// ===============================
+// A block
+// ===============================
+
+// Not clipped by the list (no overflow: hidden there): a block's action menu drops out of its row
+.element-editor__element {
+  position: relative;
+  min-height: 5rem;
+  padding: 1rem 1.25rem 1rem 2.5rem;
+  border-bottom: 1px solid var(--cms-border);
+  color: inherit;
+  cursor: pointer;
+  transition: background-color $fast ease;
+
+  // The first and last take the card's corners, so the hover colour doesn't square them off
+  &:not(.element-editor__element ~ .element-editor__element) {
+    border-top-left-radius: calc(var(--cms-radius) - 1px);
+    border-top-right-radius: calc(var(--cms-radius) - 1px);
+  }
+
+  &:not(:has(~ .element-editor__element)) {
+    border-bottom: 0;
+    border-bottom-left-radius: calc(var(--cms-radius) - 1px);
+    border-bottom-right-radius: calc(var(--cms-radius) - 1px);
+  }
+
+  &:hover {
+    background-color: var(--cms-hover);
+  }
+
+  // The row is the control: the ring goes round it, inside the card
+  &:focus-visible,
+  &:has(:focus-visible) {
+    @include focus-ring(-2px);
+  }
+
+  &:hover,
+  &:focus-within,
+  &--dragging {
+    .element-editor-header__drag-handle {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  // Being dragged: its place is held, faintly
+  &--dragging {
+    opacity: .35;
+    cursor: grabbing;
+  }
+
+  // A block whose class no longer exists: it can't be opened
+  &--broken {
+    cursor: default;
+  }
+}
+
+.element-editor--dragging {
+  cursor: grabbing;
+}
+
+// ===============================
+// A block's header: icon, title, type, flags, actions
+// ===============================
+
+.element-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  min-width: 0;
+
+  &__info {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: .5rem;
+    min-width: 0;
+
+    .badge {
+      flex: 0 0 auto;
+      margin: 0;
+    }
+  }
+
+  &__icon-container {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--cms-text-muted);
+
+    &--broken {
+      color: var(--cms-danger);
+    }
+  }
+
+  &__title {
+    margin: 0;
+    overflow: hidden;
+    font-size: .98rem;
+    font-weight: $semibold;
+    line-height: 1.35;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--cms-text);
+
+    // A block with no title
+    &--none {
+      font-style: italic;
+      font-weight: $regular;
+      color: var(--cms-text-muted);
+    }
+  }
+
+  // Draft or modified: a dot on the icon's corner, as the files area marks them (asset-admin's gallery items)
+  &__version-state {
+    position: absolute;
+    right: -.15rem;
+    bottom: -.05rem;
+    z-index: 1;
+    display: block;
+    width: .6rem;
+    height: .6rem;
+    border: 2px solid var(--cms-surface);
+    border-radius: 50%;
+    background-color: var(--cms-warning);
+
+    &--draft {
+      background-color: var(--cms-info);
+    }
+
+    &--modified {
+      background-color: var(--cms-warning);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: flex-end;
+    gap: .25rem;
+  }
+
+  // The ••• menu: quiet until pointed at
+  &__actions-toggle {
+    --btn-bg: transparent;
+    --btn-border: transparent;
+    --btn-shadow: none;
+    --btn-color: var(--cms-text-muted);
+    --btn-hover-bg: var(--cms-hover);
+    --btn-hover-color: var(--cms-text);
+  }
+
+  // Which way the block opens, a span: the row is what is pressed
+  &__expand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: var(--cms-radius-sm);
+    font-size: 1rem;
+    color: var(--cms-text-muted);
+  }
+
+  // Only while the row is pointed at or has focus (see .element-editor__element), in the gutter on its left
+  &__drag-handle {
+    position: absolute;
+    top: 1rem;
+    left: .4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 2rem;
+    border-radius: var(--cms-radius-sm);
+    font-size: 1.1rem;
+    color: var(--cms-text-muted);
+    opacity: 0;
+    pointer-events: none;
+    cursor: grab;
+    transition: opacity $fast ease;
+
+    &:hover {
+      color: var(--cms-text);
+    }
+
+    &:focus-visible {
+      @include focus-ring(0);
+    }
+  }
+
+  // The simple header (history, read only) always shows its handle
+  &--simple &__drag-handle {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .dropdown-item.active {
+    cursor: default;
+  }
+}
+
+// The title is an h3 after the icon, which the edit form's headings rule (forms/layout.scss) gave 2rem above it,
+// dropping it below the icon and its type label
+.element-editor-header .element-editor-header__title {
+  margin: 0;
+}
+
+// An action that can't be taken now (Unpublish on a draft), said with its reason
+.element-editor .action-menu .dropdown-item.disabled {
+  font-style: italic;
+  color: var(--cms-text-faint);
+  pointer-events: initial;
+  cursor: not-allowed;
+}
+
+// ===============================
+// A block's summary: its picture and the start of its text
+// ===============================
+
+// Under the title, in line with it (past the icon)
+.element-editor-summary {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  min-height: 1.5rem;
+  margin: .35rem 0 0 2.5rem;
+
+  &__thumbnail-image {
+    flex: 0 0 auto;
+    width: auto;
+    height: 2.25rem;
+    border-radius: var(--cms-radius-sm);
+    object-fit: cover;
+  }
+
+  &__content {
+    margin: 0;
+    overflow: hidden;
+    font-size: .9rem;
+    line-height: 1.4;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--cms-text-muted);
+
+    &--broken {
+      overflow: visible;
+      white-space: normal;
+      color: var(--cms-danger);
+    }
+  }
+}
+
+// ===============================
+// The bar between blocks that adds one there
+// ===============================
+
+// No height of its own: a strip over the line between two rows that shows an accent line and a + when pointed at or
+// focused, and opens the add-a-block popover when pressed
+.element-editor__hover-bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 0;
+}
+
+.element-editor__hover-bar-area {
+  @include button-reset;
+  position: relative;
+  width: 100%;
+  min-height: 1.5rem;
+  background-color: transparent;
+  outline: 0;
+
+  &:hover,
+  &:focus-visible,
+  &--focus {
+    .element-editor__hover-bar-area-inner {
+      margin: 0 1rem;
+    }
+
+    .element-editor__hover-bar-line {
+      opacity: 1;
+      transform: translateY(-50%) scaleX(1);
+
+      &::before {
+        transform: scale(1);
+      }
+    }
+  }
+}
+
+.element-editor__hover-bar-area-inner {
+  position: relative;
+  display: block;
+  margin: 0;
+  transition: margin $normal $ease;
+}
+
+.element-editor__hover-bar-line {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  height: 3px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--cms-radius-pill);
+  background-color: var(--cms-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--cms-accent), transparent 80%);
+  opacity: 0;
+  transform: translateY(-50%) scaleX(.96);
+  transition:
+    opacity $fast ease,
+    transform $normal $ease;
+
+  // The + (its icon font class is on the line), on a disc in the accent, in the middle of the line
+  &::before {
+    position: relative;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: -.75rem;
+    border-radius: 50%;
+    font-size: .85rem;
+    line-height: 1;
+    color: var(--cms-on-accent);
+    background-color: var(--cms-accent);
+    box-shadow: 0 0 0 3px var(--cms-surface);
+    transform: scale(0);
+    transition: transform $normal $ease;
+  }
+}
+
+// ===============================
+// Dragging: where the block will go
+// ===============================
+
+.elemental-editor-drag-indicator {
+  height: 3px;
+  margin: -2px 0 -1px;
+  border-radius: var(--cms-radius-pill);
+  background-color: var(--cms-accent);
+
+  &__ball {
+    position: relative;
+    top: -3px;
+    left: -4px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: var(--cms-accent);
+  }
+}
+
+// ===============================
+// The inline form (a block opened in its row)
+// ===============================
+
+.element-editor-editform {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--cms-border);
+  cursor: auto;
+
+  &__form {
+    width: 100%;
+  }
+
+  // Drawn off screen rather than display: none, which would stop the form being submitted
+  &--rendered-not-visible {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .mce-tinymce {
+    box-sizing: border-box;
+  }
+
+  .btn--hidden {
+    display: none;
+  }
+
+  .text-checkbox-group-field {
+    align-items: flex-start;
+
+    .form-group {
+      flex: auto;
+      // reactstrap adds mb-3, with !important
+      margin-bottom: 0 !important;
+    }
+  }
+}
+
+// A text field with a checkbox beside it (the title and "Displayed")
+.text-checkbox-group-field {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+
+  .form-check {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    margin: 0;
+    padding-left: 0;
+  }
+
+  &--read-only {
+    display: flex;
+
+    > :first-child {
+      flex: 1;
+    }
+
+    .show-title {
+      font-style: italic;
+      color: var(--cms-text-muted);
+    }
+  }
+}
+
+.textcheckboxgroup {
+  .form-check-input {
+    position: relative;
+    margin-left: 0;
+  }
+
+  .form-label {
+    margin-bottom: 0;
+  }
+}
+
+// ===============================
+// History
+// ===============================
+
+// A page's history: each block of an older version as it was
+.cms-edit-form .fieldgroup.elemental-area__element--historic {
+  margin-right: 0;
+  margin-left: 0;
+
+  &.form-group {
+    border-top: 1px solid var(--cms-border);
+  }
+
+  .form__field-holder {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+div.elemental-area__element--historic.elemental-area__element--historic-inner {
+  padding: 1rem 0 0;
+  border: 0;
+  background: transparent;
+}
+
+.elemental-area--read-only {
+  margin: 1.5rem 0;
+  border-bottom: 1px solid var(--cms-border);
+}
+
+.history-viewer__version-detail fieldset {
+  overflow: visible;
+}
+
+// The older grid field rendering of a block (history, reports)
+.elemental-preview {
+  line-height: 1.4;
+
+  &--historic {
+    margin-bottom: 1rem;
+  }
+}
+
+.elemental-edit {
+  display: flex;
+  color: inherit;
+
+  &:hover,
+  &:focus {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.elemental-preview__icon {
+  display: inline-block;
+  width: 1.75rem;
+  font-size: 1.5rem;
+  vertical-align: top;
+  color: var(--cms-text-muted);
+}
+
+.elemental-preview__thumbnail-image {
+  margin-right: .5rem;
+
+  img {
+    border-radius: var(--cms-radius-sm);
+  }
+
+  &--placeholder {
+    height: 2.25rem;
+    border-radius: 0;
+  }
+}
+
+.elemental-preview__detail {
+  display: inline-block;
+  margin-left: .5rem;
+
+  h3 {
+    margin: 0;
+    font-size: .98rem;
+    font-weight: $semibold;
+  }
+
+  p {
+    display: flex;
+    align-items: center;
+    margin: .3rem 0 0;
+  }
+
+  small {
+    font-size: .85rem;
+    color: var(--cms-text-muted);
+  }
+}
+
+.elemental-preview__link {
+  float: right;
+  margin-top: .25rem;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:hover &-text {
+    text-decoration: underline;
+  }
+
+  &-caret {
+    display: block;
+    float: right;
+    margin-top: -2px;
+    margin-left: 2px;
+  }
+}
+
+// ===============================
+// Reports (the blocks report)
+// ===============================
+
+.elemental-report__grid-field {
+  .ss-gridfield-item td:first-child {
+    width: 1px;
+  }
+
+  .col-Icon {
+    font-size: 1.5rem;
+    color: var(--cms-text-muted);
+  }
+
+  .element-editor-header__version-state {
+    right: auto;
+    bottom: .55rem;
+    left: .9rem;
+  }
+}

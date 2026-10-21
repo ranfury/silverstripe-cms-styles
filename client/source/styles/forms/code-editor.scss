@@ -1,0 +1,123 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Code editor (scripts/components/code-editor.js)
+// ===============================
+
+// The textarea (transparent text, it's what's typed in) sits exactly over its highlighted copy
+.cms-code-editor {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--cms-border-strong);
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-sunken);
+  box-shadow: var(--cms-shadow-sm);
+
+  &:focus-within {
+    border-color: var(--cms-focus);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--cms-focus), transparent 75%);
+  }
+}
+
+.cms-code-editor__highlight,
+.cms-code-editor__input {
+  margin: 0;
+  padding: .85rem 1rem;
+  border: 0;
+  border-radius: 0;
+  font-family: $font-mono;
+  font-size: .86rem;
+  line-height: 1.6;
+  letter-spacing: 0;
+  tab-size: 2;
+  white-space: pre;
+  word-wrap: normal;
+  overflow-wrap: normal;
+}
+
+.cms-code-editor__highlight {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: var(--cms-text);
+  background: none;
+  pointer-events: none;
+
+  code {
+    padding: 0;
+    font: inherit;
+    background: none;
+  }
+}
+
+.cms-code-editor .cms-code-editor__input {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 12rem;
+  overflow: auto;
+  resize: vertical;
+  color: transparent;
+  background: transparent;
+  box-shadow: none;
+  caret-color: var(--cms-text);
+
+  &:focus {
+    box-shadow: none;
+  }
+
+  &::selection {
+    color: transparent;
+    background-color: color-mix(in srgb, var(--cms-accent), transparent 60%);
+  }
+}
+
+// ===============================
+// Syntax colours (highlight.js)
+// ===============================
+
+.cms-code-editor .hljs {
+  &-tag,
+  &-name,
+  &-selector-tag {
+    color: var(--code-syntax-blue);
+  }
+
+  &-attr,
+  &-attribute,
+  &-property {
+    color: var(--code-syntax-orange);
+  }
+
+  &-string,
+  &-value {
+    color: var(--code-syntax-green);
+  }
+
+  &-number,
+  &-literal,
+  &-built_in {
+    color: var(--code-syntax-purple);
+  }
+
+  &-keyword,
+  &-selector-class,
+  &-selector-id {
+    color: var(--code-syntax-yellow);
+  }
+
+  &-comment,
+  &-meta {
+    font-style: italic;
+    color: var(--code-syntax-gray);
+  }
+
+  &-punctuation {
+    color: var(--cms-text-muted);
+  }
+
+  &-title,
+  &-function {
+    color: var(--code-syntax-red);
+  }
+}

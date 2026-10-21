@@ -1,0 +1,165 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// CMS Container
+// ===============================
+
+// menu | (tree) | content | preview, side by side and filling the window
+.cms-container {
+  display: flex;
+  width: 100vw;
+  height: 100%;
+  overflow: hidden;
+  color: var(--cms-text);
+  // The frame around the panels, with a soft wash of the theme colour in the top corner (behind the menu)
+  background:
+    radial-gradient(70rem 36rem at 0 0, color-mix(in srgb, var(--cms-accent), transparent 90%), transparent 70%),
+    var(--cms-sunken);
+
+  // Only show the preview in preview / split mode
+  &--content-mode .cms-preview {
+    display: none;
+  }
+
+  &--preview-mode {
+    .cms-content,
+    .cms-container-skip-link-target {
+      display: none;
+    }
+  }
+}
+
+// ===============================
+// Flex helpers
+// ===============================
+
+// The CMS builds its whole layout from these (the panel javascript depends on them)
+.fill-height {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.fill-width {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.flexbox-area-grow {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.flexbox-display {
+  display: flex;
+}
+
+.vertical-align-items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+// ===============================
+// Panels
+// ===============================
+
+.panel {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+
+  &--padded {
+    padding: 1.75rem;
+  }
+
+  &--scrollable {
+    overflow: auto;
+    scrollbar-gutter: stable;
+
+    // Only the one that scrolls keeps its gutter, otherwise each of them leaves a strip down the side
+    // (the history list sat off centre)
+    &:has(> .panel--scrollable) {
+      scrollbar-gutter: auto;
+    }
+  }
+
+  // Under the menu's header and above its toolbar
+  &--triple-toolbar {
+    height: calc(100% - #{$header-height * 2 + $toolbar-height});
+  }
+}
+
+// ===============================
+// Content area
+// ===============================
+
+// The work area (and the preview beside it) sit inset in the frame as rounded panels
+.cms-container-skip-link-target,
+.cms-preview {
+  margin: .5rem .5rem .5rem 0;
+  height: calc(100% - 1rem);
+  overflow: hidden;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius-lg);
+  background-color: var(--cms-bg);
+  box-shadow: var(--cms-shadow-panel);
+
+  @include media($md, max) {
+    margin: 0;
+    height: 100%;
+    border: 0;
+    border-radius: 0;
+  }
+}
+
+.cms-content {
+  height: 100%;
+}
+
+.cms-content-fields {
+  overflow-y: auto;
+}
+
+.cms-edit-form {
+  &.CMSMain {
+    padding: 0;
+  }
+}
+
+// The content of a single tab, e.g. the pages tree
+.cms-panel-padded .cms-content-view {
+  height: 100%;
+  padding: 1.75rem;
+}
+
+// ===============================
+// Skip link
+// ===============================
+
+.cms-container-skip-link {
+  position: absolute;
+  z-index: 100;
+  top: 1rem;
+  left: 1rem;
+  padding: .6rem 1rem;
+  border-radius: var(--cms-radius);
+  font-weight: $semibold;
+  color: var(--cms-on-accent);
+  background-color: var(--cms-accent);
+  translate: 0 calc(-100% - 2rem);
+  transition: translate $normal $ease;
+
+  &:focus {
+    translate: 0 0;
+  }
+}
+
+.cms-container-skip-link-target {
+  &:focus {
+    outline: 0;
+  }
+}

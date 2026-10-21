@@ -1,0 +1,75 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Page history (the older versions form)
+// ===============================
+
+#cms-page-history-versions {
+  td:hover {
+    cursor: pointer;
+  }
+
+  tr.loading {
+    color: var(--cms-text-faint);
+
+    td:hover {
+      cursor: wait;
+    }
+  }
+}
+
+// ===============================
+// URL segment: checking the new url
+// ===============================
+
+.field.urlsegment.loading .form__field-label::after {
+  content: '';
+  display: inline-block;
+  width: .8rem;
+  height: .8rem;
+  margin-left: .5rem;
+  border: 2px solid var(--cms-border-strong);
+  border-top-color: var(--cms-accent);
+  border-radius: 50%;
+  vertical-align: middle;
+  animation: tree-loading .7s linear infinite;
+}
+
+// The anchor selector field's options sit above everything
+.anchorselectorfield__menu {
+  z-index: 20000;
+}
+
+// The pages tree's search form opens against the panel's edge
+#cms-content-tools-CMSMain .search-form {
+  right: 0;
+}
+
+// ===============================
+// Import (a model admin's CSV import)
+// ===============================
+
+.import-form,
+.grid-field-import.show .modal-dialog {
+  .advanced {
+    display: none;
+  }
+}
+
+.grid-field-import {
+  pointer-events: none;
+
+  &.show {
+    display: block;
+
+    .modal-content {
+      overflow-y: auto;
+      pointer-events: all;
+    }
+
+    .modal-dialog {
+      max-height: 37.5rem;
+    }
+  }
+}
+

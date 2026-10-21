@@ -1,0 +1,435 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Messages (form messages, field validation)
+// ===============================
+
+// Status colours, used by messages, alerts, toasts and badges
+%status-good {
+  --status: var(--cms-success);
+  --status-soft: var(--cms-success-soft);
+}
+
+%status-warning {
+  --status: var(--cms-warning);
+  --status-soft: var(--cms-warning-soft);
+}
+
+%status-bad {
+  --status: var(--cms-danger);
+  --status-soft: var(--cms-danger-soft);
+}
+
+%status-info {
+  --status: var(--cms-info);
+  --status-soft: var(--cms-info-soft);
+}
+
+.message,
+.alert {
+  --status: var(--cms-text-muted);
+  --status-soft: var(--cms-sunken);
+
+  position: relative;
+  display: block;
+  clear: both;
+  margin-bottom: 1.25rem;
+  padding: .8rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--status), transparent 72%);
+  border-radius: var(--cms-radius);
+  font-size: .93rem;
+  line-height: 1.5;
+  color: var(--cms-text);
+  background-color: var(--status-soft);
+
+  > p,
+  > ul {
+    margin-bottom: 0;
+  }
+
+  > p + p {
+    margin-top: .35rem;
+  }
+
+  a {
+    font-weight: $medium;
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  &:empty {
+    display: none;
+  }
+}
+
+.message {
+  &.good,
+  &.success {
+    @extend %status-good;
+  }
+
+  &.warning,
+  &.caution {
+    @extend %status-warning;
+  }
+
+  &.error,
+  &.bad,
+  &.required,
+  &.validation {
+    @extend %status-bad;
+  }
+
+  &.notice,
+  &.info {
+    @extend %status-info;
+  }
+}
+
+.alert {
+  &-success {
+    @extend %status-good;
+  }
+
+  &-warning {
+    @extend %status-warning;
+  }
+
+  &-danger {
+    @extend %status-bad;
+  }
+
+  &-info,
+  &-primary {
+    @extend %status-info;
+  }
+
+  &-heading {
+    color: inherit;
+  }
+
+  &-dismissible {
+    padding-right: 3.5rem;
+
+    .btn-close {
+      position: absolute;
+      z-index: 2;
+      top: .45rem;
+      right: .5rem;
+    }
+  }
+
+  &.alert--no-border {
+    border: 0;
+    border-radius: 0;
+  }
+}
+
+.alert-link {
+  font-weight: $semibold;
+  color: inherit;
+}
+
+// A field's own validation message, under the field
+.form__field-holder > .message,
+.form__validation-message,
+.form-group .message {
+  margin: .5rem 0 0;
+  padding: .45rem .7rem;
+  font-size: .86rem;
+}
+
+// Invalid fields
+.form-group.has-error,
+.is-invalid {
+  .form-control,
+  input,
+  textarea,
+  select {
+    border-color: var(--cms-danger);
+  }
+}
+
+.valid-feedback,
+.valid-tooltip,
+.invalid-tooltip {
+  display: none;
+}
+
+.invalid-feedback {
+  display: block;
+  margin-top: .4rem;
+  font-size: .86rem;
+  color: var(--cms-danger);
+}
+
+// ===============================
+// Toasts (saved, published, errors...)
+// ===============================
+
+.toasts {
+  position: fixed;
+  z-index: $z-toast;
+  // Above the form's actions, out of the way of the header's tabs
+  right: 1.25rem;
+  bottom: calc(#{$toolbar-height} + 1.25rem);
+  display: flex;
+  flex-direction: column-reverse;
+  width: min(22rem, calc(100vw - 2rem));
+}
+
+.toasts__notice-wrap {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.toast {
+  --status: var(--cms-accent);
+
+  position: relative;
+  width: 100%;
+  max-height: 16rem;
+  margin: 0 0 .65rem;
+  overflow: hidden;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius);
+  word-wrap: break-word;
+  color: var(--cms-text);
+  background-color: var(--cms-surface-raised);
+  box-shadow: var(--cms-shadow-lg);
+  opacity: 1;
+  animation: toast-in .35s $ease both;
+  transition:
+    opacity $normal ease,
+    max-height $normal ease,
+    margin $normal ease;
+
+  // A coloured bar along the side
+  &::before {
+    content: '';
+    position: absolute;
+    top: .6rem;
+    bottom: .6rem;
+    left: .4rem;
+    width: 3px;
+    border-radius: 3px;
+    background-color: var(--status);
+  }
+
+  &--success,
+  &--good,
+  &--green {
+    @extend %status-good;
+  }
+
+  &--warning,
+  &--caution,
+  &--yellow {
+    @extend %status-warning;
+  }
+
+  &--bad,
+  &--error,
+  &--red {
+    @extend %status-bad;
+  }
+
+  &--info,
+  &--notice {
+    @extend %status-info;
+  }
+
+  &:not(.show) {
+    display: none;
+  }
+
+  &.showing {
+    opacity: 0;
+  }
+
+  &--dismissing {
+    max-height: 0;
+    margin-bottom: 0;
+    opacity: 0;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    translate: 0 .5rem;
+    scale: .97;
+  }
+}
+
+.toast__body {
+  display: flex;
+  flex-flow: row-reverse nowrap;
+  align-items: flex-start;
+  gap: .5rem;
+  padding: .8rem .65rem .8rem 1.25rem;
+  font-size: .93rem;
+}
+
+.toast__content {
+  flex: 1 0;
+  padding-top: .15rem;
+}
+
+.toast__close {
+  flex: 0 0 auto;
+  --btn-height: 1.75rem;
+}
+
+.toast__actions {
+  display: flex;
+  border-top: 1px solid var(--cms-border);
+}
+
+.toast__action {
+  flex: 1 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-weight: $semibold;
+  color: var(--cms-link);
+  background: none;
+
+  &:hover {
+    text-decoration: none;
+    background-color: var(--cms-hover);
+  }
+
+  & + & {
+    border-left: 1px solid var(--cms-border);
+  }
+}
+
+// ===============================
+// Badges (status labels: Draft, Modified...)
+// ===============================
+
+.badge {
+  --status: var(--cms-text-muted);
+  --status-soft: var(--cms-active);
+
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .15rem .5rem;
+  border: 0;
+  border-radius: var(--cms-radius-pill);
+  font-size: .72rem;
+  font-weight: $semibold;
+  letter-spacing: .02em;
+  line-height: 1.4;
+  white-space: nowrap;
+  vertical-align: middle;
+  color: var(--status);
+  background-color: var(--status-soft);
+
+  &:empty {
+    display: none;
+  }
+
+  // Modified (unpublished changes)
+  &.status-modified,
+  &--modified,
+  &-warning,
+  &.text-bg-warning {
+    @extend %status-warning;
+  }
+
+  // Draft (never published)
+  &.status-addedtodraft,
+  &--draft,
+  &-info,
+  &.text-bg-info {
+    @extend %status-info;
+  }
+
+  &.status-deletedonlive,
+  &.status-archived,
+  &.status-removedfromdraft,
+  &-danger,
+  &.text-bg-danger {
+    @extend %status-bad;
+  }
+
+  &-success,
+  &.text-bg-success,
+  &.status-published {
+    @extend %status-good;
+  }
+
+  &-pill {
+    border-radius: var(--cms-radius-pill);
+  }
+}
+
+.badge--breadcrumbs {
+  margin-left: .4rem;
+}
+
+// ===============================
+// Unsaved changes ("● Unsaved changes" beside the actions)
+// ===============================
+
+.unsaved-changes-indicator__container {
+  display: flex;
+}
+
+.unsaved-changes-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .3rem .65rem;
+  border-radius: var(--cms-radius-pill);
+  font-size: .84rem;
+  font-weight: $medium;
+  white-space: nowrap;
+  color: var(--cms-warning);
+  background-color: var(--cms-warning-soft);
+}
+
+.unsaved-changes-indicator__icon {
+  font-size: .9rem;
+}
+
+.unsaved-changes-indicator__short {
+  display: none;
+
+  @include media($sm) {
+    display: inline;
+  }
+
+  @include media($xl) {
+    display: none;
+  }
+}
+
+.unsaved-changes-indicator__full {
+  display: none;
+
+  @include media($xl) {
+    display: inline;
+  }
+}
+
+// A small spinner (react components)
+.spinner-border {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: .2em solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: tree-loading .75s linear infinite;
+}

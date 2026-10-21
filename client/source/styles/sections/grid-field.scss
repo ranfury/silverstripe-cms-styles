@@ -1,0 +1,601 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Grid field
+// ===============================
+
+// A list of records: the toolbar (add, link existing...), then the table on a card
+.grid-field {
+  min-width: 0;
+  margin: 0 0 1.75rem;
+  padding: 0;
+  border: 0;
+
+  .description {
+    margin-left: 0;
+  }
+
+  // The filter / search row above a model admin's list
+  .cms-content-filters {
+    margin: 0 0 1rem;
+    overflow: hidden;
+    border: 1px solid var(--cms-border);
+    border-radius: var(--cms-radius);
+
+    .search-box__content-field {
+      border-bottom: 0;
+    }
+  }
+
+  // Links / buttons along the top: Add new, Link existing, Import...
+  .ss-gridfield-buttonrow,
+  > .toolbar--content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    margin: 0 0 .85rem;
+    padding: 0;
+    border: 0;
+    background: none;
+
+    .btn-toolbar {
+      margin: 0;
+
+      // (an empty one would still take a gap)
+      &:not(:has(*)) {
+        display: none;
+      }
+    }
+
+    // Clearfix leftovers: as flex items they'd each take a gap, so the buttons stop short of the table's edge
+    &::before,
+    &::after,
+    :is(.pull-xs-right, .pull-xs-left, .btn-toolbar)::before,
+    :is(.pull-xs-right, .pull-xs-left, .btn-toolbar)::after {
+      display: none;
+    }
+  }
+
+  .ss-gridfield-buttonrow-after {
+    margin: .85rem 0 0;
+  }
+
+  // "Add new" (a type, then Add) on the same row as the search / link existing buttons, which keep to the right,
+  // instead of the search button being alone on a row of its own. They wrap onto their own row when there's no room
+  &:has(> .ss-gridfield-add-new-multi-class) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: .5rem;
+
+    > :not(.ss-gridfield-add-new-multi-class, .ss-gridfield-buttonrow-before) {
+      flex: 0 0 100%;
+      order: 3;
+    }
+
+    > .ss-gridfield-add-new-multi-class {
+      order: 1;
+    }
+
+    > .ss-gridfield-buttonrow-before {
+      flex: 1 1 auto;
+      order: 2;
+      min-width: 0;
+    }
+  }
+
+  // Bootstrap 4 helper classes the grid field templates still use
+  .pull-xs-right {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-left: auto;
+  }
+
+  .pull-xs-left {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  // The loading row while a page / sort loads
+  .ss-gridfield-item.loading {
+    position: relative;
+    padding: 3rem;
+  }
+
+  // Selectable rows (e.g. add existing search)
+  &[data-selectable] td {
+    cursor: pointer;
+  }
+
+  &[data-selectable] tr:is(.ui-selected, .ui-selecting) td {
+    background-color: var(--cms-accent-soft);
+  }
+}
+
+// ===============================
+// Table
+// ===============================
+
+.grid-field__table {
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--cms-border);
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-surface);
+  box-shadow: var(--cms-shadow-sm);
+
+  th,
+  td {
+    padding: .65rem 1rem;
+    border-bottom: 1px solid var(--cms-border);
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  // The title row ("Blocks", "View 1–7 of 7")
+  // Without a title it would only repeat the footer's "View 1–7 of 7" (or be empty)
+  .grid-field__title-row:not(:has(.grid-field__title, h2, a, button, input)) {
+    display: none;
+  }
+
+  .grid-field__title-row th {
+    padding: .85rem 1rem;
+    background-color: var(--cms-surface);
+    text-transform: none;
+    letter-spacing: 0;
+
+    > * {
+      vertical-align: middle;
+    }
+  }
+
+  // Column headings
+  .sortable-header th,
+  tr th.main {
+    padding-top: .55rem;
+    padding-bottom: .55rem;
+    font-size: .75rem;
+    font-weight: $semibold;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--cms-text-muted);
+    // A step off the card, in the theme's tint (lighter in the dark, darker in the light)
+    background-color: light-dark(var(--cms-sunken), color-mix(in srgb, var(--cms-surface), var(--cms-theme) 6%));
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  // Rows
+  tbody {
+    td {
+      color: var(--cms-text);
+      transition: background-color $fast ease;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .ss-gridfield-item:hover td {
+      background-color: var(--cms-hover);
+    }
+
+    // A row that opens when clicked
+    .grid-field__row--drillable,
+    tr[data-link] {
+      cursor: pointer;
+    }
+
+    // Image thumbnails
+    td.col-StripThumbnail,
+    td[class*="col-Thumbnail"] {
+      width: 3rem;
+      padding: .35rem .5rem;
+
+      img {
+        display: block;
+        width: 2.25rem;
+        height: 2.25rem;
+        border-radius: var(--cms-radius-sm);
+        object-fit: cover;
+      }
+    }
+
+    // A page's children (lumberjack, list view), a chevron like the tree's
+    td.col-listChildrenLink {
+      width: 2.5rem;
+      padding-right: 0;
+
+      .list-children-link {
+        --btn-bg: transparent;
+        --btn-border: transparent;
+        --btn-shadow: none;
+        --btn-color: var(--cms-text-muted);
+        --btn-hover-color: var(--cms-text);
+        --btn-height: 1.75rem;
+        width: 1.75rem;
+        padding: 0;
+
+        &::before {
+          @include chevron(.9rem);
+          rotate: -90deg;
+        }
+      }
+    }
+
+    // The page's name, with its page type's icon
+    td.col-getTreeTitle {
+      .action-detail {
+        display: inline-flex;
+        align-items: center;
+        gap: .55rem;
+        font-weight: $medium;
+        color: var(--cms-text);
+
+        &:hover {
+          color: var(--cms-link);
+        }
+      }
+
+      .record-icon {
+        @include record-icon;
+      }
+    }
+
+    // Editable columns (gridfield extensions): a read-only value or an input in each cell
+    td > p.form-control-static {
+      margin: 0;
+    }
+
+    td > .editable-column-field:not([type="checkbox"], [type="radio"]) {
+      width: 100%;
+    }
+
+    // "No items found"
+    .ss-gridfield-no-items td {
+      padding: 2.5rem 1rem;
+      text-align: center;
+      color: var(--cms-text-muted);
+    }
+  }
+
+  // Footer (pagination, "View 1–7 of 7")
+  tfoot td {
+    padding: .5rem 1rem;
+    border-top: 1px solid var(--cms-border);
+    border-bottom: 0;
+    font-size: .86rem;
+    color: var(--cms-text-muted);
+    background-color: var(--cms-surface);
+  }
+
+  // Filter row inputs
+  .grid-field__sort-field,
+  .filter-header input,
+  .filter-header select {
+    min-height: 2rem;
+    padding: .3rem .6rem;
+    font-size: .88rem;
+  }
+}
+
+.grid-field__title {
+  display: inline;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: $semibold;
+  text-transform: none;
+}
+
+.pagination-records-number {
+  font-size: .84rem;
+  font-weight: $regular;
+  white-space: nowrap;
+  color: var(--cms-text-muted);
+}
+
+// ===============================
+// Sorting (a heading button)
+// ===============================
+
+.grid-field__sort {
+  @include button-reset;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: 0;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--cms-text);
+  }
+
+  // An arrow for the sort direction
+  &::after {
+    @include icon('sort');
+    font-size: .8rem;
+    opacity: .4;
+  }
+
+  &.ss-gridfield-sorted-asc,
+  &.ss-gridfield-sorted-desc {
+    color: var(--cms-text);
+
+    &::after {
+      opacity: 1;
+      color: var(--cms-link);
+    }
+  }
+
+  &.ss-gridfield-sorted-asc::after {
+    content: '(';
+  }
+
+  &.ss-gridfield-sorted-desc::after {
+    content: '*';
+  }
+}
+
+// ===============================
+// Row actions (edit, delete, ⋮)
+// ===============================
+
+.grid-field__col-compact,
+.grid-field__cell--actions {
+  width: 1px;
+  text-align: right;
+  white-space: nowrap;
+
+  > * {
+    vertical-align: middle;
+  }
+}
+
+.grid-field__col-compact {
+  > * + * {
+    margin-left: .15rem;
+  }
+}
+
+// The icon buttons in a row (some are also a .btn, they all look the same)
+.grid-field__icon-action {
+  @include button-reset;
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  min-height: 0;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  border-radius: var(--cms-radius-sm);
+  font-size: 1.05rem;
+  text-decoration: none;
+  color: var(--cms-text-muted);
+  transition:
+    color $fast ease,
+    background-color $fast ease,
+    opacity $fast ease;
+
+  &::before,
+  span[class*="font-icon-"]::before {
+    font-size: 1.05rem;
+  }
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: none;
+    color: var(--cms-text);
+    background-color: var(--cms-active);
+  }
+
+  &.action--archive,
+  &.action--delete,
+  &.gridfield-button-delete,
+  &.btn--icon-danger {
+    &:hover {
+      color: var(--cms-danger);
+      background-color: var(--cms-danger-soft);
+    }
+  }
+
+  // Shown on the row's hover (always on touch screens)
+  &--hidden-on-hover {
+    opacity: 0;
+
+    .ss-gridfield-item:hover &,
+    .ss-gridfield-item:focus-within & {
+      opacity: 1;
+    }
+
+    @media (hover: none) {
+      opacity: 1;
+    }
+  }
+}
+
+// A link filling its cell
+.grid-field__link-block {
+  display: block;
+  margin: -.65rem -1rem;
+  padding: .65rem 1rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.gridfield-actionmenu__container {
+  display: inline-flex;
+  margin: -.25rem 0;
+}
+
+// ===============================
+// Pagination
+// ===============================
+
+.grid-field__paginator {
+  position: relative;
+  white-space: nowrap;
+}
+
+.grid-field__paginator_numbers {
+  float: right;
+}
+
+.grid-field__paginator__controls {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+
+  .pagination-page-number {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+
+    input {
+      width: 3rem;
+      min-height: 1.85rem;
+      padding: .2rem;
+      text-align: center;
+    }
+  }
+
+  button {
+    @include button-reset;
+    display: grid;
+    place-items: center;
+    width: 1.85rem;
+    height: 1.85rem;
+    border-radius: var(--cms-radius-sm);
+    color: var(--cms-text-muted);
+
+    &:hover {
+      color: var(--cms-text);
+      background-color: var(--cms-hover);
+    }
+
+    .ui-button-text {
+      @include visually-hidden;
+    }
+
+    &.ssui-button-disabled {
+      visibility: hidden;
+    }
+  }
+}
+
+// ===============================
+// Link existing (autocomplete + Link button)
+// ===============================
+
+.add-existing-autocompleter {
+  display: inline-flex;
+
+  span {
+    display: inline-flex;
+  }
+
+  input.relation-search {
+    width: 17rem;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .action_gridfield_relationadd {
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  // The search button is triggered by the javascript
+  .action_gridfield_relationfind {
+    display: none;
+  }
+}
+
+// ===============================
+// Nested grid fields, add existing dialog
+// ===============================
+
+// Nested grid fields (a grid field inside a row)
+.grid-field tr.nested-gridfield td.gridfield-holder {
+  padding-left: 3.5rem;
+}
+
+.grid-field.nested.empty-title .grid-field__title-row th {
+  padding: 0;
+}
+
+// Add existing search dialog
+.add-existing-search-dialog {
+  .add-existing-search-form .form-group {
+    margin-bottom: .75rem;
+  }
+
+  .list-group-item {
+    min-height: 2.25rem;
+  }
+}
+
+// ===============================
+// Small screens / narrow forms (e.g. beside the preview): the table scrolls sideways,
+// every column stays (they're often all needed)
+// ===============================
+
+@mixin scrolling-table {
+  // (as a block, its rows still line up in one anonymous table inside it)
+  .grid-field__table {
+    display: block;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+
+    // Short columns (handles, actions) stay narrow, the rest get room to read (as much as most tables fit without
+    // scrolling, once the container is narrow: it only scrolls when the columns really can't fit)
+    :is(td, th):not(:first-child, .grid-field__col-compact, .col-reorder, .col-listChildrenLink, .grid-field__cell--actions) {
+      min-width: 5.5rem;
+    }
+
+    // As a block the rows sit in an anonymous table that only grows to its content, so a table with few columns
+    // would stop short of its card (heading row and all). The footer's one cell, spanning every column, wants
+    // the whole width: that fills the card, shares the room out between the columns like a normal table,
+    // and still lets the table scroll once the columns don't fit
+    tfoot td[colspan],
+    .grid-field__title-row th[colspan] {
+      width: 100vw;
+    }
+
+    // The footer is as wide as all the columns, so "View 1–8 of 8" would be off the far end of a scrolled table.
+    // It stays at the left, over what's showing
+    .grid-field__paginator_numbers {
+      position: sticky;
+      left: 1rem;
+      float: none;
+    }
+
+    tfoot td {
+      text-align: left;
+    }
+  }
+}
+
+@include media($md, max) {
+  @include scrolling-table;
+}
+
+@container form (max-width: 44rem) {
+  @include scrolling-table;
+}

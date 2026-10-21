@@ -1,0 +1,528 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Buttons
+// ===============================
+
+// One button, its variants only change these properties.
+// Some grid field buttons are plain button.action without .btn, they look the same (kept at one class of specificity)
+.btn,
+.ss-ui-button,
+:where(button, input[type="submit"]).action:where(:not(.btn, .dropdown-item, .grid-field__icon-action, .grid-field__sort, .ss-ui-button)) {
+  --btn-color: var(--cms-text);
+  --btn-bg: var(--cms-surface);
+  --btn-border: var(--cms-border-strong);
+  --btn-hover-color: var(--btn-color);
+  --btn-hover-bg: color-mix(in srgb, var(--btn-bg), var(--cms-text) 6%);
+  --btn-hover-border: var(--btn-border);
+  --btn-shadow: var(--cms-shadow-sm);
+  --btn-height: 2.25rem;
+  --btn-padding: .9rem;
+  --btn-font-size: .93rem;
+  --btn-icon-size: 1.1rem;
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  min-height: var(--btn-height);
+  padding: 0 var(--btn-padding);
+  border: 1px solid var(--btn-border);
+  border-radius: var(--cms-radius);
+  font: inherit;
+  font-size: var(--btn-font-size);
+  font-weight: $medium;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  color: var(--btn-color);
+  background-color: var(--btn-bg);
+  background-image: var(--btn-gloss, none);
+  box-shadow: var(--btn-shadow);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    color $fast ease,
+    background-color $fast ease,
+    border-color $fast ease,
+    box-shadow $fast ease,
+    scale $fast ease;
+
+  &:hover {
+    text-decoration: none;
+    color: var(--btn-hover-color);
+    background-color: var(--btn-hover-bg);
+    border-color: var(--btn-hover-border);
+    box-shadow: var(--btn-hover-shadow, var(--btn-shadow));
+  }
+
+  &:active:not(:disabled, .disabled) {
+    scale: .98;
+    box-shadow: var(--btn-shadow);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+
+  &:disabled,
+  &.disabled,
+  &[aria-disabled="true"] {
+    opacity: .5;
+    pointer-events: none;
+    box-shadow: none;
+  }
+
+  // Icons from the icon font, on the button or a span inside it
+  &[class*="font-icon-"]::before,
+  [class*="font-icon-"]::before {
+    font-size: var(--btn-icon-size);
+    line-height: 1;
+    vertical-align: middle;
+  }
+}
+
+// ===============================
+// Variants
+// ===============================
+
+// Main action, e.g. Save / Publish / Add new
+.btn-primary,
+.ss-ui-action-constructive,
+.ss-ui-button-constructive {
+  @include button-accent;
+}
+
+// Quiet, e.g. the tree's Batch actions, an icon in a header
+.btn-secondary {
+  --btn-bg: transparent;
+  --btn-border: transparent;
+  --btn-shadow: none;
+  --btn-hover-bg: var(--cms-hover);
+
+  &.active,
+  &[aria-expanded="true"] {
+    --btn-bg: var(--cms-active);
+  }
+}
+
+.btn-outline-secondary,
+.btn-light {
+  --btn-hover-bg: var(--cms-hover);
+}
+
+// e.g. "Saved" / "Published" once nothing has changed.
+// A form's disabled primary action (e.g. My Profile's Save, which doesn't switch classes) looks the same
+.btn-outline-primary,
+.cms-content-actions .btn-primary:disabled {
+  --btn-color: var(--cms-link);
+  --btn-bg: transparent;
+  --btn-border: color-mix(in srgb, var(--cms-accent), transparent 30%);
+  --btn-shadow: none;
+  --btn-gloss: none;
+  --btn-hover-shadow: none;
+  --btn-hover-bg: var(--cms-accent-soft);
+
+  &:disabled {
+    opacity: 1;
+  }
+}
+
+.btn-danger,
+.ss-ui-action-destructive {
+  --btn-color: #fff;
+  --btn-bg: var(--cms-danger);
+  --btn-border: transparent;
+  --btn-hover-bg: color-mix(in srgb, var(--cms-danger), #000 12%);
+}
+
+.btn-outline-danger,
+.btn-danger-outline {
+  --btn-color: var(--cms-danger);
+  --btn-bg: transparent;
+  --btn-border: color-mix(in srgb, var(--cms-danger), transparent 55%);
+  --btn-shadow: none;
+  --btn-hover-bg: var(--cms-danger-soft);
+}
+
+.btn-success {
+  --btn-color: #fff;
+  --btn-bg: var(--cms-success);
+  --btn-border: transparent;
+  --btn-hover-bg: color-mix(in srgb, var(--cms-success), #000 12%);
+}
+
+.btn-outline-success {
+  --btn-color: var(--cms-success);
+  --btn-bg: transparent;
+  --btn-border: color-mix(in srgb, var(--cms-success), transparent 55%);
+  --btn-shadow: none;
+  --btn-hover-bg: var(--cms-success-soft);
+}
+
+.btn-warning,
+.btn-notice {
+  --btn-color: #1f1300;
+  --btn-bg: #f5b83d;
+  --btn-border: transparent;
+  --btn-hover-bg: #e9a81f;
+}
+
+.btn-outline-warning {
+  --btn-color: var(--cms-warning);
+  --btn-bg: transparent;
+  --btn-border: color-mix(in srgb, var(--cms-warning), transparent 55%);
+  --btn-shadow: none;
+  --btn-hover-bg: var(--cms-warning-soft);
+}
+
+.btn-info {
+  --btn-color: var(--cms-info);
+  --btn-bg: var(--cms-info-soft);
+  --btn-border: color-mix(in srgb, var(--cms-info), transparent 70%);
+  --btn-shadow: none;
+  --btn-hover-bg: color-mix(in srgb, var(--cms-info-soft), var(--cms-info) 12%);
+}
+
+.btn-outline-info {
+  --btn-color: var(--cms-info);
+  --btn-bg: transparent;
+  --btn-border: color-mix(in srgb, var(--cms-info), transparent 55%);
+  --btn-shadow: none;
+  --btn-hover-bg: var(--cms-info-soft);
+}
+
+.btn-dark {
+  --btn-color: var(--cms-bg);
+  --btn-bg: var(--cms-text);
+  --btn-border: transparent;
+  --btn-hover-bg: color-mix(in srgb, var(--cms-text), var(--cms-bg) 15%);
+}
+
+.btn-outline-dark,
+.btn-outline-light {
+  --btn-bg: transparent;
+  --btn-shadow: none;
+  --btn-hover-bg: var(--cms-hover);
+}
+
+// Looks like a link
+.btn-link {
+  --btn-color: var(--cms-link);
+  --btn-bg: transparent;
+  --btn-border: transparent;
+  --btn-shadow: none;
+  --btn-hover-bg: transparent;
+  --btn-padding: .25rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// No button styling at all, just the content (e.g. the close button on a toast)
+.btn-none {
+  --btn-bg: transparent;
+  --btn-border: transparent;
+  --btn-shadow: none;
+  --btn-hover-bg: var(--cms-hover);
+}
+
+// Danger coloured icon, e.g. a gridfield's delete
+.btn--icon-danger {
+  --btn-color: var(--cms-danger);
+  --btn-hover-color: var(--cms-danger);
+}
+
+// No focus outline on mouse users only buttons (keyboard focus still shows)
+.btn--no-focus:focus:not(:focus-visible),
+.btn-hide-outline:focus:not(:focus-visible) {
+  outline: 0;
+}
+
+// ===============================
+// Sizes
+// ===============================
+
+.btn-sm,
+.ss-ui-button-small {
+  --btn-height: 1.85rem;
+  --btn-padding: .6rem;
+  --btn-font-size: .84rem;
+  --btn-icon-size: .95rem;
+
+  border-radius: var(--cms-radius-sm);
+}
+
+.btn-lg {
+  --btn-height: 2.75rem;
+  --btn-padding: 1.2rem;
+  --btn-font-size: 1rem;
+}
+
+.btn--icon-sm {
+  --btn-icon-size: .95rem;
+}
+
+.btn--icon-md {
+  --btn-icon-size: 1.15rem;
+}
+
+.btn--icon-large,
+.btn--icon-lg {
+  --btn-icon-size: 1.35rem;
+}
+
+.btn--icon-xl {
+  --btn-icon-size: 1.55rem;
+}
+
+// ===============================
+// Icon only
+// ===============================
+
+// A square button with just an icon (the label is for screen readers)
+.btn--no-text,
+.btn.no-text,
+.icon-button {
+  --btn-padding: 0;
+
+  min-width: var(--btn-height);
+
+  .btn__title {
+    @include visually-hidden;
+  }
+}
+
+.btn--hide-text .btn__title {
+  display: none;
+}
+
+.btn--circular {
+  --btn-padding: 0;
+
+  min-width: var(--btn-height);
+  border-radius: 50%;
+}
+
+.btn__icon {
+  display: inline-flex;
+}
+
+// ===============================
+// Loading (the three dots while a form saves)
+// ===============================
+
+.btn--loading {
+  // The label hides while the dots show
+  &::before {
+    visibility: hidden;
+  }
+
+  .btn__title {
+    visibility: hidden;
+  }
+
+  .btn__loading-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+}
+
+.btn__circle {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--btn-color);
+  animation: btn-loading 1.2s infinite ease-in-out both;
+
+  &--1 {
+    animation-delay: -.32s;
+  }
+
+  &--2 {
+    animation-delay: -.16s;
+  }
+}
+
+@keyframes btn-loading {
+  0%,
+  80%,
+  100% {
+    opacity: .3;
+    scale: .7;
+  }
+
+  40% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+// ===============================
+// Groups
+// ===============================
+
+.btn-group,
+.btn-group-vertical {
+  position: relative;
+  display: inline-flex;
+  vertical-align: middle;
+
+  > .btn {
+    position: relative;
+    flex: 1 1 auto;
+
+    &:hover,
+    &:focus-visible,
+    &.active {
+      z-index: 1;
+    }
+  }
+}
+
+// Joined buttons share borders, only the ends are rounded
+.btn-group {
+  > .btn:not(:last-child, .dropdown-toggle:last-child),
+  > .btn-group:not(:last-child) > .btn {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  > .btn:not(:first-child),
+  > .btn-group:not(:first-child) > .btn {
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  // In a toolbar the groups' buttons are spaced instead of joined (e.g. the major actions)
+  .btn-toolbar > &.form-group--no-label,
+  .btn-toolbar > &[role="group"] {
+    gap: .5rem;
+
+    > .btn {
+      margin-left: 0;
+      border-radius: var(--cms-radius);
+    }
+  }
+}
+
+.btn-group-vertical {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+
+  > .btn:not(:last-child) {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  > .btn:not(:first-child) {
+    margin-top: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+.btn-group-sm > .btn {
+  @extend .btn-sm;
+}
+
+.btn-group-lg > .btn {
+  @extend .btn-lg;
+}
+
+// ===============================
+// Close (×)
+// ===============================
+
+.btn-close {
+  @include button-reset;
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--cms-radius-sm);
+  color: var(--cms-text-muted);
+  opacity: 1;
+
+  // Its own × unless it has an icon inside
+  &:empty::before {
+    @include icon('cancel');
+    font-size: 1rem;
+  }
+
+  &:hover {
+    color: var(--cms-text);
+    background-color: var(--cms-hover);
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.btn-close-white {
+  color: #fff;
+}
+
+// The legacy close links (e.g. in jQuery UI dialogs)
+.close {
+  @include button-reset;
+  float: right;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--cms-text-muted);
+
+  &:hover {
+    color: var(--cms-text);
+  }
+}
+
+// ===============================
+// Legacy jQuery UI buttons
+// ===============================
+
+// Some older fields still render ui buttons
+.ss-ui-button {
+  .ui-button-text {
+    display: inline-block;
+    padding: 0;
+  }
+
+  .ui-icon {
+    display: none;
+  }
+
+  &.ss-ui-button-loading {
+    opacity: .6;
+  }
+}
+
+.ss-ui-action-minor {
+  --btn-bg: transparent;
+  --btn-border: transparent;
+  --btn-shadow: none;
+  --btn-hover-bg: var(--cms-hover);
+}
+
+// Visually hidden form actions (the javascript triggers them)
+.action-hidden {
+  display: none;
+}
+
+// A <input type="checkbox|radio" class="btn-check"> styled through its label
+.btn-check {
+  position: absolute;
+  clip-path: inset(50%);
+  pointer-events: none;
+}

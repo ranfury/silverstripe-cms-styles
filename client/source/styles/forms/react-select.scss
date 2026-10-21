@@ -1,0 +1,115 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// React selects (tree dropdowns, searchable dropdowns, tags, list boxes)
+// ===============================
+
+// react-select styles itself with emotion (a class each, added after this stylesheet),
+// so each class is doubled up here (.x.x) to come first without !important.
+// Every CMS field that uses it has its own class prefix
+$prefixes: (
+  'treedropdownfield',
+  'ss-searchable-dropdown-field',
+  'ss-listbox-field',
+  'anchorselectorfield',
+);
+
+@each $p in $prefixes {
+  @include react-select($p);
+}
+
+// ===============================
+// Tree dropdowns: going into a page's children
+// ===============================
+
+.treedropdownfield,
+.ss-searchable-dropdown-field,
+.ss-listbox-field {
+  width: 100%;
+}
+
+// "Home › About" along the top of the list, and back
+.treedropdownfield__breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .45rem .65rem;
+  font-size: .84rem;
+  font-weight: $medium;
+  color: var(--cms-text-muted);
+  border-bottom: 1px solid var(--cms-border);
+}
+
+// The ‹ back button (or the magnifier while searching) before the crumbs
+.treedropdownfield__breadcrumbs-button.treedropdownfield__breadcrumbs-button {
+  @include button-reset;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: -.25rem 0;
+  border-radius: var(--cms-radius-sm);
+  font-size: 1rem;
+  color: var(--cms-text-muted);
+
+  &:hover {
+    color: var(--cms-text);
+    background-color: var(--cms-active);
+  }
+}
+
+.treedropdownfield__breadcrumbs-crumbs {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// The › button at the end of an option with children (a plain button: not a .btn, and the CMS's .fill-width
+// on it would make it as wide as the row, over the name)
+.treedropdownfield__option-button,
+.ss-searchable-dropdown-field__option-button,
+.ss-listbox-field__option-button {
+  @include button-reset;
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: -.25rem -.35rem -.25rem auto;
+  border-radius: var(--cms-radius-sm);
+  color: var(--cms-text-muted);
+
+  &:hover {
+    color: var(--cms-text);
+    background-color: var(--cms-active);
+  }
+}
+
+.treedropdownfield__option-title,
+.treedropdownfield__option-title--with-children {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.treedropdownfield__option-count-icon {
+  font-size: .8rem;
+  color: var(--cms-text-faint);
+}
+
+.treedropdownfield__option-context {
+  font-size: .8rem;
+  color: var(--cms-text-muted);
+}
+
+// Lazy loading searchable dropdowns have no ▾, the options come as you type
+.ss-searchable-dropdown-field--lazy-load {
+  .ss-searchable-dropdown-field__dropdown-indicator,
+  .ss-searchable-dropdown-field__indicator-separator {
+    display: none;
+  }
+}

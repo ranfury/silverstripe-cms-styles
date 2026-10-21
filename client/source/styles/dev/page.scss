@@ -1,0 +1,93 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Page
+// ===============================
+
+:root {
+  --dev-bg: #{scheme(#f4f5f7, #0e1015)};
+  --dev-surface: #{scheme(#fff, #161922)};
+  --dev-border: #{scheme(#e3e6eb, #262a36)};
+  --dev-text: #{scheme(#1d2230, #e6e8ee)};
+  --dev-muted: #{scheme(#5f6878, #959cad)};
+  // The CMS's theme colour (set by the inlined appearance boot script)
+  --dev-theme: var(--cms-theme, #77cdff);
+  --dev-accent: #{scheme(tint(var(--dev-theme), $s: 85%, $l: 34%), tint(var(--dev-theme), $s: 90%, $l: 74%))};
+  --dev-success: #{scheme(#15803d, #4ade80)};
+  --dev-warning: #{scheme(#a15c07, #fbbf24)};
+  --dev-error: #{scheme(#c2261c, #f87171)};
+
+  color-scheme: light dark;
+
+  // Light / dark as picked in the CMS (auto follows the system)
+  &[data-darkmode="on"] {
+    color-scheme: dark;
+  }
+
+  &[data-darkmode="off"] {
+    color-scheme: light;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0 0 4rem;
+  overflow-x: hidden;
+  font-family: $font-body;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--dev-text);
+  background-color: var(--dev-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 .5rem;
+  font-weight: $semibold;
+  line-height: 1.3;
+  letter-spacing: -.01em;
+}
+
+h2 {
+  font-size: 1.15rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+p {
+  margin: 0 0 .5rem;
+}
+
+ul {
+  margin: 0 0 1.25rem;
+  padding: 0 0 0 1.25rem;
+}
+
+li {
+  padding: .1rem 0;
+}
+
+a {
+  color: var(--dev-accent);
+  text-underline-offset: .2em;
+}
+
+b,
+strong {
+  font-weight: $semibold;
+}
+
+::selection {
+  color: #fff;
+  background-color: var(--dev-accent);
+}

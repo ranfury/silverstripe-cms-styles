@@ -1,0 +1,124 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Headings
+// ===============================
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+  margin-bottom: .6em;
+  font-weight: $semibold;
+  line-height: 1.25;
+  letter-spacing: -.01em;
+  color: var(--cms-text);
+}
+
+h1,
+.h1 {
+  font-size: 1.75rem;
+}
+
+h2,
+.h2 {
+  font-size: 1.45rem;
+}
+
+h3,
+.h3 {
+  font-size: 1.2rem;
+}
+
+h4,
+.h4 {
+  font-size: 1.07rem;
+}
+
+h5,
+.h5,
+h6,
+.h6 {
+  font-size: 1rem;
+}
+
+.display-1 {
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1.1;
+}
+
+// ===============================
+// Text
+// ===============================
+
+small,
+.small {
+  font-size: .86em;
+}
+
+strong,
+b {
+  font-weight: $semibold;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: $font-mono;
+  font-size: .9em;
+}
+
+code {
+  padding: .1em .35em;
+  border-radius: var(--cms-radius-sm);
+  background-color: var(--cms-hover);
+}
+
+pre {
+  padding: 1rem;
+  overflow: auto;
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-sunken);
+
+  code {
+    padding: 0;
+    background: none;
+  }
+}
+
+mark {
+  padding: 0 .2em;
+  border-radius: 3px;
+  color: inherit;
+  background-color: var(--cms-warning-soft);
+}
+
+// ===============================
+// Lists
+// ===============================
+
+.list-unstyled {
+  @include list-reset;
+}
+
+.list-inline {
+  @include list-reset;
+}
+
+.list-inline-item {
+  display: inline-block;
+
+  &:not(:last-child) {
+    margin-right: .5rem;
+  }
+}

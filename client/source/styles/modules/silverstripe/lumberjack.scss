@@ -1,0 +1,45 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Lumberjack (a page's children as a grid field)
+// ===============================
+
+.ss-gridfield {
+  .gridfield-dropdown {
+    margin: 0 .5rem 0 0;
+
+    .dropdown,
+    select {
+      min-width: 13rem;
+    }
+  }
+
+  .dropdown-action {
+    font-size: .86rem;
+  }
+}
+
+.gridfield-icon {
+  i {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    margin-right: .4rem;
+  }
+
+  &.published i {
+    color: var(--cms-success);
+  }
+}
+
+// "Modified"
+.cms .modified {
+  margin-left: .35rem;
+  padding: .1rem .45rem;
+  border-radius: var(--cms-radius-pill);
+  font-size: .72rem;
+  font-weight: $semibold;
+  text-transform: uppercase;
+  color: var(--cms-warning);
+  background-color: var(--cms-warning-soft);
+}

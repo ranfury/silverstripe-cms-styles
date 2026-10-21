@@ -1,0 +1,52 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Icon font
+// ===============================
+
+// The font ships with silverstripe/admin, only its stylesheet is blocked
+@font-face {
+  font-family: $font-icons;
+  src:
+    url('/_resources/vendor/silverstripe/admin/client/dist/fonts/silverstripe.woff') format('woff'),
+    url('/_resources/vendor/silverstripe/admin/client/dist/fonts/silverstripe.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+// ===============================
+// Icon classes
+// ===============================
+
+// <span class="font-icon-search"></span>, or data-icon="s" for the character itself.
+// Some modules put a name in data-icon (e.g. "relationfind", "font-icon-edit-write") which isn't a character,
+// those are left alone (scripts/components/data-icon.js removes them)
+$data-icon: '[data-icon]:not([data-icon^="font-icon"], [class*="font-icon-"])';
+
+[class^="font-icon-"]::before,
+[class*=" font-icon-"]::before,
+#{$data-icon}::before {
+  @include icon-font;
+}
+
+#{$data-icon}::before {
+  content: attr(data-icon);
+}
+
+// An icon on its own is only as tall as the icon, so it centres with the text beside it
+// (with the text's line height the glyph sits high)
+span[class*="font-icon-"]:empty {
+  line-height: 1;
+}
+
+@each $name, $character in $icons {
+  .font-icon-#{$name}::before {
+    content: $character;
+  }
+}
+
+// Sizes
+.font-icon-large::before {
+  font-size: 1.5rem;
+}

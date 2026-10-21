@@ -1,0 +1,212 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Pages
+// ===============================
+
+// Split mode: the pages area and the preview share the window
+#pages-controller-cms-content,
+#pages-controller-cms-content + .cms-preview {
+  width: 50%;
+}
+
+// Tree / list view switch above the tree, a small segmented control
+.cms-content-toolbar .view-controls {
+  gap: .15rem;
+  margin-top: 0;
+  padding: .2rem;
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-sunken);
+
+  .page-view-link {
+    --btn-bg: transparent;
+    --btn-border: transparent;
+    --btn-shadow: none;
+    --btn-color: var(--cms-text-muted);
+    --btn-hover-color: var(--cms-text);
+    --btn-height: 1.85rem;
+    display: inline-flex;
+    width: 2rem;
+    padding: 0;
+    border-radius: var(--cms-radius-sm);
+  }
+
+  &--treeview .page-view-link[data-view="treeview"],
+  &--listview .page-view-link[data-view="listview"] {
+    --btn-bg: var(--cms-surface);
+    --btn-border: var(--cms-border);
+    --btn-shadow: var(--cms-shadow-sm);
+    --btn-color: var(--cms-text);
+  }
+}
+
+// The page location radios repeat the field's own label
+.parentTypeSelector > .form__fieldgroup > .optionset > .form__field-label {
+  @include visually-hidden;
+}
+
+// The pages tree as the main content (not the edit form's side panel) is only as wide as its rows,
+// so badges stay next to the titles
+.cms-content-fields > .panel > .cms-tree {
+  width: fit-content;
+  min-width: min(100%, 20rem);
+  max-width: 100%;
+}
+
+// ===============================
+// URL segment
+// ===============================
+
+.field.urlsegment {
+  .URL-link {
+    display: inline-block;
+  }
+}
+
+// ===============================
+// Add a page
+// ===============================
+
+// The add form the list view opens as a dialog
+.cms-page-add-form-dialog {
+  display: none;
+}
+
+// "Step 1. Choose where to create this page"
+.step-label {
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+
+  .flyout {
+    font-size: .75rem;
+    font-weight: $semibold;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--cms-link);
+  }
+
+  .title {
+    font-weight: $medium;
+  }
+}
+
+.cms-add-form {
+  .message-restricted {
+    display: none;
+  }
+
+  // Top level / under another page
+  .parent-mode .selection-group {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-top: 0;
+
+    > li {
+      flex: 1 1 14rem;
+    }
+
+    label {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      margin: 0;
+      font-weight: $medium;
+      cursor: pointer;
+
+      > input {
+        order: -1;
+      }
+    }
+  }
+
+  // Page types, a card each
+  #Form_AddForm_RecordType {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: .65rem;
+    padding-top: 0;
+  }
+
+  .radio {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--cms-border);
+    border-radius: var(--cms-radius);
+    background-color: var(--cms-surface);
+    box-shadow: var(--cms-shadow-sm);
+    transition:
+      border-color $fast ease,
+      box-shadow $fast ease;
+
+    &:hover {
+      border-color: var(--cms-border-strong);
+    }
+
+    &.selected {
+      border-color: var(--cms-accent);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--cms-accent), transparent 50%);
+    }
+
+    &.disabled {
+      opacity: .5;
+
+      &:hover {
+        border-color: var(--cms-border);
+      }
+    }
+
+    .form-check-label {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas:
+        'icon title radio'
+        'icon description radio';
+      align-items: center;
+      gap: .1rem .75rem;
+      width: 100%;
+      min-height: 4rem;
+      padding: .75rem 1rem;
+    }
+
+    input[type="radio"] {
+      grid-area: radio;
+    }
+
+    .record-icon {
+      grid-area: icon;
+      display: grid;
+      place-items: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: var(--cms-radius);
+      font-size: 1.25rem;
+      color: var(--cms-link);
+      background-color: var(--cms-accent-soft);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 1.25rem;
+    }
+
+    .title {
+      grid-area: title;
+      font-weight: $semibold;
+    }
+
+    .form__field-description {
+      grid-area: description;
+      margin: 0;
+      font-size: .82rem;
+
+      &:empty {
+        display: none;
+      }
+    }
+
+    // A type without a description is centred on its row
+    .title:has(+ .form__field-description:empty) {
+      grid-row: 1 / 3;
+    }
+  }
+}

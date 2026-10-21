@@ -1,0 +1,238 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Field helpers (scripts/components/fields.js)
+// ===============================
+
+// Character count, at the end of the field. It floats to the right under the input, so the description that follows
+// reads beside it, not on a row below
+.cms-character-count__counter {
+  float: right;
+  margin: .4rem 0 0 1rem;
+  font-size: .78rem;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+  color: var(--cms-text-faint);
+
+  &.is-over {
+    color: var(--cms-danger);
+  }
+}
+
+// (a field without a description has the counter to itself, the holder still has to be as tall as it)
+.form__field-holder:has(> .cms-character-count__counter) {
+  display: flow-root;
+}
+
+// ===============================
+// Range sliders (number fields with min / max / step)
+// ===============================
+
+.cms-range {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem 1rem;
+
+  > .form__field-description,
+  > .message {
+    flex: 1 1 100%;
+  }
+}
+
+.cms-range__input {
+  --_track: var(--cms-border);
+  --_fill: var(--cms-accent);
+
+  flex: 1 1 12rem;
+  height: 1.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+
+  &:focus {
+    box-shadow: none;
+  }
+
+  // The track fills up to the value
+  &::-webkit-slider-runnable-track {
+    height: .4rem;
+    border-radius: var(--cms-radius-pill);
+    background: linear-gradient(to right, var(--_fill) var(--_value, 0%), var(--_track) var(--_value, 0%));
+  }
+
+  &::-moz-range-track {
+    height: .4rem;
+    border-radius: var(--cms-radius-pill);
+    background: var(--_track);
+  }
+
+  &::-moz-range-progress {
+    height: .4rem;
+    border-radius: var(--cms-radius-pill);
+    background: var(--_fill);
+  }
+
+  &::-webkit-slider-thumb {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: -.375rem;
+    border: 2px solid var(--cms-surface);
+    border-radius: 50%;
+    appearance: none;
+    background-color: var(--_fill);
+    box-shadow: var(--cms-shadow);
+  }
+
+  &::-moz-range-thumb {
+    width: 1.15rem;
+    height: 1.15rem;
+    border: 2px solid var(--cms-surface);
+    border-radius: 50%;
+    background-color: var(--_fill);
+    box-shadow: var(--cms-shadow);
+  }
+
+  &:focus-visible::-webkit-slider-thumb {
+    @include focus-ring;
+  }
+}
+
+// The value (with units)
+.cms-range__value {
+  flex: 0 0 5rem;
+  width: 5rem;
+  padding: .3rem .6rem;
+  border-radius: var(--cms-radius-sm);
+  font-size: .86rem;
+  font-weight: $medium;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  background-color: var(--cms-sunken);
+}
+
+// ===============================
+// Inline svgs (icon fields, block layout icons)
+// ===============================
+
+.cms-inline-svg {
+  display: inline-flex;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    fill: currentColor;
+  }
+}
+
+.cms-inline-svg__source {
+  display: none;
+}
+
+// ===============================
+// HTML editor: see the content on a dark background
+// ===============================
+
+// (in the toolbar: over the skin's button colours)
+.tox .tox-toolbar .cms-editor-background {
+  @include button-reset;
+  align-self: center;
+  height: 2.15rem;
+  margin: 0 .15rem;
+  padding: 0 .6rem;
+  border-radius: var(--cms-radius-sm);
+  font-size: .88rem;
+  color: var(--cms-text);
+
+  // A small swatch of the background it switches to
+  &::before {
+    content: '';
+    display: inline-block;
+    width: .8rem;
+    height: .8rem;
+    margin-right: .45rem;
+    border: 1px solid var(--cms-border-strong);
+    border-radius: 50%;
+    vertical-align: -.1em;
+    background-color: var(--cms-editor-bg-dark);
+  }
+
+  &:hover {
+    background-color: var(--cms-hover);
+  }
+
+  &[aria-pressed="true"] {
+    color: var(--cms-link);
+    background-color: var(--cms-accent-soft);
+  }
+}
+
+// The editor's page is transparent, so the iframe's own background is what the content sits on.
+// (the iframe's color-scheme has to match its page's, light, or the browser paints the page white in a dark CMS)
+.htmleditor .tox .tox-edit-area__iframe {
+  color-scheme: only light;
+  background-color: var(--cms-editor-bg);
+
+  &.cms-editor-background--dark {
+    background-color: var(--cms-editor-bg-dark);
+  }
+}
+
+// ===============================
+// Image preview (the file editor's preview, opened in a dialog)
+// ===============================
+
+.cms-image-preview {
+  max-width: min(90vw, 80rem);
+  max-height: 90vh;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: var(--cms-radius-lg);
+  background: transparent;
+
+  &::backdrop {
+    background-color: hsl(220 30% 5% / .8);
+    backdrop-filter: blur(4px);
+  }
+
+  &[open] {
+    animation: pop-in $normal $ease both;
+  }
+}
+
+.cms-image-preview__image {
+  display: block;
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: var(--cms-radius-lg);
+  box-shadow: var(--cms-shadow-lg);
+}
+
+.cms-image-preview__close {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  color: #fff;
+  background-color: hsl(220 30% 8% / .55);
+  box-shadow: inset 0 0 0 1px hsl(0 0% 100% / .2);
+  backdrop-filter: blur(6px);
+  transition: background-color $fast ease;
+
+  &:empty::before {
+    font-size: 1.1rem;
+  }
+
+  &:hover {
+    color: #fff;
+    background-color: hsl(220 30% 8% / .8);
+  }
+}

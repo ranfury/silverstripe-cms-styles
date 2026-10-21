@@ -1,0 +1,153 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Sudo mode ("Verify to continue" before editing protected sections)
+// ===============================
+
+.sudo-mode-password-field {
+  max-width: 46rem;
+  font-size: 1rem;
+
+  .SudoModePasswordField--initially-collapsed.form-group & {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+// A card with the message, its button and then the password
+.sudo-mode-password-field__inner {
+  margin-bottom: 0;
+  padding: 1rem 1.25rem;
+}
+
+.sudo-mode-password-field__notice,
+.sudo-mode__notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem 1rem;
+  margin-bottom: 0;
+}
+
+.sudo-mode-password-field__notice-message {
+  flex: 1 1 18rem;
+  margin: 0;
+}
+
+.sudo-mode-password-field__notice-button.btn {
+  @include button-accent;
+  margin: 0;
+}
+
+.sudo-mode-password-field__notice-help {
+  color: var(--cms-link);
+}
+
+.sudo-mode-password-field__notice-help {
+  margin-left: .35rem;
+}
+
+.sudo-mode-password-field__verify {
+  margin-top: 1rem;
+
+  .input-group {
+    max-width: 30rem;
+  }
+}
+
+.sudo-mode-password-field__verify-form-group.form-group {
+  margin: 0;
+}
+
+.sudo-mode-password-field__expander {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: 0;
+}
+
+.sudo-mode-password-field__expander-button-container {
+  margin-left: auto;
+}
+
+.sudo-mode-password-grid-field__row th {
+  padding: .85rem 1rem;
+  text-transform: none;
+}
+
+// The password input shows only after "Verify to continue"
+.SudoModePasswordField .form__field-holder input {
+  display: none;
+}
+
+// ===============================
+// Permissions (a group's / member's)
+// ===============================
+
+.permissioncheckboxset,
+.permissioncheckboxsetfield_readonly {
+  h5 {
+    margin-top: 1.25rem;
+  }
+
+  label {
+    margin: 0;
+  }
+
+  .optionset {
+    padding-left: 0;
+    list-style: none;
+  }
+
+  li {
+    margin-bottom: .2rem;
+
+    &.help {
+      margin-bottom: 1rem;
+      padding: 0;
+    }
+  }
+}
+
+// Read only: an icon in place of each checkbox
+.permissioncheckboxsetfield_readonly {
+  .font-icon-check-mark-circle,
+  .font-icon-plus-circled {
+    color: var(--cms-success);
+  }
+
+  .font-icon-cancel-circled {
+    color: var(--cms-danger);
+  }
+
+  .optionset li {
+    width: 100%;
+
+    input {
+      display: none;
+    }
+
+    label {
+      position: relative;
+      cursor: default;
+
+      span {
+        margin-right: .4rem;
+        font-size: 1.05rem;
+      }
+    }
+  }
+}
+
+// Permission fields take the whole width
+.cms-edit-form .form-group--no-label:is(.permissioncheckboxset, .permissioncheckboxsetfield_readonly) > .form__field-holder--no-label {
+  grid-column: 1 / -1;
+}
+
+// ===============================
+// My profile: a single form, its tabs aren't shown
+// ===============================
+
+form.member-profile-form #Root > .ui-tabs-nav {
+  display: none;
+}

@@ -1,0 +1,177 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Field layout
+// ===============================
+
+// Every field is a .form-group: a label and a .form__field-holder (the input, its description and messages)
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+
+  // A group inside a group (e.g. the fields of a field group) doesn't add its own space
+  .form-group &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form__field-label,
+.form-label {
+  display: block;
+  margin-bottom: .4rem;
+  font-size: .93rem;
+  font-weight: $medium;
+  color: var(--cms-text);
+}
+
+.form__field-holder {
+  position: relative;
+  min-width: 0;
+}
+
+// Forms lay themselves out by their panel's width (not the window's), so they fit in split mode too
+.cms-content-fields,
+.panel--padded,
+.modal-body {
+  container: form / inline-size;
+}
+
+// Labels beside their fields on wider edit forms, everything lines up in one column of fields
+.cms-edit-form,
+.form--inline,
+.ss-insert-link .form__fieldgroup {
+  @container form (min-width: 44rem) {
+    .form-group:not(.stacked, .grid-field, .form__fieldgroup .form-group, .ss-gridfield-add-new-multi-class .form-group) {
+      display: grid;
+      grid-template-columns: minmax(9rem, $form-label-width) minmax(0, $form-field-width);
+      gap: .3rem $form-gap;
+      align-items: start;
+
+      > * {
+        grid-column: 2;
+      }
+
+      > .form__field-label {
+        grid-column: 1;
+        margin-bottom: 0;
+        padding-top: .5rem;
+        overflow-wrap: anywhere;
+      }
+    }
+
+    // Big fields (html editors, grid fields) take the whole width
+    .form-group.stacked,
+    .form-group.htmleditor,
+    .ss-toggle,
+    .ui-accordion,
+    .alert,
+    .message:not(.form__field-holder .message) {
+      max-width: $form-width;
+    }
+  }
+}
+
+// ===============================
+// Descriptions
+// ===============================
+
+.form__field-description,
+.form-text,
+.description {
+  display: block;
+  margin-top: .4rem;
+  margin-bottom: 0;
+  font-size: .86rem;
+  line-height: 1.45;
+  color: var(--cms-text-muted);
+}
+
+// Empty ones take no room
+.form__field-description:empty,
+.form__field-extra-label:empty {
+  display: none;
+}
+
+// The "right title" beside a field
+.form__field-extra-label {
+  display: block;
+  margin-top: .4rem;
+  font-size: .86rem;
+  color: var(--cms-text-muted);
+}
+
+// ===============================
+// Field groups (e.g. "Visibility": two checkboxes side by side)
+// ===============================
+
+.form__fieldgroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem 1.5rem;
+
+  // A composite field's children stack (e.g. Page location: the radios, then the parent page)
+  .composite > &,
+  &.composite {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.form__fieldgroup-item {
+  min-width: 0;
+  margin: 0;
+}
+
+.fieldgroup-field {
+  flex: 1 1 10rem;
+}
+
+// Fields side by side in a field group that are meant to be small (e.g. checkboxes)
+.field--small {
+  flex: 0 0 auto;
+}
+
+// ===============================
+// Headers / literal content in forms
+// ===============================
+
+.cms-edit-form,
+.form {
+  h2,
+  h3,
+  h4 {
+    margin-top: 2rem;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  // A heading field (HeaderField) gets a quiet rule under it
+  > fieldset > .ss-tabset .tab-pane > h2,
+  .tab-pane > h3 {
+    padding-bottom: .5rem;
+    border-bottom: 1px solid var(--cms-border);
+  }
+}
+
+// ===============================
+// Hidden / no label
+// ===============================
+
+.form-group--no-label > .form__field-label {
+  display: none;
+}
+
+.field.hidden,
+.form-group.hidden {
+  display: none;
+}
+
+// Text written straight into a field group (e.g. the page's Google Sitemap) reads as its description
+.form__fieldgroup > p {
+  flex: 1 1 100%;
+  margin-bottom: .75rem;
+  font-size: .86rem;
+  color: var(--cms-text-muted);
+}

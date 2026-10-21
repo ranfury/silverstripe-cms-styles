@@ -1,0 +1,32 @@
+@use 'sass:string';
+
+// ===============================
+// Colour helpers
+// ===============================
+
+// A version of the theme colour (or any colour) with its lightness / saturation / alpha changed,
+// using relative colour syntax so it follows the theme picker at runtime
+// e.g. tint(var(--cms-theme), $l: 95%) or tint(var(--cms-theme), $a: .1)
+@function tint($colour, $s: s, $l: l, $a: 1) {
+  @return hsl(from #{$colour} h #{$s} #{$l} / #{$a});
+}
+
+// A light and a dark value, picked by the element's color-scheme (body[data-darkmode], see base/tokens)
+@function scheme($light, $dark) {
+  @return light-dark(#{$light}, #{$dark});
+}
+
+// ===============================
+// String helpers
+// ===============================
+
+// Replaces every $search in $string, e.g. to colour an inline svg
+@function str-replace($string, $search, $replace: '') {
+  $index: string.index($string, $search);
+
+  @if $index {
+    @return string.slice($string, 1, $index - 1) + $replace + str-replace(string.slice($string, $index + string.length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
