@@ -18,8 +18,8 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .5rem;
-  margin: 0 0 1rem;
+  gap: $space-sm;
+  margin: 0 0 $space-xl;
 }
 
 .elemental-editor__add-new-block-control {
@@ -33,7 +33,7 @@
 .elemental-editor-list {
   position: relative;
   min-height: 5rem;
-  margin: 0 0 1.75rem;
+  margin: 0 0 $space-4xl;
   border: 1px solid var(--cms-border);
   border-radius: var(--cms-radius);
   color: var(--cms-text);
@@ -45,7 +45,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem 1rem;
+    padding: $space-5xl $space-xl;
     color: var(--cms-text-muted);
   }
 }
@@ -57,8 +57,9 @@
 // Not clipped by the list (no overflow: hidden there): a block's action menu drops out of its row
 .element-editor__element {
   position: relative;
-  min-height: 5rem;
-  padding: 1rem 1.25rem 1rem 2.5rem;
+  // Tighter than a card: rows were 83px, so a page of 23 blocks ran to two screens
+  min-height: 4rem;
+  padding: $space-lg $space-2xl $space-lg $space-6xl;
   border-bottom: 1px solid var(--cms-border);
   color: inherit;
   cursor: pointer;
@@ -119,14 +120,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: .75rem;
+  gap: $space-lg;
   min-width: 0;
 
   &__info {
     display: flex;
     flex: 1 1 auto;
     align-items: center;
-    gap: .5rem;
+    gap: $space-sm;
     min-width: 0;
 
     .badge {
@@ -155,7 +156,7 @@
   &__title {
     margin: 0;
     overflow: hidden;
-    font-size: .98rem;
+    font-size: $text-md;
     font-weight: $semibold;
     line-height: 1.35;
     white-space: nowrap;
@@ -197,7 +198,7 @@
     flex: 0 0 auto;
     align-items: center;
     justify-content: flex-end;
-    gap: .25rem;
+    gap: $space-2xs;
   }
 
   // The ••• menu: quiet until pointed at
@@ -218,7 +219,7 @@
     width: 2rem;
     height: 2rem;
     border-radius: var(--cms-radius-sm);
-    font-size: 1rem;
+    font-size: $text-md;
     color: var(--cms-text-muted);
   }
 
@@ -282,9 +283,9 @@
 .element-editor-summary {
   display: flex;
   align-items: center;
-  gap: .75rem;
-  min-height: 1.5rem;
-  margin: .35rem 0 0 2.5rem;
+  gap: $space-lg;
+  min-height: 1.25rem;
+  margin: $space-2xs 0 0 $space-6xl;
 
   &__thumbnail-image {
     flex: 0 0 auto;
@@ -297,7 +298,7 @@
   &__content {
     margin: 0;
     overflow: hidden;
-    font-size: .9rem;
+    font-size: $text-base;
     line-height: 1.4;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -338,7 +339,7 @@
   &:focus-visible,
   &--focus {
     .element-editor__hover-bar-area-inner {
-      margin: 0 1rem;
+      margin: 0 $space-xl;
     }
 
     .element-editor__hover-bar-line {
@@ -386,9 +387,9 @@
     place-items: center;
     width: 1.5rem;
     height: 1.5rem;
-    margin-top: -.75rem;
+    margin-top: (-$space-lg);
     border-radius: 50%;
-    font-size: .85rem;
+    font-size: $text-sm;
     line-height: 1;
     color: var(--cms-on-accent);
     background-color: var(--cms-accent);
@@ -424,8 +425,8 @@
 // ===============================
 
 .element-editor-editform {
-  margin-top: 1rem;
-  padding-top: 1rem;
+  margin-top: $space-xl;
+  padding-top: $space-xl;
   border-top: 1px dashed var(--cms-border);
   cursor: auto;
 
@@ -463,12 +464,12 @@
 .text-checkbox-group-field {
   display: flex;
   align-items: center;
-  gap: .75rem;
+  gap: $space-lg;
 
   .form-check {
     display: inline-flex;
     align-items: center;
-    gap: .4rem;
+    gap: $space-xs;
     margin: 0;
     padding-left: 0;
   }
@@ -518,13 +519,13 @@
 }
 
 div.elemental-area__element--historic.elemental-area__element--historic-inner {
-  padding: 1rem 0 0;
+  padding: $space-xl 0 0;
   border: 0;
   background: transparent;
 }
 
 .elemental-area--read-only {
-  margin: 1.5rem 0;
+  margin: $space-3xl 0;
   border-bottom: 1px solid var(--cms-border);
 }
 
@@ -537,7 +538,7 @@ div.elemental-area__element--historic.elemental-area__element--historic-inner {
   line-height: 1.4;
 
   &--historic {
-    margin-bottom: 1rem;
+    margin-bottom: $space-xl;
   }
 }
 
@@ -561,7 +562,7 @@ div.elemental-area__element--historic.elemental-area__element--historic-inner {
 }
 
 .elemental-preview__thumbnail-image {
-  margin-right: .5rem;
+  margin-right: $space-sm;
 
   img {
     border-radius: var(--cms-radius-sm);
@@ -575,29 +576,29 @@ div.elemental-area__element--historic.elemental-area__element--historic-inner {
 
 .elemental-preview__detail {
   display: inline-block;
-  margin-left: .5rem;
+  margin-left: $space-sm;
 
   h3 {
     margin: 0;
-    font-size: .98rem;
+    font-size: $text-md;
     font-weight: $semibold;
   }
 
   p {
     display: flex;
     align-items: center;
-    margin: .3rem 0 0;
+    margin: $space-xs 0 0;
   }
 
   small {
-    font-size: .85rem;
+    font-size: $text-sm;
     color: var(--cms-text-muted);
   }
 }
 
 .elemental-preview__link {
   float: right;
-  margin-top: .25rem;
+  margin-top: $space-2xs;
 
   &:hover {
     text-decoration: none;
@@ -633,5 +634,28 @@ div.elemental-area__element--historic.elemental-area__element--historic-inner {
     right: auto;
     bottom: .55rem;
     left: .9rem;
+  }
+}
+
+// ===============================
+// A block's actions menu
+// ===============================
+
+// Its items come with no icons, the grid field's have them: the same icons as the grid field and history use
+$-block-actions: (
+  'publish': 'rocket',
+  'unpublish': 'cancel-circled',
+  'duplicate': 'page-multiple',
+  'archive': 'box',
+  'move': 'drag-handle',
+);
+
+@each $action, $icon in $-block-actions {
+  .dropdown-item.element-editor__actions-#{$action}::before {
+    @include icon($icon);
+    width: 1.1rem;
+    font-size: 1.05rem;
+    text-align: center;
+    opacity: .8;
   }
 }

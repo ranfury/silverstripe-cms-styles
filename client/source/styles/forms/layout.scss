@@ -7,7 +7,7 @@
 // Every field is a .form-group: a label and a .form__field-holder (the input, its description and messages)
 .form-group {
   position: relative;
-  margin-bottom: 1.5rem;
+  margin-bottom: $space-3xl;
 
   // A group inside a group (e.g. the fields of a field group) doesn't add its own space
   .form-group &:last-child {
@@ -18,8 +18,8 @@
 .form__field-label,
 .form-label {
   display: block;
-  margin-bottom: .4rem;
-  font-size: .93rem;
+  margin-bottom: $space-xs;
+  font-size: $text-base;
   font-weight: $medium;
   color: var(--cms-text);
 }
@@ -36,15 +36,16 @@
   container: form / inline-size;
 }
 
-// Labels beside their fields on wider edit forms, everything lines up in one column of fields
+// Labels beside their fields on wider edit forms, everything lines up in one column of fields.
+// The sudo mode notice is for the whole section, not a field: it starts at the left, with the list it protects
 .cms-edit-form,
 .form--inline,
 .ss-insert-link .form__fieldgroup {
   @container form (min-width: 44rem) {
-    .form-group:not(.stacked, .grid-field, .form__fieldgroup .form-group, .ss-gridfield-add-new-multi-class .form-group) {
+    .form-group:not(.stacked, .grid-field, .form__fieldgroup .form-group, .ss-gridfield-add-new-multi-class .form-group, .SudoModePasswordField) {
       display: grid;
       grid-template-columns: minmax(9rem, $form-label-width) minmax(0, $form-field-width);
-      gap: .3rem $form-gap;
+      gap: $space-xs $form-gap;
       align-items: start;
 
       > * {
@@ -54,7 +55,7 @@
       > .form__field-label {
         grid-column: 1;
         margin-bottom: 0;
-        padding-top: .5rem;
+        padding-top: $space-sm;
         overflow-wrap: anywhere;
       }
     }
@@ -79,9 +80,9 @@
 .form-text,
 .description {
   display: block;
-  margin-top: .4rem;
+  margin-top: $space-xs;
   margin-bottom: 0;
-  font-size: .86rem;
+  font-size: $text-sm;
   line-height: 1.45;
   color: var(--cms-text-muted);
 }
@@ -95,8 +96,8 @@
 // The "right title" beside a field
 .form__field-extra-label {
   display: block;
-  margin-top: .4rem;
-  font-size: .86rem;
+  margin-top: $space-xs;
+  font-size: $text-sm;
   color: var(--cms-text-muted);
 }
 
@@ -107,13 +108,13 @@
 .form__fieldgroup {
   display: flex;
   flex-wrap: wrap;
-  gap: .75rem 1.5rem;
+  gap: $space-lg $space-3xl;
 
   // A composite field's children stack (e.g. Page location: the radios, then the parent page)
   .composite > &,
   &.composite {
     flex-direction: column;
-    gap: 1rem;
+    gap: $space-xl;
   }
 }
 
@@ -140,7 +141,7 @@
   h2,
   h3,
   h4 {
-    margin-top: 2rem;
+    margin-top: $space-5xl;
 
     &:first-child {
       margin-top: 0;
@@ -150,7 +151,7 @@
   // A heading field (HeaderField) gets a quiet rule under it
   > fieldset > .ss-tabset .tab-pane > h2,
   .tab-pane > h3 {
-    padding-bottom: .5rem;
+    padding-bottom: $space-sm;
     border-bottom: 1px solid var(--cms-border);
   }
 }
@@ -171,7 +172,7 @@
 // Text written straight into a field group (e.g. the page's Google Sitemap) reads as its description
 .form__fieldgroup > p {
   flex: 1 1 100%;
-  margin-bottom: .75rem;
-  font-size: .86rem;
+  margin-bottom: $space-lg;
+  font-size: $text-sm;
   color: var(--cms-text-muted);
 }

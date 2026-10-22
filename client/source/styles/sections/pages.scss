@@ -10,11 +10,38 @@
   width: 50%;
 }
 
+// Above the tree in its panel: Add new Page across the row beside the view switch, Batch actions under them, quiet.
+// (they wrapped as they fell, the switch beside Batch actions on a row of their own)
+// The toolbar's own padding and margin, and the row's, added up to 42px between Batch actions and the tree
+.cms-content-tools .cms-content-toolbar {
+  margin-bottom: $space-xs;
+  padding-bottom: 0;
+}
+
+.cms-content-tools .cms-actions-buttons-row {
+  margin: 0;
+
+  .cms-content-addpage-button {
+    flex: 1 1 auto;
+  }
+
+  .view-controls {
+    order: 1;
+  }
+
+  .cms-content-batchactions-button {
+    --btn-height: 2rem;
+    --btn-padding: #{$space-sm};
+    order: 2;
+    color: var(--cms-text-muted);
+  }
+}
+
 // Tree / list view switch above the tree, a small segmented control
 .cms-content-toolbar .view-controls {
-  gap: .15rem;
+  gap: $space-3xs;
   margin-top: 0;
-  padding: .2rem;
+  padding: $space-2xs;
   border-radius: var(--cms-radius);
   background-color: var(--cms-sunken);
 
@@ -76,18 +103,17 @@
 .step-label {
   display: flex;
   flex-direction: column;
-  gap: .15rem;
+  gap: $space-3xs;
 
+  // "Step 1." quietly over its title: in accent capitals it outshouted the page type that's picked
   .flyout {
-    font-size: .75rem;
-    font-weight: $semibold;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: var(--cms-link);
+    font-size: $text-sm;
+    font-weight: $medium;
+    color: var(--cms-text-muted);
   }
 
   .title {
-    font-weight: $medium;
+    font-weight: $semibold;
   }
 }
 
@@ -109,7 +135,7 @@
     label {
       display: flex;
       align-items: center;
-      gap: .6rem;
+      gap: $space-md;
       margin: 0;
       font-weight: $medium;
       cursor: pointer;
@@ -124,7 +150,9 @@
   #Form_AddForm_RecordType {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-    gap: .65rem;
+    // Every card as tall as the tallest, so a row reads as a row whatever each description's length
+    grid-auto-rows: 1fr;
+    gap: $space-md;
     padding-top: 0;
   }
 
@@ -159,15 +187,18 @@
 
     .form-check-label {
       display: grid;
+      // The card is as tall as the row's tallest: the title and its description stay together in the middle
+      align-content: center;
+      height: 100%;
       grid-template-columns: auto 1fr auto;
       grid-template-areas:
         'icon title radio'
         'icon description radio';
       align-items: center;
-      gap: .1rem .75rem;
+      gap: $space-3xs $space-lg;
       width: 100%;
       min-height: 4rem;
-      padding: .75rem 1rem;
+      padding: $space-lg $space-xl;
     }
 
     input[type="radio"] {
@@ -197,7 +228,7 @@
     .form__field-description {
       grid-area: description;
       margin: 0;
-      font-size: .82rem;
+      font-size: $text-xs;
 
       &:empty {
         display: none;

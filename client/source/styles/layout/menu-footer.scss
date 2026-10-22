@@ -9,18 +9,18 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: .25rem;
+  gap: $space-2xs;
   height: auto;
   // (as tall as the panels' toolbars plus the frame's gap below them, so its line carries on theirs)
   min-height: $toolbar-height + 8px;
-  padding: 0 .75rem 8px;
+  padding: 0 $space-lg 8px;
   border-top: 1px solid var(--cms-border);
   background-color: transparent;
 
   // The appearance swatch sits in the menu icons' column, and the help button's text starts where the menu's does
   // (the list's padding and its rows' padding, then the icon, then the gap before the text)
   .cms-appearance__toggle {
-    margin-left: .75rem;
+    margin-left: $space-lg;
   }
 
   // The menu always stays open, so its collapse and sticky controls aren't needed
@@ -45,9 +45,9 @@
     @include button-reset;
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: $space-sm;
     width: 100%;
-    padding: .45rem .55rem .45rem .355rem;
+    padding: $space-sm $space-sm $space-sm $space-xs;
     border-radius: var(--cms-radius-sm);
     color: var(--cms-text-muted);
 
@@ -65,7 +65,7 @@
   &__toggle-title {
     min-width: 0;
     overflow: hidden;
-    font-size: .86rem;
+    font-size: $text-sm;
     font-weight: $medium;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -73,12 +73,13 @@
 
   // Also a bootstrap .badge.text-bg-info, this keeps it in the menu's colours
   &__badge.badge {
-    padding: .1rem .45rem;
+    padding: $space-3xs $space-sm;
     border-radius: var(--cms-radius-pill);
     font-family: $font-mono;
-    font-size: .72rem;
+    font-size: $text-xs;
     color: var(--cms-text-muted);
-    background-color: var(--cms-active);
+    // The hover tint, not the active one: muted text on the active tint was 3.91:1
+    background-color: var(--cms-hover);
   }
 
   // A chevron like the rest of the CMS's (not the icon font's solid caret), pointing up to the menu
@@ -100,7 +101,7 @@
     bottom: calc(100% + .35rem);
     left: 0;
     width: max(100%, 14rem);
-    padding: .35rem;
+    padding: $space-xs;
     visibility: hidden;
     opacity: 0;
     translate: 0 .35rem;

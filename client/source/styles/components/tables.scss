@@ -6,27 +6,27 @@
 
 .table {
   width: 100%;
-  margin-bottom: 1rem;
+  margin-bottom: $space-xl;
   border-collapse: separate;
   border-spacing: 0;
-  font-size: .93rem;
+  font-size: $text-base;
   color: var(--cms-text);
   vertical-align: middle;
 
   th,
   td {
-    padding: .7rem 1rem;
+    padding: $space-md $space-xl;
     text-align: left;
     vertical-align: middle;
     border-bottom: 1px solid var(--cms-border);
   }
 
   thead th {
-    padding-top: .6rem;
-    padding-bottom: .6rem;
-    font-size: .75rem;
+    padding-top: $space-md;
+    padding-bottom: $space-md;
+    font-size: $text-xs;
     font-weight: $semibold;
-    letter-spacing: .04em;
+    letter-spacing: $caps-tracking;
     text-transform: uppercase;
     white-space: nowrap;
     color: var(--cms-text-muted);
@@ -49,7 +49,7 @@
 .table-sm {
   th,
   td {
-    padding: .4rem .65rem;
+    padding: $space-xs $space-md;
   }
 }
 
@@ -74,7 +74,7 @@
 .list-group-item {
   position: relative;
   display: block;
-  padding: .65rem 1rem;
+  padding: $space-md $space-xl;
   color: var(--cms-text);
   background-color: var(--cms-surface);
 
@@ -105,7 +105,7 @@
   @include list-reset;
   display: flex;
   flex-wrap: wrap;
-  gap: .25rem;
+  gap: $space-2xs;
 }
 
 .page-link {
@@ -113,9 +113,9 @@
   place-items: center;
   min-width: 2rem;
   height: 2rem;
-  padding: 0 .5rem;
+  padding: 0 $space-sm;
   border-radius: var(--cms-radius-sm);
-  font-size: .9rem;
+  font-size: $text-base;
   color: var(--cms-text);
 
   &:hover {

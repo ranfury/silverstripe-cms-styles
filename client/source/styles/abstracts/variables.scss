@@ -10,12 +10,35 @@ $xl: 1200px;
 $xxl: 1400px;
 
 // ===============================
+// Spacing
+// ===============================
+
+// Padding, margins and gaps come from these. On the 14px root: 2, 3.5, 5, 7, 9, 10.5, 14, 17.5, 21, 24.5, 28 and 35px.
+// They replaced 59 different values (22 Oct 2026); none moved more than 1.4px. Nudges in px, sizes in em and the
+// room kept for an icon (a select's chevron, a file's check box) are measurements of their own and stay as they are
+$space-3xs: .15rem;
+$space-2xs: .25rem;
+$space-xs: .35rem;
+$space-sm: .5rem;
+$space-md: .65rem;
+$space-lg: .75rem;
+$space-xl: 1rem;
+$space-2xl: 1.25rem;
+$space-3xl: 1.5rem;
+$space-4xl: 1.75rem;
+$space-5xl: 2rem;
+$space-6xl: 2.5rem;
+
+// ===============================
 // Layout
 // ===============================
 
 // The panel javascript reads these widths (.cms-panel-content / .cms-panel-content-collapsed) to size the panels
 $menu-width: 272px;
 $tree-width: 300px;
+// Below $xl: at 1024 the full widths left the edit form about 430px, its tabs wrapped and the editor's toolbar took four rows
+$menu-width-compact: 224px;
+$tree-width-compact: 256px;
 $panel-collapsed-width: 56px;
 
 // The CMS expects its toolbars to be this tall (the south toolbars line up across the menu, content and preview)
@@ -24,7 +47,7 @@ $header-height: 56px;
 
 // Edit forms: a label column, a gap and a field column (forms/layout.scss), nothing in a form is wider
 $form-label-width: 13rem;
-$form-gap: 2rem;
+$form-gap: $space-5xl;
 $form-field-width: 46rem;
 $form-width: $form-label-width + $form-gap + $form-field-width;
 
@@ -35,6 +58,20 @@ $form-width: $form-label-width + $form-gap + $form-field-width;
 $font-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 $font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
 $font-icons: 'silverstripe';
+
+// The type scale, for text (icon glyphs keep their own sizes). On the CMS's 14px root: 11.2, 12, 13, 14, 16, 20 and
+// 24.5px. It replaced 45 different sizes, 18 of them rendered between 10 and 24px, some under half a pixel apart
+// (measured 22 Oct 2026). xs is the smallest text there is: under 11px was too small to read comfortably
+$text-xs: .8rem; // labels in capitals, badges, meta
+$text-sm: .86rem; // help text, descriptions, secondary lines
+$text-base: .93rem; // controls, menus, tables, messages
+$text-md: 1rem; // the body, small headings
+$text-lg: 1.15rem; // panel and dialog titles
+$text-xl: 1.45rem;
+$text-2xl: 1.75rem;
+
+// Labels in capitals (column headings, section labels) all take the same tracking: there were seven, .02 to .06em
+$caps-tracking: .04em;
 
 $regular: 400;
 $medium: 500;

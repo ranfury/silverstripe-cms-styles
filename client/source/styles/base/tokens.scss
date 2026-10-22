@@ -24,7 +24,9 @@
   --cms-surface: #{scheme(#fff, tint(var(--cms-theme), $s: 16%, $l: 11%))};
   --cms-surface-raised: #{scheme(#fff, tint(var(--cms-theme), $s: 18%, $l: 14.5%))};
   // The html editor's page: a soft tint of the theme (not white), or the sunken dark (the sidebar's bottom) in place of black
-  --cms-editor-bg: #{tint(var(--cms-theme), $s: 26%, $l: 97.5%)};
+  // In dark mode a dimmed page, still light enough for the site's own dark text: near white, it was the brightest
+  // thing on the screen
+  --cms-editor-bg: #{scheme(tint(var(--cms-theme), $s: 26%, $l: 97.5%), tint(var(--cms-theme), $s: 14%, $l: 84%))};
   --cms-editor-bg-dark: #{tint(var(--cms-theme), $s: 18%, $l: 5%)};
   --cms-overlay: #{scheme(tint(var(--cms-theme), $s: 30%, $l: 10%, $a: .35), hsl(0 0% 0% / .6))};
 
@@ -39,11 +41,16 @@
   // Lines
   --cms-border: #{scheme(tint(var(--cms-theme), $s: 22%, $l: 88%), tint(var(--cms-theme), $s: 16%, $l: 20%))};
   --cms-border-strong: #{scheme(tint(var(--cms-theme), $s: 16%, $l: 76%), tint(var(--cms-theme), $s: 14%, $l: 32%))};
+  // The edge of a field or check box: 3:1 against the panels and the sunken colour (WCAG 1.4.11), border-strong was
+  // 1.77:1 light and 2.34:1 dark
+  --cms-control-border: #{scheme(tint(var(--cms-theme), $s: 16%, $l: 53%), tint(var(--cms-theme), $s: 14%, $l: 42%))};
 
   // Text
   --cms-text: #{scheme(tint(var(--cms-theme), $s: 25%, $l: 13%), tint(var(--cms-theme), $s: 12%, $l: 92%))};
-  --cms-text-muted: #{scheme(tint(var(--cms-theme), $s: 10%, $l: 42%), tint(var(--cms-theme), $s: 8%, $l: 66%))};
-  --cms-text-faint: #{scheme(tint(var(--cms-theme), $s: 8%, $l: 60%), tint(var(--cms-theme), $s: 6%, $l: 46%))};
+  // Both read as text (help, placeholders, meta), so both are 4.5:1 on the panels and the sunken background.
+  // Faint was 2.81:1 light and 3.95:1 dark (measured 22 Oct 2026); it stays a step quieter than muted
+  --cms-text-muted: #{scheme(tint(var(--cms-theme), $s: 10%, $l: 37%), tint(var(--cms-theme), $s: 8%, $l: 68%))};
+  --cms-text-faint: #{scheme(tint(var(--cms-theme), $s: 8%, $l: 43%), tint(var(--cms-theme), $s: 6%, $l: 56%))};
 
   // Status
   --cms-success: #{scheme(#17803d, #4ade80)};
@@ -52,6 +59,9 @@
   --cms-warning-soft: #{scheme(#fdf3dc, hsl(43 90% 50% / .14))};
   --cms-danger: #{scheme(#c2261c, #f87171)};
   --cms-danger-soft: #{scheme(#fdecea, hsl(0 85% 60% / .14))};
+  // Text on a solid status colour: the dark mode colours are light, so they take dark text (white was 2.77:1 on #f87171)
+  --cms-on-danger: #{scheme(#fff, hsl(0 70% 9%))};
+  --cms-on-success: #{scheme(#fff, hsl(142 70% 7%))};
   --cms-info: #{scheme(#1d5fbf, #7cb4ff)};
   --cms-info-soft: #{scheme(#e8f0fc, hsl(215 90% 65% / .14))};
 
@@ -65,6 +75,8 @@
   --cms-background-colour--dynamic: var(--cms-sunken);
 
   // Shapes
+  // Small marks: check boxes, code, the bars beside a toast or the current menu item
+  --cms-radius-xs: 4px;
   --cms-radius-sm: 6px;
   --cms-radius: 10px;
   --cms-radius-lg: 16px;

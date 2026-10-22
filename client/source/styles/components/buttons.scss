@@ -17,15 +17,15 @@
   --btn-hover-border: var(--btn-border);
   --btn-shadow: var(--cms-shadow-sm);
   --btn-height: 2.25rem;
-  --btn-padding: .9rem;
-  --btn-font-size: .93rem;
+  --btn-padding: #{$space-xl};
+  --btn-font-size: #{$text-base};
   --btn-icon-size: 1.1rem;
 
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: .45rem;
+  gap: $space-sm;
   min-height: var(--btn-height);
   padding: 0 var(--btn-padding);
   border: 1px solid var(--btn-border);
@@ -40,7 +40,6 @@
   vertical-align: middle;
   color: var(--btn-color);
   background-color: var(--btn-bg);
-  background-image: var(--btn-gloss, none);
   box-shadow: var(--btn-shadow);
   cursor: pointer;
   user-select: none;
@@ -122,7 +121,6 @@
   --btn-bg: transparent;
   --btn-border: color-mix(in srgb, var(--cms-accent), transparent 30%);
   --btn-shadow: none;
-  --btn-gloss: none;
   --btn-hover-shadow: none;
   --btn-hover-bg: var(--cms-accent-soft);
 
@@ -133,7 +131,7 @@
 
 .btn-danger,
 .ss-ui-action-destructive {
-  --btn-color: #fff;
+  --btn-color: var(--cms-on-danger);
   --btn-bg: var(--cms-danger);
   --btn-border: transparent;
   --btn-hover-bg: color-mix(in srgb, var(--cms-danger), #000 12%);
@@ -149,7 +147,7 @@
 }
 
 .btn-success {
-  --btn-color: #fff;
+  --btn-color: var(--cms-on-success);
   --btn-bg: var(--cms-success);
   --btn-border: transparent;
   --btn-hover-bg: color-mix(in srgb, var(--cms-success), #000 12%);
@@ -216,7 +214,7 @@
   --btn-border: transparent;
   --btn-shadow: none;
   --btn-hover-bg: transparent;
-  --btn-padding: .25rem;
+  --btn-padding: #{$space-2xs};
 
   &:hover {
     text-decoration: underline;
@@ -250,8 +248,8 @@
 .btn-sm,
 .ss-ui-button-small {
   --btn-height: 1.85rem;
-  --btn-padding: .6rem;
-  --btn-font-size: .84rem;
+  --btn-padding: #{$space-md};
+  --btn-font-size: #{$text-sm};
   --btn-icon-size: .95rem;
 
   border-radius: var(--cms-radius-sm);
@@ -259,8 +257,8 @@
 
 .btn-lg {
   --btn-height: 2.75rem;
-  --btn-padding: 1.2rem;
-  --btn-font-size: 1rem;
+  --btn-padding: #{$space-2xl};
+  --btn-font-size: #{$text-md};
 }
 
 .btn--icon-sm {
@@ -404,10 +402,12 @@
     border-bottom-left-radius: 0;
   }
 
-  // In a toolbar the groups' buttons are spaced instead of joined (e.g. the major actions)
+  // In a toolbar the groups' buttons are spaced instead of joined (e.g. the major actions), as are a react form's
+  // actions (the file editor's Saved / Published), so they look as they do under a page or a record
   .btn-toolbar > &.form-group--no-label,
-  .btn-toolbar > &[role="group"] {
-    gap: .5rem;
+  .btn-toolbar > &[role="group"],
+  &.field-group-component:has(> .btn.action) {
+    gap: $space-sm;
 
     > .btn {
       margin-left: 0;

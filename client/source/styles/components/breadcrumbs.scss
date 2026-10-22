@@ -21,7 +21,7 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-size: .8rem;
+  font-size: $text-xs;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--cms-text-muted);
@@ -40,7 +40,7 @@
 
   &::after {
     content: '/';
-    padding: 0 .4rem;
+    padding: 0 $space-xs;
     color: var(--cms-text-faint);
   }
 
@@ -48,7 +48,7 @@
   &--last {
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: $space-sm;
 
     &::after {
       display: none;
@@ -61,13 +61,28 @@
 h2.breadcrumb__item-title--last {
   margin: 0;
   overflow: hidden;
-  font-size: 1.15rem;
+  font-size: $text-lg;
   font-weight: $semibold;
   letter-spacing: -.01em;
   line-height: 1.4;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--cms-text);
+}
+
+// The parents share the class with the title, and took its size: "Files / Uploads /" was 16px over the folder's name,
+// where the classic screens' parents ("Pages /") are small and quiet. These are the small ones too
+.breadcrumb .breadcrumb__item-title:not(.breadcrumb__item-title--last) {
+  display: inline;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: normal;
+  line-height: inherit;
+  color: inherit;
+
+  &:hover {
+    color: var(--cms-text);
+  }
 }
 
 .breadcrumb__icon {

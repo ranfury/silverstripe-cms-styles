@@ -42,8 +42,32 @@ Colours all come from one theme colour (`--cms-theme`) with `light-dark()`. It, 
 appearance menu in the menu footer and remembered in the browser (the dev pages use them too). The colours the menu offers are
 `theme_colours` in `_config/config.yml`.
 
+The text on the theme colour (buttons, selections, ticks) is black or white, whichever has the more contrast on it by
+WCAG's measure, so any colour picked stays readable.
+
 The variable names the previous CMS theme module used (`--cms-accent-colour`, `--cms-border-colour`...) are kept as
 aliases, other modules' styles may still read them.
+
+## Scales
+
+Sizes come from a few scales in `abstracts/variables.scss` and `base/tokens.scss`, rather than values written in place:
+
+- Type: `$text-xs` (.8rem, the smallest text there is) to `$text-2xl`. Icon glyphs keep their own sizes
+- Spacing: `$space-3xs` (.15rem) to `$space-6xl` (2.5rem), for padding, margins and gaps. Nudges in px and the room kept
+  for an icon are measurements of their own
+- Radii: `--cms-radius-xs` to `--cms-radius-lg`, and `--cms-radius-pill`
+- Edges: `--cms-border` for lines between things, `--cms-control-border` (3:1) for the edge of a field or check box
+- Capitals: labels in capitals take `$caps-tracking`
+
+## Icons
+
+The menu's icons, the page types' (tree, pages list, add page) and a few others are [Lucide](https://lucide.dev)'s
+outline icons in place of the icon font's glyphs, which mix filled and outlined drawings. A section or page type whose
+glyph isn't mapped (`$-menu-icons` in `layout/menu.scss`, `$-record-icons` in `base/icons.scss`) keeps its glyph.
+
+Lucide is a dependency of the build (`lucide-static` in `package.json`): `@include lucide('mail')` reads the icon from it
+when the styles are built and writes it into the css, once, as `--lucide-mail`. Nothing extra is installed with the
+module. Lucide's licence (ISC) is in `licenses/lucide.txt`.
 
 ## Configuration
 

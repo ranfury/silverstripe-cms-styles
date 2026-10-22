@@ -13,9 +13,16 @@
   // The CMS's theme colour (set by the inlined appearance boot script)
   --dev-theme: var(--cms-theme, #77cdff);
   --dev-accent: #{scheme(tint(var(--dev-theme), $s: 85%, $l: 34%), tint(var(--dev-theme), $s: 90%, $l: 74%))};
+  // The accent is a dark shade in light mode and a light one in dark mode, so the text on it follows (white was
+  // about 2:1 on the dark mode accent)
+  --dev-on-accent: #{scheme(#fff, hsl(0 0% 8%))};
   --dev-success: #{scheme(#15803d, #4ade80)};
   --dev-warning: #{scheme(#a15c07, #fbbf24)};
   --dev-error: #{scheme(#c2261c, #f87171)};
+  // The dev pages have no CMS tokens, these are their radii
+  --dev-radius-sm: 8px;
+  --dev-radius: 10px;
+  --dev-radius-lg: 14px;
 
   color-scheme: light dark;
 
@@ -50,31 +57,31 @@ body {
 h1,
 h2,
 h3 {
-  margin: 0 0 .5rem;
+  margin: 0 0 $space-sm;
   font-weight: $semibold;
   line-height: 1.3;
   letter-spacing: -.01em;
 }
 
 h2 {
-  font-size: 1.15rem;
+  font-size: $text-lg;
 }
 
 h3 {
-  font-size: 1rem;
+  font-size: $text-md;
 }
 
 p {
-  margin: 0 0 .5rem;
+  margin: 0 0 $space-sm;
 }
 
 ul {
-  margin: 0 0 1.25rem;
-  padding: 0 0 0 1.25rem;
+  margin: 0 0 $space-2xl;
+  padding: 0 0 0 $space-2xl;
 }
 
 li {
-  padding: .1rem 0;
+  padding: $space-3xs 0;
 }
 
 a {
@@ -88,6 +95,6 @@ strong {
 }
 
 ::selection {
-  color: #fff;
+  color: var(--dev-on-accent);
   background-color: var(--dev-accent);
 }

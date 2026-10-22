@@ -10,7 +10,8 @@
   flex-wrap: wrap;
   align-items: flex-start;
   max-width: 26rem;
-  margin-top: .75rem;
+  // Room above the tree's own label below it, as there is above
+  margin: $space-sm 0 $space-lg;
 
   fieldset {
     flex: 1 1 auto;
@@ -51,10 +52,10 @@
   // Options for the chosen action (e.g. publishing date)
   .action-parameters {
     flex: 1 1 100%;
-    margin-top: .75rem;
+    margin-top: $space-lg;
 
     .form-group {
-      margin-bottom: .75rem;
+      margin-bottom: $space-lg;
 
       &:last-child {
         margin-bottom: 0;
@@ -77,8 +78,8 @@
 // ===============================
 
 .cms-list .cms-list__item-breadcrumbs {
-  margin: .15rem 0 0 1.5rem;
-  font-size: .82rem;
+  margin: $space-3xs 0 0 $space-3xl;
+  font-size: $text-xs;
   word-break: break-word;
   color: var(--cms-text-muted);
 }

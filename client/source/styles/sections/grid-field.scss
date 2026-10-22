@@ -7,7 +7,7 @@
 // A list of records: the toolbar (add, link existing...), then the table on a card
 .grid-field {
   min-width: 0;
-  margin: 0 0 1.75rem;
+  margin: 0 0 $space-4xl;
   padding: 0;
   border: 0;
 
@@ -17,7 +17,7 @@
 
   // The filter / search row above a model admin's list
   .cms-content-filters {
-    margin: 0 0 1rem;
+    margin: 0 0 $space-xl;
     overflow: hidden;
     border: 1px solid var(--cms-border);
     border-radius: var(--cms-radius);
@@ -33,8 +33,8 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: .5rem;
-    margin: 0 0 .85rem;
+    gap: $space-sm;
+    margin: 0 0 $space-lg;
     padding: 0;
     border: 0;
     background: none;
@@ -58,7 +58,25 @@
   }
 
   .ss-gridfield-buttonrow-after {
-    margin: .85rem 0 0;
+    margin: $space-lg 0 0;
+  }
+
+  // "Add new" first, on the left, as it is above the tree and in the files area; Export, Print and search to the right.
+  // The template puts the search first and Add new inside the toolbar with the others, so the toolbar's box is dropped
+  .ss-gridfield-buttonrow:has(> .btn-toolbar > .new-link) {
+    > .btn-toolbar {
+      display: contents;
+    }
+
+    .new-link {
+      order: -1;
+      margin-right: auto;
+    }
+
+    > .pull-xs-right {
+      order: 1;
+      margin-left: 0;
+    }
   }
 
   // "Add new" (a type, then Add) on the same row as the search / link existing buttons, which keep to the right,
@@ -67,7 +85,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    column-gap: .5rem;
+    column-gap: $space-sm;
 
     > :not(.ss-gridfield-add-new-multi-class, .ss-gridfield-buttonrow-before) {
       flex: 0 0 100%;
@@ -89,14 +107,14 @@
   .pull-xs-right {
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: $space-sm;
     margin-left: auto;
   }
 
   .pull-xs-left {
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: $space-sm;
   }
 
   // The loading row while a page / sort loads
@@ -132,10 +150,21 @@
 
   th,
   td {
-    padding: .65rem 1rem;
+    padding: $space-md $space-xl;
     border-bottom: 1px solid var(--cms-border);
     text-align: left;
     vertical-align: middle;
+  }
+
+  // Numbers and dates line up down a column
+  td {
+    font-variant-numeric: tabular-nums;
+  }
+
+  // A date and time on one line: the jobs list's "2026-10-19 09:43:00" broke at the space at 1024. The columns are
+  // known by their names, there's nothing else to tell a date by
+  td:is(.col-Created, .col-LastEdited, [class*="Date"], [class*="Started"], [class*="Finished"], [class*="After"], [class*="Expir"]) {
+    white-space: nowrap;
   }
 
   // The title row ("Blocks", "View 1–7 of 7")
@@ -145,7 +174,7 @@
   }
 
   .grid-field__title-row th {
-    padding: .85rem 1rem;
+    padding: $space-lg $space-xl;
     background-color: var(--cms-surface);
     text-transform: none;
     letter-spacing: 0;
@@ -158,11 +187,11 @@
   // Column headings
   .sortable-header th,
   tr th.main {
-    padding-top: .55rem;
-    padding-bottom: .55rem;
-    font-size: .75rem;
+    padding-top: $space-sm;
+    padding-bottom: $space-sm;
+    font-size: $text-xs;
     font-weight: $semibold;
-    letter-spacing: .04em;
+    letter-spacing: $caps-tracking;
     text-transform: uppercase;
     white-space: nowrap;
     color: var(--cms-text-muted);
@@ -201,7 +230,7 @@
     td.col-StripThumbnail,
     td[class*="col-Thumbnail"] {
       width: 3rem;
-      padding: .35rem .5rem;
+      padding: $space-xs $space-sm;
 
       img {
         display: block;
@@ -239,7 +268,7 @@
       .action-detail {
         display: inline-flex;
         align-items: center;
-        gap: .55rem;
+        gap: $space-sm;
         font-weight: $medium;
         color: var(--cms-text);
 
@@ -264,7 +293,7 @@
 
     // "No items found"
     .ss-gridfield-no-items td {
-      padding: 2.5rem 1rem;
+      padding: $space-6xl $space-xl;
       text-align: center;
       color: var(--cms-text-muted);
     }
@@ -272,10 +301,10 @@
 
   // Footer (pagination, "View 1–7 of 7")
   tfoot td {
-    padding: .5rem 1rem;
+    padding: $space-sm $space-xl;
     border-top: 1px solid var(--cms-border);
     border-bottom: 0;
-    font-size: .86rem;
+    font-size: $text-sm;
     color: var(--cms-text-muted);
     background-color: var(--cms-surface);
   }
@@ -285,21 +314,21 @@
   .filter-header input,
   .filter-header select {
     min-height: 2rem;
-    padding: .3rem .6rem;
-    font-size: .88rem;
+    padding: $space-xs $space-md;
+    font-size: $text-sm;
   }
 }
 
 .grid-field__title {
   display: inline;
   margin: 0;
-  font-size: 1.05rem;
+  font-size: $text-md;
   font-weight: $semibold;
   text-transform: none;
 }
 
 .pagination-records-number {
-  font-size: .84rem;
+  font-size: $text-sm;
   font-weight: $regular;
   white-space: nowrap;
   color: var(--cms-text-muted);
@@ -313,7 +342,7 @@
   @include button-reset;
   display: inline-flex;
   align-items: center;
-  gap: .35rem;
+  gap: $space-xs;
   padding: 0;
   font-weight: inherit;
   letter-spacing: inherit;
@@ -368,7 +397,7 @@
 
 .grid-field__col-compact {
   > * + * {
-    margin-left: .15rem;
+    margin-left: $space-3xs;
   }
 }
 
@@ -432,15 +461,15 @@
 // A link filling its cell
 .grid-field__link-block {
   display: block;
-  margin: -.65rem -1rem;
-  padding: .65rem 1rem;
+  margin: (-$space-md) (-$space-xl);
+  padding: $space-md $space-xl;
   text-decoration: none;
   color: inherit;
 }
 
 .gridfield-actionmenu__container {
   display: inline-flex;
-  margin: -.25rem 0;
+  margin: (-$space-2xs) 0;
 }
 
 // ===============================
@@ -459,17 +488,17 @@
 .grid-field__paginator__controls {
   display: inline-flex;
   align-items: center;
-  gap: .25rem;
+  gap: $space-2xs;
 
   .pagination-page-number {
     display: inline-flex;
     align-items: center;
-    gap: .35rem;
+    gap: $space-xs;
 
     input {
       width: 3rem;
       min-height: 1.85rem;
-      padding: .2rem;
+      padding: $space-2xs;
       text-align: center;
     }
   }
@@ -543,7 +572,7 @@
 // Add existing search dialog
 .add-existing-search-dialog {
   .add-existing-search-form .form-group {
-    margin-bottom: .75rem;
+    margin-bottom: $space-lg;
   }
 
   .list-group-item {

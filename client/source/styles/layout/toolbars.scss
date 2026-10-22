@@ -10,8 +10,8 @@
 .toolbar--south {
   width: 100%;
   min-height: $toolbar-height;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+  padding-left: $space-2xl;
+  padding-right: $space-2xl;
 
   .btn {
     margin-bottom: 0;
@@ -51,15 +51,15 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .5rem;
+  gap: $space-sm;
   width: auto;
   min-height: auto;
-  margin: -1.75rem -1.75rem 1.25rem;
-  padding: 1rem 1.75rem;
+  margin: (-$space-4xl) (-$space-4xl) $space-2xl;
+  padding: $space-xl $space-4xl;
 
   .ui-tabs-panel & {
-    margin-left: -1.75rem;
-    margin-right: -1.75rem;
+    margin-left: (-$space-4xl);
+    margin-right: (-$space-4xl);
   }
 
   .field + .grid-field & {
@@ -91,8 +91,8 @@
   flex: 0 0 auto;
   align-items: center;
   min-height: $toolbar-height;
-  padding-top: .5rem;
-  padding-bottom: .5rem;
+  padding-top: $space-sm;
+  padding-bottom: $space-sm;
   border-top: 1px solid var(--cms-border);
   background-color: var(--cms-bg);
 }
@@ -111,7 +111,7 @@
     flex: 1 1 auto;
     flex-wrap: wrap;
     align-items: center;
-    gap: .5rem;
+    gap: $space-sm;
   }
 }
 
@@ -129,9 +129,9 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
-  gap: .5rem;
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
+  gap: $space-sm;
+  margin-top: $space-2xl;
+  margin-bottom: $space-2xl;
 
   fieldset + & {
     margin-top: 0;

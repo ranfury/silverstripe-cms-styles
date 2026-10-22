@@ -6,7 +6,7 @@
 
 .sudo-mode-password-field {
   max-width: 46rem;
-  font-size: 1rem;
+  font-size: $text-md;
 
   .SudoModePasswordField--initially-collapsed.form-group & {
     margin-left: 0;
@@ -17,7 +17,7 @@
 // A card with the message, its button and then the password
 .sudo-mode-password-field__inner {
   margin-bottom: 0;
-  padding: 1rem 1.25rem;
+  padding: $space-xl $space-2xl;
 }
 
 .sudo-mode-password-field__notice,
@@ -25,7 +25,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .75rem 1rem;
+  gap: $space-lg $space-xl;
   margin-bottom: 0;
 }
 
@@ -44,11 +44,11 @@
 }
 
 .sudo-mode-password-field__notice-help {
-  margin-left: .35rem;
+  margin-left: $space-xs;
 }
 
 .sudo-mode-password-field__verify {
-  margin-top: 1rem;
+  margin-top: $space-xl;
 
   .input-group {
     max-width: 30rem;
@@ -62,7 +62,7 @@
 .sudo-mode-password-field__expander {
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: $space-sm;
   margin-bottom: 0;
 }
 
@@ -70,9 +70,17 @@
   margin-left: auto;
 }
 
-.sudo-mode-password-grid-field__row th {
-  padding: .85rem 1rem;
+// (in a grid's heading row: it's a message, not a column heading, so none of the headings' capitals and single line.
+// A table's own heading rule is a class stronger, hence the thead)
+.sudo-mode-password-grid-field__row th,
+thead .sudo-mode-password-grid-field__row th {
+  padding: $space-lg $space-xl;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: normal;
   text-transform: none;
+  white-space: normal;
+  color: inherit;
 }
 
 // The password input shows only after "Verify to continue"
@@ -87,7 +95,7 @@
 .permissioncheckboxset,
 .permissioncheckboxsetfield_readonly {
   h5 {
-    margin-top: 1.25rem;
+    margin-top: $space-2xl;
   }
 
   label {
@@ -100,10 +108,10 @@
   }
 
   li {
-    margin-bottom: .2rem;
+    margin-bottom: $space-2xs;
 
     &.help {
-      margin-bottom: 1rem;
+      margin-bottom: $space-xl;
       padding: 0;
     }
   }
@@ -132,8 +140,8 @@
       cursor: default;
 
       span {
-        margin-right: .4rem;
-        font-size: 1.05rem;
+        margin-right: $space-xs;
+        font-size: $text-md;
       }
     }
   }

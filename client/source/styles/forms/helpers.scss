@@ -8,8 +8,8 @@
 // reads beside it, not on a row below
 .cms-character-count__counter {
   float: right;
-  margin: .4rem 0 0 1rem;
-  font-size: .78rem;
+  margin: $space-xs 0 0 $space-xl;
+  font-size: $text-xs;
   line-height: 1.45;
   font-variant-numeric: tabular-nums;
   color: var(--cms-text-faint);
@@ -32,7 +32,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .5rem 1rem;
+  gap: $space-sm $space-xl;
 
   > .form__field-description,
   > .message {
@@ -80,7 +80,7 @@
   &::-webkit-slider-thumb {
     width: 1.15rem;
     height: 1.15rem;
-    margin-top: -.375rem;
+    margin-top: (-$space-xs);
     border: 2px solid var(--cms-surface);
     border-radius: 50%;
     appearance: none;
@@ -106,9 +106,9 @@
 .cms-range__value {
   flex: 0 0 5rem;
   width: 5rem;
-  padding: .3rem .6rem;
+  padding: $space-xs $space-md;
   border-radius: var(--cms-radius-sm);
-  font-size: .86rem;
+  font-size: $text-sm;
   font-weight: $medium;
   font-variant-numeric: tabular-nums;
   text-align: center;
@@ -143,10 +143,10 @@
   @include button-reset;
   align-self: center;
   height: 2.15rem;
-  margin: 0 .15rem;
-  padding: 0 .6rem;
+  margin: 0 $space-3xs;
+  padding: 0 $space-md;
   border-radius: var(--cms-radius-sm);
-  font-size: .88rem;
+  font-size: $text-sm;
   color: var(--cms-text);
 
   // A small swatch of the background it switches to
@@ -155,15 +155,21 @@
     display: inline-block;
     width: .8rem;
     height: .8rem;
-    margin-right: .45rem;
-    border: 1px solid var(--cms-border-strong);
+    margin-right: $space-sm;
+    border: 1px solid var(--cms-control-border);
     border-radius: 50%;
     vertical-align: -.1em;
-    background-color: var(--cms-editor-bg-dark);
+    // Half the page as it is, half the dark background: a dark dot alone disappeared on the dark mode toolbar
+    background: linear-gradient(135deg, var(--cms-editor-bg) 50%, var(--cms-editor-bg-dark) 50%);
   }
 
   &:hover {
     background-color: var(--cms-hover);
+  }
+
+  // The skin takes the outline off everything in the toolbar
+  &:focus-visible {
+    @include focus-ring(-2px);
   }
 
   &[aria-pressed="true"] {
@@ -172,11 +178,23 @@
   }
 }
 
+// The editor's page colour, worked out (light-dark()) where the CMS's colour scheme applies. Registered as a colour so
+// it inherits as the colour, not as light-dark(): the iframe below is always light, and would pick the light value
+@property --cms-editor-page {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: transparent;
+}
+
+.htmleditor .tox {
+  --cms-editor-page: var(--cms-editor-bg);
+}
+
 // The editor's page is transparent, so the iframe's own background is what the content sits on.
 // (the iframe's color-scheme has to match its page's, light, or the browser paints the page white in a dark CMS)
 .htmleditor .tox .tox-edit-area__iframe {
   color-scheme: only light;
-  background-color: var(--cms-editor-bg);
+  background-color: var(--cms-editor-page);
 
   &.cms-editor-background--dark {
     background-color: var(--cms-editor-bg-dark);

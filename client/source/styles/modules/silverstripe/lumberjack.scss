@@ -6,7 +6,7 @@
 
 .ss-gridfield {
   .gridfield-dropdown {
-    margin: 0 .5rem 0 0;
+    margin: 0 $space-sm 0 0;
 
     .dropdown,
     select {
@@ -15,7 +15,7 @@
   }
 
   .dropdown-action {
-    font-size: .86rem;
+    font-size: $text-sm;
   }
 }
 
@@ -24,7 +24,7 @@
     display: inline-block;
     width: 1rem;
     height: 1rem;
-    margin-right: .4rem;
+    margin-right: $space-xs;
   }
 
   &.published i {
@@ -34,10 +34,10 @@
 
 // "Modified"
 .cms .modified {
-  margin-left: .35rem;
-  padding: .1rem .45rem;
+  margin-left: $space-xs;
+  padding: $space-3xs $space-sm;
   border-radius: var(--cms-radius-pill);
-  font-size: .72rem;
+  font-size: $text-xs;
   font-weight: $semibold;
   text-transform: uppercase;
   color: var(--cms-warning);

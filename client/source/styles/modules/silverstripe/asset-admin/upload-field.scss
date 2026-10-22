@@ -13,7 +13,7 @@
 .uploadfield__dropzone {
   position: relative;
   height: 4.5rem;
-  margin: 0 0 .5rem;
+  margin: 0 0 $space-sm;
   padding: 0;
   border: 1.5px dashed var(--cms-border-strong);
   border-radius: var(--cms-radius);
@@ -50,8 +50,8 @@
   left: 50%;
   display: inline-flex;
   align-items: center;
-  gap: .35rem;
-  font-size: .93rem;
+  gap: $space-xs;
+  font-size: $text-base;
   white-space: nowrap;
   color: var(--cms-text-muted);
   translate: -50% -50%;
@@ -63,7 +63,7 @@
 }
 
 .uploadfield__dropicon {
-  margin-right: .5rem;
+  margin-right: $space-sm;
   font-size: 1.4rem;
   color: var(--cms-text-faint);
 }
@@ -87,11 +87,11 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: .25rem;
+  gap: $space-2xs;
   height: auto;
   min-height: 3.75rem;
   margin: 0;
-  padding: .45rem .6rem .45rem .45rem;
+  padding: $space-sm $space-md $space-sm $space-sm;
   border: 1px solid var(--cms-border);
   border-bottom-width: 0;
   background-color: var(--cms-surface);
@@ -153,10 +153,10 @@
 
 .uploadfield-item__details {
   justify-content: center;
-  gap: .1rem;
+  gap: $space-3xs;
   min-width: 0;
   height: auto;
-  padding: 0 .5rem 0 .65rem;
+  padding: 0 $space-sm 0 $space-md;
 }
 
 .uploadfield-item__title {
@@ -170,8 +170,8 @@
 .uploadfield-item__meta {
   display: flex;
   align-items: center;
-  gap: .4rem;
-  font-size: .8rem;
+  gap: $space-xs;
+  font-size: $text-xs;
   text-transform: uppercase;
   color: var(--cms-text-muted);
 }
@@ -188,7 +188,7 @@
 .uploadfield-item__upload-progress {
   width: 30%;
   height: .5rem;
-  margin: 0 .5rem;
+  margin: 0 $space-sm;
   overflow: hidden;
   border-radius: var(--cms-radius-pill);
   background-color: var(--cms-sunken);
@@ -209,11 +209,11 @@
 
 .uploadfield-item__error-message {
   max-width: 50%;
-  margin: 0 .5rem;
-  padding: .2rem .65rem;
+  margin: 0 $space-sm;
+  padding: $space-2xs $space-md;
   overflow: hidden;
   border-radius: var(--cms-radius-pill);
-  font-size: .84rem;
+  font-size: $text-sm;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--cms-danger);

@@ -22,19 +22,19 @@
   }
 
   .cms-panel-header {
-    margin: .75rem 0 .25rem;
-    padding-bottom: .35rem;
-    font-size: .8rem;
+    margin: $space-lg 0 $space-2xs;
+    padding-bottom: $space-xs;
+    font-size: $text-xs;
     font-weight: $semibold;
-    letter-spacing: .04em;
+    letter-spacing: $caps-tracking;
     text-transform: uppercase;
     color: var(--cms-text-muted);
     border-bottom: 1px solid var(--cms-border);
   }
 
-  @include media($lg, max) {
+  @include media($xl, max) {
     .cms-panel-content {
-      width: min(#{$tree-width}, 40vw);
+      width: min(#{$tree-width-compact}, 32vw);
     }
   }
 }
@@ -70,10 +70,10 @@
       display: flex;
       align-items: center;
       width: 100%;
-      margin: 1.75rem 0 0;
+      margin: $space-4xl 0 0;
       padding: 0;
       border: 0;
-      font-size: .86rem;
+      font-size: $text-sm;
       line-height: 1;
       white-space: nowrap;
       color: var(--cms-text-muted);
@@ -86,7 +86,7 @@
   .cms-panel-toggle {
     display: flex;
     justify-content: flex-end;
-    padding: 0 .5rem;
+    padding: 0 $space-sm;
   }
 
   .cms-panel-toggle__button {
@@ -96,9 +96,21 @@
     width: 2.25rem;
     height: 2.25rem;
     border-radius: var(--cms-radius-sm);
-    font-size: 1.15rem;
+    // The button's text is a « or », which the panel javascript swaps: hidden, and a chevron drawn in its place
+    // pointing the way the panel will go
+    font-size: 0;
     line-height: 1;
     color: var(--cms-text-muted);
+
+    &::before {
+      @include chevron(1rem);
+      rotate: 90deg;
+      transition: rotate $normal $ease;
+    }
+
+    &[aria-expanded="false"]::before {
+      rotate: -90deg;
+    }
 
     &:hover {
       color: var(--cms-text);

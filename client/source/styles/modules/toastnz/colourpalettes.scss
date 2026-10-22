@@ -34,8 +34,8 @@
 #Form_ItemEditForm_ContrastColour_Holder {
   .optionset {
     flex-direction: row;
-    gap: 1rem;
-    margin-bottom: 1.75rem;
+    gap: $space-xl;
+    margin-bottom: $space-4xl;
   }
 
   .radio {

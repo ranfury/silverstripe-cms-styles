@@ -8,7 +8,7 @@
 .cms-code-editor {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--cms-border-strong);
+  border: 1px solid var(--cms-control-border);
   border-radius: var(--cms-radius);
   background-color: var(--cms-sunken);
   box-shadow: var(--cms-shadow-sm);
@@ -22,11 +22,11 @@
 .cms-code-editor__highlight,
 .cms-code-editor__input {
   margin: 0;
-  padding: .85rem 1rem;
+  padding: $space-lg $space-xl;
   border: 0;
   border-radius: 0;
   font-family: $font-mono;
-  font-size: .86rem;
+  font-size: $text-sm;
   line-height: 1.6;
   letter-spacing: 0;
   tab-size: 2;

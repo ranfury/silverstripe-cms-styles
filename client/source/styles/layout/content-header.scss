@@ -10,13 +10,15 @@
   z-index: 60;
   display: flex;
   flex: 0 0 auto;
-  flex-flow: row wrap;
+  // One row: the tabs scroll sideways (header tabs, below) rather than wrap under the title, which doubled the
+  // header's height on a laptop. A phone has room for neither, so they take a row of their own there
+  flex-flow: row nowrap;
   align-items: stretch;
-  gap: 0 1rem;
+  gap: 0 $space-xl;
   width: 100%;
   min-width: 100%;
   min-height: $header-height;
-  padding: 0 1.25rem;
+  padding: 0 $space-2xl;
   border-bottom: 1px solid var(--cms-border);
   background-color: var(--cms-bg);
 
@@ -24,9 +26,13 @@
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
-    gap: .5rem;
+    gap: $space-sm;
     min-height: $header-height - 1px;
-    min-width: 12rem;
+    min-width: 10rem;
+  }
+
+  @include media($sm, max) {
+    flex-wrap: wrap;
   }
 }
 
@@ -42,7 +48,7 @@
 
 .section-label {
   overflow: hidden;
-  font-size: 1.15rem;
+  font-size: $text-lg;
   font-weight: $semibold;
   letter-spacing: -.01em;
   text-overflow: ellipsis;
@@ -52,7 +58,7 @@
 .view-controls {
   display: flex;
   align-items: center;
-  gap: .25rem;
+  gap: $space-2xs;
   margin-left: auto;
 }
 
@@ -72,7 +78,7 @@
 
   .crumb,
   .sep {
-    font-size: .8rem;
+    font-size: $text-xs;
     white-space: nowrap;
     color: var(--cms-text-muted);
   }
@@ -82,7 +88,7 @@
   }
 
   .sep {
-    margin: 0 .3rem;
+    margin: 0 $space-xs;
     color: var(--cms-text-faint);
   }
 
@@ -90,7 +96,7 @@
     display: block;
     flex: 1 1 100%;
     overflow: hidden;
-    font-size: 1.15rem;
+    font-size: $text-lg;
     font-weight: $semibold;
     letter-spacing: -.01em;
     text-overflow: ellipsis;
@@ -109,7 +115,9 @@
 
 .cms-content-header-tabs {
   display: flex;
+  flex: 0 1 auto;
   align-items: center;
+  min-width: 0;
   max-width: 100%;
   min-height: $header-height - 1px;
   margin-left: auto;
@@ -119,6 +127,6 @@
   // On a phone they're a row of their own under the title, which they line up with rather than the far side
   @include media($sm, max) {
     margin-left: 0;
-    padding-bottom: .6rem;
+    padding-bottom: $space-md;
   }
 }

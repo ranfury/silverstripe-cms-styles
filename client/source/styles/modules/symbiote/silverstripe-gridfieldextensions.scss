@@ -8,7 +8,7 @@
 .ss-gridfield-add-new-multi-class {
   display: inline-flex;
   align-items: stretch;
-  margin: 0 0 .85rem;
+  margin: 0 0 $space-lg;
   white-space: nowrap;
 
   .form-group {
@@ -33,7 +33,7 @@
   .grid-field__table td.col-reorder {
     position: relative;
     width: 2rem;
-    padding: 0 0 0 .5rem;
+    padding: 0 0 0 $space-sm;
   }
 
   .col-reorder .handle {
@@ -106,7 +106,7 @@
 }
 
 .ss-gridfield-add-new-inline {
-  margin-bottom: .85rem;
+  margin-bottom: $space-lg;
 
   .col-buttons {
     text-align: right;
@@ -121,7 +121,7 @@
   right: 3rem;
   bottom: 3rem;
   display: none;
-  padding: .35rem;
+  padding: $space-xs;
 
   a {
     @include menu-item;
@@ -138,13 +138,13 @@
     display: flex;
     float: left;
     align-items: center;
-    gap: .5rem;
+    gap: $space-sm;
   }
 
   .pagination-page-size-select {
     width: auto;
     min-height: 1.85rem;
-    padding-block: .15rem;
+    padding-block: $space-3xs;
   }
 
   .ss-gridfield-pagesize-submit {

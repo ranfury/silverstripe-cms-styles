@@ -45,13 +45,13 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
-    margin: 2px 0 .25rem 1.75rem;
-    padding-left: .6rem;
+    margin: 2px 0 $space-2xs $space-4xl;
+    padding-left: $space-md;
     border-left: 1px solid var(--cms-border);
 
     a {
       min-height: 2.25rem;
-      padding-block: .4rem;
+      padding-block: $space-xs;
       font-weight: $regular;
     }
   }

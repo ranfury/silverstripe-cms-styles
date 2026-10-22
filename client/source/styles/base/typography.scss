@@ -25,29 +25,29 @@ h6,
 
 h1,
 .h1 {
-  font-size: 1.75rem;
+  font-size: $text-2xl;
 }
 
 h2,
 .h2 {
-  font-size: 1.45rem;
+  font-size: $text-xl;
 }
 
 h3,
 .h3 {
-  font-size: 1.2rem;
+  font-size: $text-lg;
 }
 
 h4,
 .h4 {
-  font-size: 1.07rem;
+  font-size: $text-md;
 }
 
 h5,
 .h5,
 h6,
 .h6 {
-  font-size: 1rem;
+  font-size: $text-md;
 }
 
 .display-1 {
@@ -85,7 +85,7 @@ code {
 }
 
 pre {
-  padding: 1rem;
+  padding: $space-xl;
   overflow: auto;
   border-radius: var(--cms-radius);
   background-color: var(--cms-sunken);
@@ -98,7 +98,7 @@ pre {
 
 mark {
   padding: 0 .2em;
-  border-radius: 3px;
+  border-radius: var(--cms-radius-xs);
   color: inherit;
   background-color: var(--cms-warning-soft);
 }
@@ -119,6 +119,6 @@ mark {
   display: inline-block;
 
   &:not(:last-child) {
-    margin-right: .5rem;
+    margin-right: $space-sm;
   }
 }

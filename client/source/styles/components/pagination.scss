@@ -6,27 +6,27 @@
 
 .history-viewer__pagination,
 .paginator-footer {
-  padding: .75rem 0;
+  padding: $space-lg 0;
 }
 
 .paginator-footer > div {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: .5rem;
+  gap: $space-sm;
 }
 
 .paginator-page {
   display: inline-flex;
   align-items: center;
-  gap: .4rem;
-  font-size: .9rem;
+  gap: $space-xs;
+  font-size: $text-base;
   color: var(--cms-text-muted);
 
   select {
     width: auto;
     min-height: 2rem;
-    padding-block: .2rem;
+    padding-block: $space-2xs;
   }
 }
 

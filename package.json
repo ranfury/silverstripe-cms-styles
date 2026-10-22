@@ -23,7 +23,8 @@
     "dependencies": {
         "domobserverjs": "^1.0.0",
         "highlight.js": "^11.11.1",
-        "js-beautify": "^1.15.4"
+        "js-beautify": "^1.15.4",
+        "lucide-static": "^1.61.0"
     },
     "devDependencies": {
         "@babel/core": "^8.0.1",

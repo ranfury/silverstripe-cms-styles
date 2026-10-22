@@ -5,13 +5,13 @@
 // ===============================
 
 .session-manager-field {
-  padding: .5rem 0;
+  padding: $space-sm 0;
 }
 
 .login-session {
   height: auto;
-  margin-bottom: .5rem;
-  padding: .75rem 1rem;
+  margin-bottom: $space-sm;
+  padding: $space-lg $space-xl;
   overflow: hidden;
   border: 1px solid var(--cms-border);
   border-radius: var(--cms-radius);
@@ -22,7 +22,7 @@
 
   p {
     margin: 0;
-    font-size: .9rem;
+    font-size: $text-base;
   }
 
   // Logged out: fades away

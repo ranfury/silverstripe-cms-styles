@@ -14,11 +14,11 @@
 }
 
 :where(p, ul, ol, dl, blockquote, pre) {
-  margin-bottom: 1rem;
+  margin-bottom: $space-xl;
 }
 
 :where(ul, ol) {
-  padding-left: 1.5rem;
+  padding-left: $space-3xl;
 }
 
 :where(img, svg, video, canvas) {
@@ -80,7 +80,7 @@
 
 :where(hr) {
   height: 0;
-  margin: 1.5rem 0;
+  margin: $space-3xl 0;
   border: 0;
   border-top: 1px solid var(--cms-border);
 }
@@ -128,13 +128,4 @@
 // Motion
 // ===============================
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
+@include reduced-motion;

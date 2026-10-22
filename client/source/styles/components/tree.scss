@@ -15,8 +15,8 @@ $arrow: 1.4rem;
 .tree-holder {
   --depth: 0;
 
-  padding-bottom: 1.5rem;
-  font-size: .93rem;
+  padding-bottom: $space-3xl;
+  font-size: $text-base;
 
   ul,
   li {
@@ -50,7 +50,7 @@ $arrow: 1.4rem;
     position: relative;
     display: flex;
     align-items: center;
-    gap: .55rem;
+    gap: $space-sm;
     min-height: $row;
     margin: 1px 0;
     padding: .25rem .6rem .25rem calc(var(--depth) * #{$indent} + #{$arrow} + .35rem);
@@ -77,12 +77,16 @@ $arrow: 1.4rem;
 
     // The page being edited: tinted (the indent guides run over it, like a code editor's tree)
     &.jstree-clicked {
-      font-weight: $medium;
+      font-weight: $semibold;
       background-color: var(--cms-accent-soft);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cms-accent), transparent 80%);
 
       .jstree-recordicon {
         color: var(--cms-link);
+      }
+
+      @media (forced-colors: active) {
+        outline: 2px solid Highlight;
+        outline-offset: -2px;
       }
     }
 
@@ -90,7 +94,7 @@ $arrow: 1.4rem;
       display: flex;
       flex: 1 1 auto;
       align-items: center;
-      gap: .55rem;
+      gap: $space-sm;
       min-width: 0;
     }
 
@@ -105,10 +109,10 @@ $arrow: 1.4rem;
   li.Root {
     > strong {
       display: block;
-      padding: .25rem .6rem .6rem;
-      font-size: .74rem;
+      padding: $space-2xs $space-md $space-md;
+      font-size: $text-xs;
       font-weight: $semibold;
-      letter-spacing: .06em;
+      letter-spacing: $caps-tracking;
       text-transform: uppercase;
       color: var(--cms-text-muted);
     }
@@ -279,31 +283,27 @@ $arrow: 1.4rem;
     color: var(--cms-text-muted);
   }
 
-  // A dot on the page icon: draft only / modified
-  li.status-addedtodraft > a .jstree-recordicon,
-  li.status-modified > a .jstree-recordicon {
-    position: relative;
-
-    &::after {
-      content: '';
-      position: absolute;
-      right: -3px;
-      bottom: -2px;
-      width: 7px;
-      height: 7px;
-      border: 1.5px solid var(--cms-bg);
-      border-radius: 50%;
-      background-color: var(--cms-warning);
-    }
-  }
-
-  li.status-addedtodraft > a .jstree-recordicon::after {
-    background-color: var(--cms-info);
-  }
-
   // Status badges ("Draft", "Modified") right after the title
   .badge {
     flex: 0 0 auto;
+  }
+
+  // In the narrow tree beside the form, a mark rather than the word: "Modified" took a third of a row there and cut
+  // titles to "Search R...". Modified a dot, draft a ring, as the files area marks them; the word is still there for
+  // screen readers (font-size 0 hides it from sight only)
+  .cms-content-tools & .badge {
+    width: .55rem;
+    height: .55rem;
+    margin-left: $space-2xs;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 0;
+    background-color: var(--status);
+
+    &.status-addedtodraft {
+      background-color: transparent;
+      box-shadow: inset 0 0 0 1.5px var(--status);
+    }
   }
 
   .badge ~ .badge {
@@ -348,9 +348,9 @@ $level: '> ul > li > ul > li';
 
 // A searched tree's "showing results for" bar
 .cms-tree-filtered {
-  margin: 0 -1.75rem 1rem;
-  padding: .75rem 1.75rem;
-  font-size: .9rem;
+  margin: 0 (-$space-4xl) $space-xl;
+  padding: $space-lg $space-4xl;
+  font-size: $text-base;
   background-color: var(--cms-info-soft);
 }
 
@@ -376,7 +376,7 @@ $level: '> ul > li > ul > li';
   height: 3px;
   margin: 0;
   padding: 0;
-  border-radius: 3px;
+  border-radius: var(--cms-radius-xs);
   background-color: var(--cms-accent);
   box-shadow: 0 0 0 2px var(--cms-bg);
   cursor: pointer;
@@ -426,7 +426,7 @@ $level: '> ul > li > ul > li';
   visibility: hidden;
   min-width: 12rem;
   margin: 0;
-  padding: .35rem;
+  padding: $space-xs;
 
   ul,
   li {
@@ -449,7 +449,7 @@ $level: '> ul > li > ul > li';
 
     &.vakata-separator {
       height: 1px;
-      margin: .35rem -.35rem;
+      margin: $space-xs (-$space-xs);
       background-color: var(--cms-border);
     }
 
@@ -465,7 +465,7 @@ $level: '> ul > li > ul > li';
       left: 100%;
       display: none;
       min-width: 12rem;
-      padding: .35rem;
+      padding: $space-xs;
 
       &.vakata-col-2 {
         column-count: 2;
@@ -495,9 +495,9 @@ $level: '> ul > li > ul > li';
   top: -2000px;
   display: block;
   margin: 0;
-  padding: .35rem .65rem .35rem 1.75rem;
+  padding: $space-xs $space-md $space-xs $space-4xl;
   border-radius: var(--cms-radius-sm);
-  font-size: .9rem;
+  font-size: $text-base;
   background-color: var(--cms-surface-raised);
   box-shadow: var(--cms-shadow);
 

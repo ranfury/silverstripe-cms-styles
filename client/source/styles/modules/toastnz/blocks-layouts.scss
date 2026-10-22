@@ -16,7 +16,7 @@ td.col-IconForCMS {
 
   .toast-block-icon {
     width: 2.75rem;
-    margin: 0 auto .35rem !important;
+    margin: 0 auto $space-xs !important;
     padding: 0 !important;
   }
 
@@ -25,10 +25,10 @@ td.col-IconForCMS {
   }
 
   .toast-block-title {
-    font-size: .66rem !important;
+    font-size: $text-xs !important;
     font-weight: $semibold !important;
     line-height: 1.25 !important;
-    letter-spacing: .04em;
+    letter-spacing: $caps-tracking;
     color: var(--cms-text-muted);
   }
 }
@@ -41,23 +41,23 @@ td.col-IconForCMS div::before,
 .content-block-siblings {
   &::before {
     background: var(--cms-bg) !important;
-    font-size: .75rem !important;
+    font-size: $text-xs !important;
     font-weight: $semibold !important;
-    letter-spacing: .06em;
+    letter-spacing: $caps-tracking;
     text-transform: uppercase;
     color: var(--cms-text-muted);
   }
 
   a {
-    margin-bottom: 1rem !important;
-    font-size: .66rem;
+    margin-bottom: $space-xl !important;
+    font-size: $text-xs;
     font-weight: $semibold;
-    letter-spacing: .04em;
+    letter-spacing: $caps-tracking;
     text-align: center;
   }
 
   a div {
-    margin-bottom: .35rem !important;
+    margin-bottom: $space-xs !important;
   }
 
   a.active div {
@@ -79,12 +79,12 @@ td.col-IconForCMS div::before,
   scrollbar-gutter: auto;
 
   > fieldset {
-    padding: 1.75rem 0 0 1.75rem;
+    padding: $space-4xl 0 0 $space-4xl;
   }
 }
 
 fieldset:has(> #Root .content-block-siblings) .tab-pane {
-  padding: 0 1.75rem 1.75rem 15px;
+  padding: 0 $space-4xl $space-4xl 15px;
 }
 
 // ===============================
@@ -107,8 +107,8 @@ fieldset:has(> #Root .content-block-siblings) .tab-pane {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 1rem 1.25rem;
-  padding-top: .35rem;
+  gap: $space-xl $space-2xl;
+  padding-top: $space-xs;
 }
 
 .toast-block-layouts .radio {
@@ -133,14 +133,13 @@ fieldset:has(> #Root .content-block-siblings) .tab-pane {
     border-color: var(--cms-text-faint);
   }
 
-  // The chosen one: the theme colour, its icon in the colour that reads on it
+  // The chosen one: ringed in the theme colour on its soft tint, as a picked page type is. A solid accent tile in a
+  // double ring was the loudest thing in the form
   input:checked + .blockThumbnail {
     border-color: var(--cms-accent);
-    color: var(--cms-on-accent);
-    background-color: var(--cms-accent);
-    box-shadow:
-      0 0 0 2px var(--cms-bg),
-      0 0 0 4px var(--cms-accent);
+    color: var(--cms-link);
+    background-color: var(--cms-accent-soft);
+    box-shadow: 0 0 0 1px var(--cms-accent);
 
     svg {
       color: inherit;
@@ -164,8 +163,8 @@ fieldset:has(> #Root .content-block-siblings) .tab-pane {
   }
 
   strong {
-    font-size: .72rem;
-    letter-spacing: .05em;
+    font-size: $text-xs;
+    letter-spacing: $caps-tracking;
     color: var(--cms-text-muted);
   }
 }

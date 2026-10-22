@@ -7,6 +7,8 @@
 //------------------------------------------------------------------
 
 // Tokens, reset, type, icons and helper classes
+@use 'cms/abstracts' as *;
+
 @use 'base';
 
 // The frame: menu, panels, headers, toolbars, preview
@@ -20,3 +22,6 @@
 
 // Bigger parts of the CMS: grid fields, the files area, history...
 @use 'sections';
+
+// The Lucide icons the partials above used, each once (abstracts/mixins: lucide)
+@include lucide-icons;

@@ -9,3 +9,7 @@
 @use 'dev/header';
 @use 'dev/output';
 @use 'dev/tasks';
+
+@use 'cms/abstracts' as *;
+
+@include reduced-motion;

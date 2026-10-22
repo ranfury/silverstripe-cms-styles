@@ -42,6 +42,21 @@
   outline-offset: $offset;
 }
 
+// Everything moves at once (almost) when the reader asks for less motion. At the root of each stylesheet that has
+// motion of its own: cms.css (base/reset), dev.css and critical.css (the loading screen)
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
 // ===============================
 // Resets
 // ===============================
@@ -103,11 +118,11 @@
   display: block;
   width: 100%;
   min-height: 2.5rem;
-  padding: .5rem .8rem;
-  border: 1px solid var(--cms-border-strong);
+  padding: $space-sm $space-lg;
+  border: 1px solid var(--cms-control-border);
   border-radius: var(--cms-radius);
   font: inherit;
-  font-size: .95rem;
+  font-size: $text-base;
   line-height: 1.4;
   color: var(--cms-text);
   background-color: var(--cms-surface);
@@ -135,12 +150,13 @@
 }
 
 @mixin control-hover {
-  border-color: color-mix(in srgb, var(--cms-border-strong), var(--cms-text) 15%);
+  border-color: color-mix(in srgb, var(--cms-control-border), var(--cms-text) 25%);
 }
 
-// A soft accent glow instead of an outline
+// A soft accent glow instead of an outline. The outline is kept, transparent: forced colours (Windows contrast themes)
+// drop the shadow and draw the outline, so the focus still shows there
 @mixin control-focus {
-  outline: 0;
+  outline: 2px solid transparent;
   border-color: var(--cms-focus);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--cms-focus), transparent 75%);
 }
@@ -154,6 +170,36 @@
   height: $size;
   background-color: currentColor;
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m4 6 4 4 4-4'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+// Lucide icons, drawn with a mask so they take currentColor: @include lucide('mail'). Any of lucide-static's names
+// can be used. Each icon is written once, as --lucide-<name> on :root (lucide-icons, at the end of cms.scss): an
+// icon used in several places, and the -webkit-mask autoprefixer adds, would otherwise each carry its own copy
+$-lucide-used: ();
+
+// Marks an icon as used, for a rule that reads var(--lucide-<name>) itself
+@mixin lucide-use($name) {
+  $-lucide-used: map.set($-lucide-used, $name, true) !global;
+}
+
+@mixin lucide($name, $size: 1.25rem) {
+  @include lucide-use($name);
+  content: '';
+  display: block;
+  flex: 0 0 auto;
+  width: $size;
+  height: $size;
+  background-color: currentColor;
+  mask: var(--lucide-#{$name}) center / contain no-repeat;
+}
+
+// The icons used, read from the lucide-static package by lucide-svg() (webpack.config.js)
+@mixin lucide-icons {
+  :root {
+    @each $name, $used in $-lucide-used {
+      --lucide-#{$name}: url("#{lucide-svg($name)}");
+    }
+  }
 }
 
 // A plain folder drawn with a mask, so it takes currentColor (the icon font's folders are "folder-add" and "folder-move")
@@ -175,10 +221,9 @@
   --btn-border: hsl(from var(--cms-accent) h calc(s * 1.05) calc(l * .86));
   // A deeper shade of the accent (mixing in black greys it)
   --btn-hover-bg: hsl(from var(--cms-accent) h calc(s * 1.1) calc(l * .9));
-  // A light catching the top edge, and the accent glowing underneath once it's hovered
-  --btn-gloss: linear-gradient(to bottom, rgb(255 255 255 / .28), rgb(255 255 255 / 0) 65%);
-  --btn-shadow: inset 0 1px 0 rgb(255 255 255 / .35), 0 1px 2px var(--cms-glow);
-  --btn-hover-shadow: inset 0 1px 0 rgb(255 255 255 / .35), 0 4px 14px -3px var(--cms-glow);
+  // Flat, like every other surface: the gloss that was here lightened the top of the label to 2.15:1 (22 Oct 2026)
+  --btn-shadow: var(--cms-shadow-sm);
+  --btn-hover-shadow: 0 2px 8px -2px var(--cms-glow);
 }
 
 // A row that scrolls sideways, an edge fades while there's more to scroll to that way
@@ -211,6 +256,11 @@
   @supports (animation-timeline: scroll()) {
     animation: scroll-fade linear both;
     animation-timeline: scroll(self inline);
+
+    // Not motion, it follows the scrolling: keep it out of the reduced motion rule (base/reset), which shortens animations
+    @media (prefers-reduced-motion: reduce) {
+      animation-duration: auto !important;
+    }
   }
 }
 
@@ -245,9 +295,9 @@
 @mixin menu-item {
   display: flex;
   align-items: center;
-  gap: .6rem;
+  gap: $space-md;
   width: 100%;
-  padding: .55rem .8rem;
+  padding: $space-sm $space-lg;
   border: 0;
   border-radius: var(--cms-radius-sm);
   font: inherit;
@@ -282,7 +332,7 @@
 
   &::-webkit-scrollbar-thumb {
     border: 2px solid transparent;
-    border-radius: 8px;
+    border-radius: var(--cms-radius-pill);
     background: var(--cms-scrollbar) padding-box;
   }
 
@@ -309,8 +359,8 @@ $-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
   width: 1.1rem;
   height: 1.1rem;
   margin: 0;
-  border: 1.5px solid var(--cms-border-strong);
-  border-radius: 5px;
+  border: 1.5px solid var(--cms-control-border);
+  border-radius: var(--cms-radius-xs);
   background-color: var(--cms-surface);
   background-position: center;
   background-repeat: no-repeat;
@@ -345,7 +395,7 @@ $-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
   // The field
   .#{$p}__control.#{$p}__control {
     min-height: 2.5rem;
-    border: 1px solid var(--cms-border-strong);
+    border: 1px solid var(--cms-control-border);
     border-radius: var(--cms-radius);
     background-color: var(--cms-surface);
     box-shadow: var(--cms-shadow-sm);
@@ -355,7 +405,7 @@ $-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
       box-shadow $fast ease;
 
     &:hover {
-      border-color: color-mix(in srgb, var(--cms-border-strong), var(--cms-text) 15%);
+      border-color: color-mix(in srgb, var(--cms-control-border), var(--cms-text) 25%);
     }
   }
 
@@ -371,8 +421,8 @@ $-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
   }
 
   .#{$p}__value-container.#{$p}__value-container {
-    gap: .3rem;
-    padding: .2rem .6rem;
+    gap: $space-xs;
+    padding: $space-2xs $space-md;
   }
 
   .#{$p}__single-value.#{$p}__single-value,
@@ -398,7 +448,7 @@ $-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
 
   // Clear (×) and open (▾)
   .#{$p}__indicator.#{$p}__indicator {
-    padding: 0 .55rem;
+    padding: 0 $space-sm;
     color: var(--cms-text-faint);
 
     &:hover {
@@ -407,7 +457,7 @@ $-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
   }
 
   .#{$p}__indicator-separator.#{$p}__indicator-separator {
-    margin: .55rem 0;
+    margin: $space-sm 0;
     background-color: var(--cms-border);
   }
 
@@ -423,13 +473,13 @@ $-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
   }
 
   .#{$p}__multi-value__label.#{$p}__multi-value__label {
-    padding: .15rem .25rem .15rem .55rem;
-    font-size: .88rem;
+    padding: $space-3xs $space-2xs $space-3xs $space-sm;
+    font-size: $text-sm;
     color: var(--cms-text);
   }
 
   .#{$p}__multi-value__remove.#{$p}__multi-value__remove {
-    padding: 0 .35rem;
+    padding: 0 $space-xs;
     border-radius: 0;
     color: var(--cms-text-muted);
     cursor: pointer;
@@ -447,19 +497,19 @@ $-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
   .#{$p}__menu.#{$p}__menu {
     @include floating;
     z-index: $z-dropdown;
-    margin: .35rem 0;
+    margin: $space-xs 0;
     overflow: hidden;
   }
 
   .#{$p}__menu-list.#{$p}__menu-list {
-    padding: .35rem;
+    padding: $space-xs;
   }
 
   .#{$p}__option.#{$p}__option {
     display: flex;
     align-items: center;
-    gap: .5rem;
-    padding: .45rem .65rem;
+    gap: $space-sm;
+    padding: $space-sm $space-md;
     border-radius: var(--cms-radius-sm);
     color: var(--cms-text);
     background-color: transparent;
@@ -486,15 +536,15 @@ $-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
   }
 
   .#{$p}__menu-notice.#{$p}__menu-notice {
-    padding: .65rem;
+    padding: $space-md;
     color: var(--cms-text-muted);
   }
 
   .#{$p}__group-heading.#{$p}__group-heading {
-    padding: .5rem .65rem .25rem;
-    font-size: .75rem;
+    padding: $space-sm $space-md $space-2xs;
+    font-size: $text-xs;
     font-weight: $semibold;
-    letter-spacing: .04em;
+    letter-spacing: $caps-tracking;
     color: var(--cms-text-muted);
   }
 }

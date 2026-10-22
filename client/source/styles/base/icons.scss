@@ -50,3 +50,51 @@ span[class*="font-icon-"]:empty {
 .font-icon-large::before {
   font-size: 1.5rem;
 }
+
+// ===============================
+// Page type icons
+// ===============================
+
+// The page types' glyphs (their $icon_class) as Lucide's outline icons, as the menu's are: in the tree, the pages list
+// and the add page cards. 1em, so each place keeps the size it gives them; a glyph not listed keeps its own
+$-record-icons: (
+  'page': 'file',
+  'p-home': 'house',
+  'p-alt': 'file-text',
+  'p-alt-2': 'file-text',
+  'p-alt-3': 'file-text',
+  'p-article': 'file-text',
+  'p-articles': 'files',
+  'p-post': 'file-text',
+  'p-posts': 'files',
+  'p-multi': 'files',
+  'p-document': 'file-text',
+  'p-list': 'list',
+  'p-search': 'search',
+  'p-error': 'file-warning',
+  'p-mail': 'mail',
+  'p-profile': 'user',
+  'p-virtual': 'file-symlink',
+  'p-redirect': 'file-output',
+  'p-news-item': 'newspaper',
+  'p-gallery': 'images',
+  'p-gallery-alt': 'images',
+  'p-map': 'map',
+  'p-event': 'calendar',
+  'p-event-alt': 'calendar',
+  'p-cart': 'shopping-cart',
+  'p-shop': 'shopping-cart',
+  'p-code': 'file-code',
+  'p-archive': 'archive',
+  'p-package': 'package',
+  'p-attachment': 'paperclip',
+  'p-download': 'file-down',
+  'p-data': 'database',
+  'p-book': 'book-open',
+);
+
+@each $glyph, $icon in $-record-icons {
+  :is(.record-icon, .jstree-recordicon).font-icon-#{$glyph}::before {
+    @include lucide($icon, 1em);
+  }
+}

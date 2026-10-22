@@ -71,12 +71,7 @@ class LeftAndMainExtension extends Extension
 
         Requirements::insertHeadTags($this->getStylesheetTags($styles), 'CMSStylesLinks');
 
-        Requirements::insertHeadTags(
-            '<script type="application/json" id="CMSStylesConfig">'
-            . json_encode($this->getCMSStylesConfig(), JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES)
-            . '</script>',
-            'CMSStylesConfig'
-        );
+        Requirements::insertHeadTags(static::getConfigTag($this->getCMSStylesConfig()), 'CMSStylesConfig');
 
         if ($boot = static::getBootScript()) {
             Requirements::insertHeadTags('<script>' . $boot . '</script>', 'CMSStylesAppearance');
@@ -89,12 +84,30 @@ class LeftAndMainExtension extends Extension
     public function getCMSStylesConfig(): array
     {
         $config = [
-            'colours' => array_values(array_filter(static::config()->get('theme_colours') ?: [])),
+            'colours' => static::getThemeColours(),
         ];
 
         $this->owner->extend('updateCMSStylesConfig', $config);
 
         return $config;
+    }
+
+    /**
+     * The colours the appearance menu offers, the first is the default
+     */
+    public static function getThemeColours(): array
+    {
+        return array_values(array_filter(static::config()->get('theme_colours') ?: []));
+    }
+
+    /**
+     * The settings as the JSON block the javascript reads, for the CMS and the dev pages (Dev\DebugView)
+     */
+    public static function getConfigTag(array $config): string
+    {
+        return '<script type="application/json" id="CMSStylesConfig">'
+            . json_encode($config, JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_SLASHES)
+            . '</script>';
     }
 
     /**

@@ -27,7 +27,7 @@
   display: inline-block;
   width: .8rem;
   height: .8rem;
-  margin-left: .5rem;
+  margin-left: $space-sm;
   border: 2px solid var(--cms-border-strong);
   border-top-color: var(--cms-accent);
   border-radius: 50%;

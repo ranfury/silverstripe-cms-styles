@@ -8,6 +8,38 @@ const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
+const sass = require('sass');
+
+// lucide-svg('mail') in the styles: a Lucide icon from the lucide-static package, as a data url for a mask (the
+// lucide() mixin). Drawn at a 1.75 stroke, not Lucide's 2: at the 18px the menu shows them, that's its text's weight.
+// Only the icons the styles name end up in the css, the package itself isn't shipped
+function lucideSvg([name]) {
+  const icon = name.assertString('name').text;
+  let svg;
+
+  try {
+    svg = fs.readFileSync(require.resolve(`lucide-static/icons/${icon}.svg`), 'utf8');
+  } catch {
+    throw new Error(`There is no "${icon}" icon in lucide-static (https://lucide.dev/icons)`);
+  }
+
+  const encoded = svg
+    .replace(/<!--.*?-->/gs, '')
+    .replace(/\s*class="[^"]*"/, '')
+    .replace(/\s*(width|height)="24"/g, '')
+    .replace('stroke="currentColor"', 'stroke="#000"')
+    .replace('stroke-width="2"', 'stroke-width="1.75"')
+    .replace(/\s+/g, ' ')
+    .replace(/\s*>\s*/g, '>')
+    .replace(/\s*\/>/g, '/>')
+    .trim()
+    .replace(/"/g, "'")
+    .replace(/</g, '%3C')
+    .replace(/>/g, '%3E')
+    .replace(/#/g, '%23');
+
+  return new sass.SassString(`data:image/svg+xml,${encoded}`, { quotes: true });
+}
 
 const source = path.resolve(__dirname, 'client/source');
 const dist = path.resolve(__dirname, 'client/dist');
@@ -88,7 +120,7 @@ module.exports = (env, argv) => {
             MiniCssExtractPlugin.loader,
             { loader: 'css-loader', options: { url: false } },
             { loader: 'postcss-loader', options: { postcssOptions: { plugins: [autoprefixer()] } } },
-            'sass-loader',
+            { loader: 'sass-loader', options: { sassOptions: { functions: { 'lucide-svg($name)': lucideSvg } } } },
           ],
         },
       ],
@@ -96,7 +128,9 @@ module.exports = (env, argv) => {
     optimization: {
       minimizer: [
         new TerserPlugin({ terserOptions: { compress: { passes: 2 } } }),
-        new CssMinimizerPlugin(),
+        // cssnano's calc step can't read relative colours (hsl(from var(--cms-accent) h calc(s * 1.05) ...)): it left
+        // them as they were and warned on each one. Sass has already worked out every calc it can, so it's off
+        new CssMinimizerPlugin({ minimizerOptions: { preset: ['default', { calc: false }] } }),
       ],
     },
     plugins: [

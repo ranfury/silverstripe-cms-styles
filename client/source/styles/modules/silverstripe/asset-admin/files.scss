@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: .25rem;
+  gap: $space-2xs;
   width: auto;
   margin-left: auto;
 }
@@ -59,19 +59,38 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .5rem;
+  gap: $space-sm;
 }
 
 .gallery__btn-toolbar {
   .btn-toolbar {
+    display: flex;
+    gap: $space-sm;
     margin: 0;
+  }
+
+  // The files area's own Add new: Upload is its main action, as Add new Page is above the tree, and the folder
+  // a button beside it (both came as quiet .btn-secondary, the only create actions with no button to them)
+  #upload-button {
+    @include button-accent;
+  }
+
+  #add-folder-button {
+    --btn-bg: var(--cms-surface);
+    --btn-border: var(--cms-border-strong);
+    --btn-shadow: var(--cms-shadow-sm);
+    --btn-hover-bg: color-mix(in srgb, var(--cms-surface), var(--cms-text) 6%);
+  }
+
+  .btn--icon-xl {
+    --btn-icon-size: 1.1rem;
   }
 }
 
 .gallery__state-buttons {
   display: flex;
   align-items: center;
-  gap: .5rem;
+  gap: $space-sm;
   margin-left: auto;
 }
 
@@ -89,8 +108,8 @@
 .gallery__files {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: $space-xl;
+  margin-bottom: $space-xl;
 
   // The drag / drop wrappers around each item
   > div,
@@ -103,7 +122,7 @@
 
 .gallery__folders {
   grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
-  gap: .65rem;
+  gap: $space-md;
 }
 
 .gallery__files {
@@ -121,8 +140,8 @@
 .gallery__load-more {
   @include button-reset;
   display: block;
-  margin: .5rem auto 1.5rem;
-  padding: .55rem 1.5rem;
+  margin: $space-sm auto $space-3xl;
+  padding: $space-sm $space-3xl;
   border-radius: var(--cms-radius-pill);
   font-weight: $semibold;
   color: var(--cms-on-accent);
@@ -130,8 +149,8 @@
 }
 
 .gallery__no-item-notice {
-  margin-top: 2rem;
-  font-size: 1.05rem;
+  margin-top: $space-5xl;
+  font-size: $text-md;
   text-align: center;
   color: var(--cms-text-muted);
 }
@@ -148,7 +167,7 @@
 }
 
 .gallery__search-message-clear {
-  padding-left: .5rem;
+  padding-left: $space-sm;
 }
 
 // Back to the parent folder (a drop target too)
@@ -300,7 +319,7 @@
   grid-area: 1 / 1 / 2 / 3;
   display: none;
   place-content: center;
-  gap: .35rem;
+  gap: $space-xs;
   font-weight: $semibold;
   color: #fff;
   background-color: hsl(220 30% 10% / .45);
@@ -320,7 +339,7 @@
   grid-area: 1 / 1;
   align-self: start;
   justify-self: start;
-  padding: .5rem;
+  padding: $space-sm;
 
   .gallery-item--folder & {
     display: none;
@@ -338,16 +357,18 @@
   box-shadow: var(--cms-shadow-sm);
 }
 
+// A draft (never published) is a ring, modified a filled dot: they differed only by colour
 .gallery-item--draft {
-  background-color: var(--cms-info);
+  border-color: var(--cms-info);
+  background-color: var(--cms-surface);
 }
 
 .gallery-item__status-icons {
   grid-area: 1 / 2;
   display: flex;
   flex-direction: column;
-  gap: .35rem;
-  margin: .5rem .5rem 0 auto;
+  gap: $space-xs;
+  margin: $space-sm $space-sm 0 auto;
   text-align: right;
 
   .gallery-item--folder & {
@@ -360,17 +381,29 @@
   width: 100%;
   min-width: 0;
   height: auto;
-  margin: 0;
-  padding: .6rem 2.4rem .6rem .75rem;
+  // The space above and below is margin, not padding: the clamped lines are only hidden by the overflow, so a third
+  // line showed in the bottom padding
+  margin: $space-md 0;
+  padding: 0 2.4rem 0 $space-lg;
   overflow: hidden;
-  font-size: .9rem;
+  font-size: $text-base;
   font-weight: $medium;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  // Two lines before the ellipsis: on one, five files in a folder all read "Earthworks at Dr..."
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  // Room for both lines on every file, so a short name doesn't leave its card shorter than the rest of the row
+  min-height: 2lh;
 
   .gallery-item--folder & {
+    display: block;
+    min-height: 0;
     flex: 1 1 auto;
     padding-left: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 
@@ -388,7 +421,9 @@
   display: grid;
   place-items: center;
   width: 2.4rem;
-  height: 100%;
+  // Level with the title's first line: the title keeps room for two (min-height), and centred in that the box sat
+  // half a line below a one line name
+  height: 1lh;
   margin: 0;
   cursor: pointer;
 }
@@ -398,8 +433,8 @@
   place-items: center;
   width: 1.15rem;
   height: 1.15rem;
-  border: 1.5px solid var(--cms-border-strong);
-  border-radius: 5px;
+  border: 1.5px solid var(--cms-control-border);
+  border-radius: var(--cms-radius-xs);
   font-size: .7rem;
   color: transparent;
   background-color: var(--cms-surface);
@@ -451,14 +486,24 @@
   left: 50%;
   width: 90%;
   max-height: calc(100% - 3rem);
-  padding: .5rem;
+  padding: $space-xs $space-2xs;
   overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--cms-danger), transparent 60%);
   border-radius: var(--cms-radius-sm);
-  font-size: .8rem;
+  font-size: $text-xs;
   text-align: center;
-  color: #fff;
-  background-color: var(--cms-danger);
+  color: var(--cms-danger);
+  // The soft danger over a solid surface: it sits on the thumbnail. A solid red slab on every missing file was alarm
+  // level for a state of one item, and white on the dark mode red was 2.77:1
+  background: linear-gradient(var(--cms-danger-soft) 0 0), var(--cms-surface-raised);
+  box-shadow: var(--cms-shadow-sm);
   translate: -50% -50%;
+
+  &::before {
+    @include icon('attention');
+    margin-right: $space-3xs;
+    vertical-align: -.05em;
+  }
 }
 
 .gallery-item--error {
@@ -499,7 +544,7 @@
   z-index: 105;
   top: -.5rem;
   right: -.5rem;
-  font-size: 1rem;
+  font-size: $text-md;
 }
 
 .gallery-item__drag-shadow {
@@ -533,7 +578,7 @@
 
   th,
   td {
-    padding: .5rem 1rem;
+    padding: $space-sm $space-xl;
     border-bottom: 1px solid var(--cms-border);
     text-align: left;
     vertical-align: middle;
@@ -542,9 +587,9 @@
 
   thead th {
     height: 2.5rem;
-    font-size: .75rem;
+    font-size: $text-xs;
     font-weight: $semibold;
-    letter-spacing: .04em;
+    letter-spacing: $caps-tracking;
     text-transform: uppercase;
     white-space: nowrap;
     color: var(--cms-text-muted);
@@ -573,10 +618,10 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: .35rem;
+    gap: $space-xs;
     width: 100%;
     min-height: 0;
-    padding: .5rem 1rem;
+    padding: $space-sm $space-xl;
     border-radius: 0;
     font: inherit;
     letter-spacing: inherit;
@@ -643,14 +688,14 @@
   }
 
   .badge {
-    margin-left: .35rem;
+    margin-left: $space-xs;
   }
 }
 
 .gallery__table-column--title .flexbox-area-grow {
   display: flex;
   align-items: center;
-  gap: .4rem;
+  gap: $space-xs;
 }
 
 .gallery__table-column--select {
@@ -660,7 +705,7 @@
 
 .gallery__table .gallery__table-column--image {
   width: 3.75rem;
-  padding: .35rem .5rem;
+  padding: $space-xs $space-sm;
   text-align: center;
 }
 
@@ -731,8 +776,8 @@
   width: 1.15rem;
   height: 1.15rem;
   margin: auto;
-  border: 1.5px solid var(--cms-border-strong);
-  border-radius: 5px;
+  border: 1.5px solid var(--cms-control-border);
+  border-radius: var(--cms-radius-xs);
   font-size: .7rem;
   color: transparent;
 
@@ -769,11 +814,11 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .35rem;
+  gap: $space-xs;
   width: max-content;
   max-width: calc(100% - 2rem);
   margin: 0;
-  padding: .4rem;
+  padding: $space-xs;
   border: 1px solid var(--cms-border);
   border-radius: var(--cms-radius-lg);
   background-color: var(--cms-surface-raised);
@@ -868,7 +913,7 @@
   }
 
   h2 {
-    margin: 1.25rem 0 0;
+    margin: $space-2xl 0 0;
   }
 
   // Stacked fields
@@ -878,7 +923,7 @@
 
   // The form's room inside the panel (the admin's form--padded): the fields scroll, the actions stay at the foot
   .form--padded > fieldset {
-    padding: 1.25rem 1.5rem 1.5rem;
+    padding: $space-2xl $space-3xl $space-3xl;
   }
 
   .form--padded > .btn-toolbar {
@@ -890,25 +935,25 @@
 
     flex-wrap: wrap;
     align-items: center;
-    gap: .5rem;
+    gap: $space-sm;
     min-height: 3.5rem;
     margin: 0;
-    padding: .6rem 1.5rem;
+    padding: $space-md $space-3xl;
     border-top: 1px solid var(--cms-border);
     background-color: var(--cms-bg);
   }
 
   // Details / Permissions / Used on: the CMS's form tabs, an underline under the current one
   .nav-tabs {
-    gap: 1.25rem;
-    margin: .5rem -1.5rem 1.25rem;
-    padding: 0 1.5rem;
+    gap: $space-2xl;
+    margin: $space-sm (-$space-3xl) $space-2xl;
+    padding: 0 $space-3xl;
     box-shadow: inset 0 -1px 0 var(--cms-border);
 
     .nav-link {
       height: 2.6rem;
       border-bottom: 2px solid transparent;
-      font-size: .93rem;
+      font-size: $text-base;
 
       &:hover {
         border-bottom-color: var(--cms-border-strong);
@@ -926,8 +971,8 @@
   display: flex;
   flex-wrap: nowrap;
   align-items: flex-start;
-  gap: .5rem;
-  margin-bottom: .75rem;
+  gap: $space-sm;
+  margin-bottom: $space-lg;
 
   &__back-button {
     flex: 0 0 auto;
@@ -982,9 +1027,9 @@
 }
 
 .editor__heading {
-  margin-bottom: .15rem;
+  margin-bottom: $space-3xs;
   overflow: hidden;
-  font-size: 1.2rem;
+  font-size: $text-lg;
   font-weight: $semibold;
   line-height: 1.4;
   text-overflow: ellipsis;
@@ -994,17 +1039,17 @@
 .editor__specs {
   display: flex;
   align-items: center;
-  gap: .4rem;
-  font-size: .8rem;
+  gap: $space-xs;
+  font-size: $text-xs;
   color: var(--cms-text-muted);
 }
 
 .editor__status-flag {
-  margin-left: .25rem;
+  margin-left: $space-2xs;
 }
 
 .editor__top-message {
-  margin: -.75rem -1.75rem 1.25rem;
+  margin: (-$space-lg) (-$space-4xl) $space-2xl;
 }
 
 // The file's preview, it zooms a little on hover
@@ -1013,7 +1058,7 @@
   display: block;
   max-height: 22rem;
   min-height: 4rem;
-  margin: 0 0 1rem;
+  margin: 0 0 $space-xl;
   overflow: hidden;
   border-radius: var(--cms-radius);
   text-align: center;
@@ -1068,8 +1113,8 @@
 }
 
 .editor__file-preview-message--file-missing {
-  margin: 2rem 0 1rem;
-  font-size: 1.05rem;
+  margin: $space-5xl 0 $space-xl;
+  font-size: $text-md;
   text-align: center;
   color: var(--cms-danger);
 }
@@ -1111,7 +1156,7 @@
   top: .5rem;
   right: .5rem;
   display: flex;
-  gap: .25rem;
+  gap: $space-2xs;
   height: auto;
 }
 
@@ -1169,7 +1214,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  padding: 1rem;
+  padding: $space-xl;
 
   @include media($lg) {
     display: flex;
@@ -1188,7 +1233,7 @@
 }
 
 .preview-image-field__message-button {
-  margin-left: .75rem;
+  margin-left: $space-lg;
 }
 
 // ===============================
@@ -1208,10 +1253,10 @@
     position: relative;
     display: block;
     max-width: 50%;
-    padding: .65rem;
+    padding: $space-md;
     border: 1px solid var(--cms-border);
     border-radius: var(--cms-radius);
-    font-size: .75rem;
+    font-size: $text-xs;
     text-align: center;
     background-color: var(--cms-sunken);
   }
@@ -1226,7 +1271,7 @@
 
 .history-item {
   position: relative;
-  padding: .85rem 1rem;
+  padding: $space-lg $space-xl;
   cursor: pointer;
 
   &:hover,
@@ -1241,7 +1286,7 @@
 
 .history-item__date,
 .history-item__version {
-  font-size: .8rem;
+  font-size: $text-xs;
   color: var(--cms-text-muted);
 }
 
@@ -1256,7 +1301,7 @@
 }
 
 .history-item__status-flag {
-  font-size: .8rem;
+  font-size: $text-xs;
   font-weight: $semibold;
   text-transform: uppercase;
   color: var(--cms-success);
@@ -1269,11 +1314,11 @@
 .asset-admin .popover-field {
   .popover {
     min-width: 14rem;
-    font-size: .93rem;
+    font-size: $text-base;
   }
 
   .popover-body {
-    padding: .35rem;
+    padding: $space-xs;
 
     ul {
       @include list-reset;
@@ -1299,12 +1344,12 @@
     width: calc(100% - 2rem);
     max-width: 100rem;
     height: calc(100% - 3rem);
-    margin: 1.5rem auto;
+    margin: $space-3xl auto;
 
     @include media($md, max) {
       width: calc(100% - 1rem);
       height: calc(100% - 1rem);
-      margin: .5rem auto;
+      margin: $space-sm auto;
     }
   }
 
@@ -1318,7 +1363,7 @@
   }
 
   .tab-content {
-    margin-bottom: 1.25rem;
+    margin-bottom: $space-2xl;
   }
 
   .btn--close-panel {
@@ -1334,7 +1379,7 @@
   }
 
   .fieldgroup.fill-width .field.flexbox-area-grow:first-child {
-    margin-right: 1.25rem;
+    margin-right: $space-2xl;
   }
 
   // Insert button: the javascript decides which one shows
@@ -1365,7 +1410,7 @@
 #Form_fileInsertForm .tab-pane .show {
   display: flex;
   flex-wrap: wrap;
-  gap: 0 1rem;
+  gap: 0 $space-xl;
 
   > div {
     width: 100%;
@@ -1377,7 +1422,7 @@
     .field-group-component {
       display: flex;
       flex-wrap: wrap;
-      gap: .5rem;
+      gap: $space-sm;
     }
 
     .field {
@@ -1394,7 +1439,7 @@
 .image-size-preset-list {
   display: flex;
   flex-wrap: wrap;
-  gap: .25rem;
+  gap: $space-2xs;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -1437,19 +1482,19 @@
 
 .insert-embed-modal__url-create .form-control {
   min-height: 3rem;
-  font-size: 1.05rem;
+  font-size: $text-md;
 }
 
 .insert-embed-modal__fields--fill-width {
   @include media($md) {
     display: flex;
-    gap: 1.25rem;
+    gap: $space-2xl;
     width: 100%;
   }
 }
 
 .insert-embed-modal__preview-container {
-  padding-bottom: 1.25rem;
+  padding-bottom: $space-2xl;
 
   @include media($md) {
     order: 2;
@@ -1487,11 +1532,11 @@
 
     span {
       display: block;
-      padding: .45rem .5rem;
+      padding: $space-sm $space-sm;
       border-radius: calc(var(--cms-radius) - 3px);
-      font-size: .78rem;
+      font-size: $text-xs;
       font-weight: $medium;
-      letter-spacing: .03em;
+      letter-spacing: $caps-tracking;
       text-align: center;
       text-transform: uppercase;
       color: var(--cms-text-muted);
@@ -1516,14 +1561,14 @@
 
 .used-on__table {
   th {
-    padding: .5rem .65rem;
+    padding: $space-sm $space-md;
   }
 
   td {
     padding: 0;
 
     &.used-on__message {
-      padding: .65rem;
+      padding: $space-md;
     }
   }
 }
@@ -1535,7 +1580,7 @@
 
 .used-on__cell-link {
   display: block;
-  padding: .65rem;
+  padding: $space-md;
   text-decoration: none;
   color: inherit;
 
@@ -1557,7 +1602,7 @@
 
   &::after {
     content: '/';
-    margin: 0 .35rem;
+    margin: 0 $space-xs;
     color: var(--cms-text-faint);
   }
 
@@ -1568,7 +1613,7 @@
 
 .used-on__type {
   display: block;
-  font-size: .75rem;
+  font-size: $text-xs;
   color: var(--cms-text-muted);
 }
 

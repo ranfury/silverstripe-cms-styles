@@ -21,6 +21,15 @@
     overflow-x: hidden;
   }
 
+  @include media($xl, max) {
+    min-width: $menu-width-compact;
+    max-width: $menu-width-compact;
+
+    .cms-panel-content {
+      width: $menu-width-compact;
+    }
+  }
+
   @include media($md, max) {
     position: absolute;
     top: 0;
@@ -72,8 +81,8 @@
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
-    gap: .25rem;
-    padding: .5rem .75rem .75rem;
+    gap: $space-2xs;
+    padding: $space-sm $space-lg $space-lg;
 
     li {
       position: relative;
@@ -81,9 +90,9 @@
       a {
         display: flex;
         align-items: center;
-        gap: .85rem;
-        min-height: 2.65rem;
-        padding: .45rem .75rem;
+        gap: $space-lg;
+        min-height: 2.4rem;
+        padding: $space-xs $space-lg;
         border-radius: var(--cms-radius-sm);
         font-weight: $medium;
         text-decoration: none;
@@ -102,12 +111,21 @@
       }
 
       // The current item, as the current page in the tree (a size up, it's the top of the hierarchy)
+      // Raised off the menu as the open header tab is, with weight and its icon in the theme colour: a tint alone
+      // was 1.16:1 against the menu. In dark mode the tint, a raised surface hardly shows there
       &.current > a {
-        background-color: var(--cms-accent-soft);
-        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cms-accent), transparent 80%);
+        font-weight: $semibold;
+        background-color: #{scheme(var(--cms-surface), var(--cms-accent-soft))};
+        box-shadow: 0 0 0 1px var(--cms-border), var(--cms-shadow-sm);
 
         .menu__icon {
           color: var(--cms-link);
+        }
+
+        // Contrast themes drop backgrounds and shadows, so the current item draws an outline instead
+        @media (forced-colors: active) {
+          outline: 2px solid Highlight;
+          outline-offset: -2px;
         }
       }
     }
@@ -126,13 +144,64 @@
 // Menu icons
 // ===============================
 
+// An icon font glyph (a section's menu_icon_class) and the Lucide icon drawn in its place
+$-menu-icons: (
+  'sitemap': 'network',
+  'menu-pages': 'network',
+  'image': 'image',
+  'menu-files': 'image',
+  'user-lock': 'shield-check',
+  'menu-security': 'shield-check',
+  'lock': 'lock',
+  'cog': 'settings',
+  'menu-settings': 'settings',
+  'menu-reports': 'chart-pie',
+  'chart-pie': 'chart-pie',
+  'chart-line': 'chart-line',
+  'menu-campaigns': 'megaphone',
+  'menu-help': 'circle-help',
+  'help-circled': 'circle-help',
+  'menu-modaladmin': 'layout-grid',
+  'p-mail': 'mail',
+  'checklist': 'list-checks',
+  'link': 'link',
+  'accessibility': 'accessibility',
+  'universal-access': 'accessibility',
+  'p-document': 'file-text',
+  'page': 'file-text',
+  'tag': 'tag',
+  'tags': 'tags',
+  'torso': 'user',
+  'torsos-all': 'users',
+  'address-card': 'contact',
+  'database': 'database',
+  'home': 'house',
+  'dashboard': 'layout-dashboard',
+  'calendar': 'calendar',
+  'news': 'newspaper',
+  'book': 'book-open',
+  'book-open': 'book-open',
+  'cart': 'shopping-cart',
+  'globe': 'globe',
+  'box': 'box',
+  'comment': 'message-square',
+  'chat': 'message-square',
+  'flag': 'flag',
+  'block': 'blocks',
+  'block-layout': 'blocks',
+  'explore-addons': 'puzzle',
+  'sliders': 'sliders-horizontal',
+  'edit-list': 'square-pen',
+  'clipboard-pencil': 'square-pen',
+);
+
 .menu__icon {
   display: grid;
   flex: 0 0 1.75rem;
   place-items: center;
   width: 1.75rem;
   height: 1.75rem;
-  font-size: 1.45rem;
+  font-size: 1.3rem;
   line-height: 1;
   text-align: center;
   color: var(--cms-text-muted);
@@ -149,8 +218,22 @@
   &--masked {
     // (the CMS's own rule for the icon sets the image with !important)
     background: currentColor !important;
-    mask: var(--icon) center / contain no-repeat;
+    mask: var(--icon) center / 1.25rem no-repeat;
   }
+
+  // The icon font draws some glyphs filled and some outlined, so the menu read as two sets. The common ones are
+  // Lucide's outline icons instead (one stroke, one size); a glyph not listed here keeps its own
+  @each $glyph, $icon in $-menu-icons {
+    &.font-icon-#{$glyph}::before {
+      @include lucide($icon);
+    }
+  }
+}
+
+// Redirects' icon is an image (masked by menu-icons.js, which sets --icon inline), its arrows a heavier drawing
+#Menu-SilverStripe-RedirectedURLs-Admin-RedirectedURLAdmin .menu__icon {
+  @include lucide-use('shuffle');
+  --icon: var(--lucide-shuffle) !important;
 }
 
 // ===============================
@@ -192,7 +275,7 @@
   gap: 4px;
   width: 2.5rem;
   height: 2.5rem;
-  padding: 0 .65rem;
+  padding: 0 $space-md;
   border-radius: var(--cms-radius);
   background-color: var(--cms-surface);
   border: 1px solid var(--cms-border);
@@ -200,7 +283,7 @@
   span {
     display: block;
     height: 2px;
-    border-radius: 2px;
+    border-radius: var(--cms-radius-xs);
     background-color: currentColor;
   }
 }

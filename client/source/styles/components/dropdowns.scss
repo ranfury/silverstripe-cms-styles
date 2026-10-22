@@ -19,7 +19,7 @@
 
   &:not(.btn--no-text, .no-text)::after {
     @include icon('down-open-big');
-    margin-left: .1rem;
+    margin-left: $space-3xs;
     font-size: .65rem;
     opacity: .7;
   }
@@ -33,8 +33,8 @@
   display: none;
   min-width: 12rem;
   margin: 0;
-  padding: .35rem;
-  font-size: .93rem;
+  padding: $space-xs;
+  font-size: $text-base;
   text-align: left;
   list-style: none;
 
@@ -46,7 +46,7 @@
   &[data-bs-popper] {
     top: 100%;
     left: 0;
-    margin-top: .35rem;
+    margin-top: $space-xs;
   }
 
   &-end[data-bs-popper] {
@@ -78,11 +78,12 @@
     pointer-events: none;
   }
 
-  // Delete / archive actions
+  // Delete / archive actions (the grid field's, and Elemental's block menu)
   &.text-danger,
   &--danger,
   &.action--archive,
   &.action--delete,
+  &.element-editor__actions-archive,
   &.font-icon-trash-bin {
     color: var(--cms-danger);
 
@@ -104,10 +105,10 @@
 
 .dropdown-header {
   display: block;
-  padding: .5rem .8rem .3rem;
-  font-size: .75rem;
+  padding: $space-sm $space-lg $space-xs;
+  font-size: $text-xs;
   font-weight: $semibold;
-  letter-spacing: .04em;
+  letter-spacing: $caps-tracking;
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--cms-text-muted);
@@ -115,7 +116,7 @@
 
 .dropdown-divider {
   height: 0;
-  margin: .35rem -.35rem;
+  margin: $space-xs (-$space-xs);
   overflow: hidden;
   border: 0;
   border-top: 1px solid var(--cms-border);
@@ -123,7 +124,7 @@
 
 .dropdown-item-text {
   display: block;
-  padding: .55rem .8rem;
+  padding: $space-sm $space-lg;
   color: var(--cms-text-muted);
 }
 
@@ -154,16 +155,16 @@
   z-index: $z-popover;
   display: block;
   max-width: 22rem;
-  font-size: .93rem;
+  font-size: $text-base;
   word-wrap: break-word;
   border-radius: var(--cms-radius-lg);
 }
 
 .popover-header {
   margin: 0;
-  padding: .85rem 1rem .25rem;
+  padding: $space-lg $space-xl $space-2xs;
   border: 0;
-  font-size: 1rem;
+  font-size: $text-md;
   font-weight: $semibold;
 
   &:empty {
@@ -171,12 +172,12 @@
   }
 
   + .popover-body {
-    padding-top: .25rem;
+    padding-top: $space-2xs;
   }
 }
 
 .popover-body {
-  padding: .85rem 1rem;
+  padding: $space-lg $space-xl;
   color: var(--cms-text);
 
   p:last-child {
@@ -215,7 +216,7 @@
 
 .popover-option-set__search-input {
   height: 100%;
-  padding-left: 1rem;
+  padding-left: $space-xl;
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -247,15 +248,15 @@
 .popover-option-set__button-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-  gap: .35rem;
+  gap: $space-xs;
   max-height: 25rem;
-  padding: .5rem;
+  padding: $space-sm;
   overflow-y: auto;
 
   .popover-option-set__no-results {
     grid-column: 1 / -1;
     margin: 0;
-    padding: .75rem;
+    padding: $space-lg;
     text-align: center;
     color: var(--cms-text-muted);
   }
@@ -294,7 +295,7 @@
   z-index: $z-popover + 10;
   display: block;
   margin: 0;
-  font-size: .8rem;
+  font-size: $text-xs;
   font-weight: $medium;
   line-height: 1.4;
   word-wrap: break-word;
@@ -308,7 +309,7 @@
 
 .tooltip-inner {
   max-width: 16rem;
-  padding: .35rem .6rem;
+  padding: $space-xs $space-md;
   border-radius: var(--cms-radius-sm);
   text-align: center;
   color: var(--cms-bg);

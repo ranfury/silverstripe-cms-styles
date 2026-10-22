@@ -15,7 +15,7 @@
 
   .tox.tox-tinymce {
     overflow: hidden;
-    border: 1px solid var(--cms-border-strong);
+    border: 1px solid var(--cms-control-border);
     border-radius: var(--cms-radius);
     box-shadow: var(--cms-shadow-sm);
   }
@@ -41,13 +41,15 @@
     }
 
     .tox-editor-header {
-      padding: .15rem .25rem;
+      padding: $space-3xs $space-2xs;
       border-bottom: 1px solid var(--cms-border);
       box-shadow: none;
     }
 
+    // Groups are spaced, not ruled: the skin's line after each group hung at the end of a row once the toolbar wrapped
     .tox-toolbar__group:not(:last-of-type) {
-      border-color: var(--cms-border);
+      margin-right: $space-sm;
+      border-right: 0;
     }
 
     // Buttons
@@ -61,10 +63,14 @@
         fill: currentColor;
       }
 
-      &:hover,
-      &:focus {
+      &:hover {
         color: var(--cms-text);
         background: var(--cms-hover);
+      }
+
+      // The skin takes the outline off, and a hover tint alone was 1.1:1 (22 Oct 2026)
+      &:focus-visible {
+        @include focus-ring(-2px);
       }
 
       &--enabled,
@@ -81,7 +87,7 @@
     }
 
     .tox-tbtn--select {
-      padding: 0 .4rem;
+      padding: 0 $space-xs;
     }
 
     .tox-tbtn__select-label {

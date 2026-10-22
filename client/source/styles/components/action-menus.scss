@@ -61,8 +61,8 @@
     z-index: $z-dropdown;
     min-width: 15rem;
     max-width: 20rem;
-    margin: .35rem 0;
-    padding: .35rem;
+    margin: $space-xs 0;
+    padding: $space-xs;
 
     // Small screens: across the bottom, above the actions (it would run off the side)
     @include media($md, max) {
@@ -76,13 +76,13 @@
 
   // "Last saved 3 months ago"
   .cms-sitetree-information {
-    margin: 0 0 .35rem;
-    padding: .4rem .65rem .6rem;
+    margin: 0 0 $space-xs;
+    padding: $space-xs $space-md $space-md;
     border-bottom: 1px solid var(--cms-border);
 
     .meta-info {
       margin: 0;
-      font-size: .8rem;
+      font-size: $text-xs;
       line-height: 1.5;
       white-space: nowrap;
       color: var(--cms-text-muted);
@@ -115,7 +115,7 @@
   .ui-tabs-panel {
     .form-group {
       display: block;
-      margin: .5rem .65rem;
+      margin: $space-sm $space-md;
     }
 
     .cms-content-actions,
@@ -130,6 +130,6 @@
 // The tree's view mode buttons
 .cms-tree-view-modes {
   display: flex;
-  gap: .25rem;
+  gap: $space-2xs;
   margin-left: auto;
 }

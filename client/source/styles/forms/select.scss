@@ -17,7 +17,7 @@ select:has(+ .chosen-container) {
 select,
 .form-select {
   @include control;
-  padding-right: 2.5rem;
+  padding-right: $space-6xl;
   cursor: pointer;
   appearance: none;
   // A chevron for browsers without customisable selects (replaced by ::picker-icon below)
@@ -35,12 +35,12 @@ select,
 // Lists (multiple / size)
 select:is([multiple], [size]:not([size="1"])) {
   min-height: 8rem;
-  padding: .35rem;
+  padding: $space-xs;
   background-image: none;
   cursor: default;
 
   option {
-    padding: .4rem .6rem;
+    padding: $space-xs $space-md;
     border-radius: var(--cms-radius-sm);
 
     &:checked {
@@ -66,8 +66,8 @@ select:is([multiple], [size]:not([size="1"])) {
     --select-display: flex;
     display: flex;
     align-items: center;
-    gap: .5rem;
-    padding-right: .75rem;
+    gap: $space-sm;
+    padding-right: $space-lg;
     background-image: none;
 
     &,
@@ -95,7 +95,7 @@ select:is([multiple], [size]:not([size="1"])) {
     selectedcontent {
       display: flex;
       align-items: center;
-      gap: .5rem;
+      gap: $space-sm;
       min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -111,8 +111,8 @@ select:is([multiple], [size]:not([size="1"])) {
     min-width: anchor-size(width);
     max-width: min(30rem, calc(100vw - 2rem));
     max-height: min(22rem, 60vh);
-    margin-block: .35rem;
-    padding: .35rem;
+    margin-block: $space-xs;
+    padding: $space-xs;
     overflow-y: auto;
     transition:
       opacity $fast ease,
@@ -135,10 +135,10 @@ select:is([multiple], [size]:not([size="1"])) {
     position: relative;
     display: flex;
     align-items: center;
-    gap: .55rem;
+    gap: $space-sm;
     min-height: 2.15rem;
     // Room on the right for the tick, so it lines up on every option however long its text
-    padding: .4rem 2.1rem .4rem .6rem;
+    padding: $space-xs 2.1rem $space-xs $space-md;
     // (an option longer than the widest the list can be is cut short, not run under the tick)
     overflow: hidden;
     text-overflow: ellipsis;
@@ -182,15 +182,15 @@ select:is([multiple], [size]:not([size="1"])) {
   }
 
   optgroup {
-    padding-top: .35rem;
-    font-size: .75rem;
+    padding-top: $space-xs;
+    font-size: $text-xs;
     font-weight: $semibold;
-    letter-spacing: .04em;
+    letter-spacing: $caps-tracking;
     text-transform: uppercase;
     color: var(--cms-text-muted);
 
     option {
-      font-size: .95rem;
+      font-size: $text-base;
       font-weight: $regular;
       letter-spacing: 0;
       text-transform: none;
@@ -198,7 +198,7 @@ select:is([multiple], [size]:not([size="1"])) {
   }
 
   hr {
-    margin: .35rem 0;
+    margin: $space-xs 0;
   }
 }
 
@@ -209,9 +209,9 @@ select:is([multiple], [size]:not([size="1"])) {
 @mixin quiet-select {
   width: auto !important; // over the inline width chosen copies to it
   min-height: 2.25rem;
-  padding-block: .3rem;
+  padding-block: $space-xs;
   border-color: transparent;
-  font-size: .88rem;
+  font-size: $text-sm;
   font-weight: $medium;
   color: var(--cms-text-muted);
   background-color: transparent;

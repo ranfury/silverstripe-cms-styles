@@ -10,16 +10,16 @@
 
 .history-viewer {
   > .panel--padded {
-    padding-top: 1.25rem;
+    padding-top: $space-2xl;
   }
 
   &.history-viewer__compare-mode .panel--padded {
-    padding-top: 2rem;
+    padding-top: $space-5xl;
   }
 
   &--no-margins {
-    margin-left: -1.75rem;
-    margin-right: -1.75rem;
+    margin-left: (-$space-4xl);
+    margin-right: (-$space-4xl);
   }
 }
 
@@ -34,6 +34,7 @@
 
 .history-viewer__table {
   margin: 0;
+  font-variant-numeric: tabular-nums;
   padding: 0;
   overflow: hidden;
   border: 1px solid var(--cms-border);
@@ -47,7 +48,7 @@
   }
 
   &--current {
-    margin-bottom: .75rem;
+    margin-bottom: $space-lg;
 
     .history-viewer__version-link:hover {
       cursor: default;
@@ -70,16 +71,16 @@
 }
 
 .history-viewer__heading {
-  font-size: .75rem;
+  font-size: $text-xs;
   font-weight: $semibold;
-  letter-spacing: .04em;
+  letter-spacing: $caps-tracking;
   text-transform: uppercase;
   color: var(--cms-text-muted);
   background-color: var(--cms-sunken);
 
   > * {
-    padding-top: .5rem;
-    padding-bottom: .5rem;
+    padding-top: $space-sm;
+    padding-bottom: $space-sm;
   }
 }
 
@@ -130,7 +131,7 @@
 .history-viewer__version-state,
 .history-viewer__author,
 .history-viewer__actions {
-  padding: .75rem 1rem;
+  padding: $space-lg $space-xl;
 }
 
 .history-viewer__version-no {
@@ -149,7 +150,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .25rem .6rem;
+  gap: $space-2xs $space-md;
   font-weight: $medium;
 
   .text-muted {
@@ -168,7 +169,7 @@
 
 .history-viewer__actions-dropdown {
   .form-check {
-    margin-top: .5rem;
+    margin-top: $space-sm;
   }
 
   .form-check-label {
@@ -206,7 +207,7 @@
 }
 
 .history-viewer__compare-button {
-  margin-right: .75rem;
+  margin-right: $space-lg;
 }
 
 .history-viewer__close-button {
@@ -228,13 +229,13 @@
   translate: -50% 0;
 
   .notice-message {
-    padding: .4rem 1rem;
+    padding: $space-xs $space-xl;
   }
 
   button {
     @include button-reset;
     align-self: stretch;
-    padding: 0 .9rem;
+    padding: 0 $space-xl;
     border-left: 1px solid color-mix(in srgb, var(--status, var(--cms-info)), transparent 70%);
 
     &:hover {
@@ -245,7 +246,7 @@
 
 .history-viewer__messages .message-box {
   &:first-child {
-    margin-top: 1.25rem;
+    margin-top: $space-2xl;
   }
 
   &:last-child {
@@ -274,7 +275,7 @@
   ins {
     display: inline;
     padding: 0 .15em;
-    border-radius: 3px;
+    border-radius: var(--cms-radius-xs);
     text-decoration: none;
   }
 
@@ -295,14 +296,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: -1.75rem -1.75rem 0;
-  padding: 2.5rem 1.75rem;
+  margin: (-$space-4xl) (-$space-4xl) 0;
+  padding: $space-6xl $space-4xl;
   border-bottom: 1px solid var(--cms-border);
 
   .form__field-label {
     width: auto;
-    margin-bottom: .75rem;
-    font-size: 1.15rem;
+    margin-bottom: $space-lg;
+    font-size: $text-lg;
     color: var(--cms-text-muted);
   }
 

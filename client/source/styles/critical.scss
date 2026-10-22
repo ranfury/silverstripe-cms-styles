@@ -6,6 +6,7 @@
 // until it has
 //------------------------------------------------------------------
 
+@use 'cms/abstracts' as *;
 @use 'base/tokens';
 @use 'base/document';
 @use 'components/loading';
@@ -15,3 +16,5 @@
 html:not(.cms-css) body > :not(.ss-loading-screen) {
   visibility: hidden;
 }
+
+@include reduced-motion;

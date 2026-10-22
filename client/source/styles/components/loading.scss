@@ -19,7 +19,7 @@
   background-color: var(--cms-sunken);
 
   .nojs-warning {
-    margin-top: 1rem;
+    margin-top: $space-xl;
     text-align: center;
   }
 }
@@ -27,7 +27,7 @@
 .ss-loading-screen__text {
   // (the spinner is centred, over where the text would be: the text goes below it)
   margin-top: 8rem;
-  font-size: 1rem;
+  font-size: $text-md;
   font-weight: $medium;
   color: var(--cms-text-muted);
 }
@@ -57,13 +57,22 @@
   }
 }
 
-// A panel loading (the cms-content area while ajax loads a page)
+// A panel loading (the cms-content area while ajax loads a page).
+// It, and its spinner, show only once a load has taken a second: a quick one is over before they'd show, and the
+// panel doesn't flash. The overlay is there (invisible) from the start, so it still stops a second click
 .cms-content-loading-overlay {
   position: absolute;
   z-index: $z-loading - 1;
   inset: 0;
   background-color: color-mix(in srgb, var(--cms-bg), transparent 40%);
   backdrop-filter: blur(1px);
+  animation: loading-overlay-in $normal ease-out 1s both;
+}
+
+@keyframes loading-overlay-in {
+  from {
+    opacity: 0;
+  }
 }
 
 .cms-content-loading-spinner {
@@ -73,11 +82,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: loading-overlay-in $normal ease-out 1s both;
+
+  // (the whole CMS's first load: its loading screen is the wait, so its spinner shows straight away)
+  .ss-loading-screen & {
+    animation: none;
+  }
 
   .spinner {
     width: 3rem;
     height: 3rem;
-    padding: .5rem;
+    padding: $space-sm;
     border-radius: var(--cms-radius);
     background-color: var(--cms-surface-raised);
     box-shadow: var(--cms-shadow);

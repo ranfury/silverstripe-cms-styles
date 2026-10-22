@@ -43,7 +43,7 @@
   inset: auto auto 0 0;
   width: 17rem;
   margin: 0;
-  padding: .85rem;
+  padding: $space-lg;
   border-radius: var(--cms-radius-lg);
   box-shadow: var(--cms-shadow-lg);
 
@@ -53,15 +53,15 @@
 }
 
 .cms-appearance__heading {
-  margin: 0 0 .5rem;
-  font-size: .75rem;
+  margin: 0 0 $space-sm;
+  font-size: $text-xs;
   font-weight: $semibold;
-  letter-spacing: .05em;
+  letter-spacing: $caps-tracking;
   text-transform: uppercase;
   color: var(--cms-text-muted);
 
   &:not(:first-child) {
-    margin-top: 1rem;
+    margin-top: $space-xl;
   }
 }
 
@@ -80,10 +80,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: .25rem;
-  padding: .5rem .25rem;
+  gap: $space-2xs;
+  padding: $space-sm $space-2xs;
   border-radius: calc(var(--cms-radius) - 3px);
-  font-size: .8rem;
+  font-size: $text-xs;
   font-weight: $medium;
   color: var(--cms-text-muted);
 
@@ -112,7 +112,7 @@
 .cms-appearance__colours {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: .5rem;
+  gap: $space-sm;
 }
 
 .cms-appearance__colour,

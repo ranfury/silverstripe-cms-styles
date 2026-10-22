@@ -59,7 +59,7 @@
   border: 0;
   border-bottom: 1px solid var(--cms-border);
   border-radius: 0;
-  font-size: 1rem;
+  font-size: $text-md;
   font-weight: $medium;
   background-color: var(--cms-bg);
   box-shadow: none;
@@ -117,11 +117,11 @@
   align-items: center;
   height: 1.5rem;
   margin: auto 0;
-  padding: 0 .45rem;
+  padding: 0 $space-sm;
   border: 1px solid var(--cms-border);
   border-radius: var(--cms-radius-sm);
   font-family: $font-mono;
-  font-size: .75rem;
+  font-size: $text-xs;
   color: var(--cms-text-muted);
   user-select: none;
   cursor: pointer;
@@ -168,6 +168,11 @@
 
   .btn__icon {
     transition: rotate $normal $ease;
+
+    // The stroked chevron the other menus use, in place of the icon font's filled triangle
+    &::before {
+      @include chevron(.9rem);
+    }
   }
 
   &:not(.collapsed) .btn__icon {
@@ -214,7 +219,7 @@
   // Stacked fields
   .form-group {
     display: block;
-    margin-bottom: 1rem;
+    margin-bottom: $space-xl;
   }
 
   // Dates stack, so they have the room to show the whole date
@@ -224,14 +229,14 @@
 
   .form__fieldgroup {
     flex-wrap: nowrap;
-    gap: .75rem;
+    gap: $space-lg;
   }
 }
 
 .search-form__wrapper {
   display: flex;
   flex-direction: column;
-  padding: 1.25rem;
+  padding: $space-2xl;
 
   > .form > fieldset {
     flex: 1 0 auto;
@@ -256,7 +261,7 @@
 
   .tag-list {
     display: flex;
-    gap: .35rem;
+    gap: $space-xs;
     white-space: nowrap;
   }
 }
@@ -278,7 +283,7 @@
   list-style: none;
 
   &--deletable {
-    padding-left: 1.6rem;
+    padding-left: $space-3xl;
   }
 }
 

@@ -9,9 +9,9 @@ ul.IconField {
   @include list-reset;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
-  gap: .5rem;
+  gap: $space-sm;
   max-width: 46rem;
-  padding: .75rem;
+  padding: $space-lg;
   border: 1px solid var(--cms-border);
   border-radius: var(--cms-radius);
   background: var(--cms-sunken);
@@ -58,10 +58,12 @@ ul.IconField .option {
     @include focus-ring;
   }
 
+  // As a chosen layout: a ring on the soft tint
   input:checked + label {
     border-color: var(--cms-accent);
-    color: var(--cms-on-accent);
-    background-color: var(--cms-accent);
+    color: var(--cms-link);
+    background-color: var(--cms-accent-soft);
+    box-shadow: 0 0 0 1px var(--cms-accent);
   }
 
   img,
@@ -97,9 +99,9 @@ ul.IconField .option {
   // "None"
   input[value=""] + label::before {
     content: 'None';
-    font-size: .72rem;
+    font-size: $text-xs;
     font-weight: $semibold;
-    letter-spacing: .04em;
+    letter-spacing: $caps-tracking;
     text-transform: uppercase;
     color: var(--cms-text-muted);
   }

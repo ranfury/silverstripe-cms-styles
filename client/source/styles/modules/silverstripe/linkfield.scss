@@ -26,7 +26,7 @@
 
 .link-field__save-record-first,
 .link-field__loading_error {
-  padding-top: .5rem;
+  padding-top: $space-sm;
   color: var(--cms-text-muted);
 }
 
@@ -45,19 +45,19 @@
   cursor: pointer;
 
   &:not(:last-child) {
-    margin-bottom: .65rem;
+    margin-bottom: $space-md;
   }
 
   &.font-icon-link::before {
     align-self: center;
-    margin: 0 .25rem 0 .85rem;
+    margin: 0 $space-2xs 0 $space-lg;
     color: var(--cms-text-muted);
   }
 }
 
 .link-picker__cannot-create {
   flex-grow: 1;
-  padding: .85rem;
+  padding: $space-lg;
   color: var(--cms-text-muted);
   cursor: default;
 }
@@ -81,14 +81,14 @@
 
 .link-picker__menu-icon {
   display: inline-block;
-  padding-right: .5rem;
+  padding-right: $space-sm;
   line-height: 1;
   vertical-align: middle;
 }
 
 // The links, a joined list
 .link-picker__list {
-  margin: 0 0 .65rem;
+  margin: 0 0 $space-md;
   padding-left: 0;
 }
 
@@ -101,7 +101,7 @@
   min-height: 3.5rem;
   margin: 0;
   padding: 0;
-  border: 1px solid var(--cms-border-strong);
+  border: 1px solid var(--cms-control-border);
   border-top-width: 0;
   border-radius: 0;
   text-align: left;
@@ -159,7 +159,7 @@
   min-width: 0;
   height: 100%;
   margin: 0;
-  padding: .55rem .5rem .55rem 0;
+  padding: $space-sm $space-sm $space-sm 0;
   border: 0;
   text-align: left;
   color: inherit;
@@ -171,7 +171,7 @@
     place-items: center;
     width: 2.25rem;
     height: 2.25rem;
-    margin: 0 .5rem 0 .75rem;
+    margin: 0 $space-sm 0 $space-lg;
     border-radius: var(--cms-radius-sm);
     font-size: 1.1rem;
     color: var(--cms-link);
@@ -189,7 +189,7 @@
 .link-picker__title {
   display: flex;
   align-items: center;
-  gap: .35rem;
+  gap: $space-xs;
   width: 100%;
   font-weight: $medium;
 }
@@ -205,7 +205,7 @@
 
 .link-picker__type {
   width: 100%;
-  font-size: .82rem;
+  font-size: $text-xs;
   color: var(--cms-text-muted);
 }
 
@@ -214,8 +214,11 @@
 }
 
 .link-picker__delete {
+  --btn-color: var(--cms-danger);
+  --btn-hover-color: var(--cms-danger);
+  --btn-hover-bg: var(--cms-danger-soft);
   flex-grow: 0;
-  margin-right: .5rem;
+  margin-right: $space-sm;
 }
 
 // Drag to reorder

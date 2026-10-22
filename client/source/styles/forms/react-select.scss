@@ -32,9 +32,9 @@ $prefixes: (
 .treedropdownfield__breadcrumbs {
   display: flex;
   align-items: center;
-  gap: .4rem;
-  padding: .45rem .65rem;
-  font-size: .84rem;
+  gap: $space-xs;
+  padding: $space-sm $space-md;
+  font-size: $text-sm;
   font-weight: $medium;
   color: var(--cms-text-muted);
   border-bottom: 1px solid var(--cms-border);
@@ -48,9 +48,9 @@ $prefixes: (
   place-items: center;
   width: 1.75rem;
   height: 1.75rem;
-  margin: -.25rem 0;
+  margin: (-$space-2xs) 0;
   border-radius: var(--cms-radius-sm);
-  font-size: 1rem;
+  font-size: $text-md;
   color: var(--cms-text-muted);
 
   &:hover {
@@ -78,7 +78,7 @@ $prefixes: (
   place-items: center;
   width: 1.75rem;
   height: 1.75rem;
-  margin: -.25rem -.35rem -.25rem auto;
+  margin: (-$space-2xs) (-$space-xs) (-$space-2xs) auto;
   border-radius: var(--cms-radius-sm);
   color: var(--cms-text-muted);
 
@@ -102,7 +102,7 @@ $prefixes: (
 }
 
 .treedropdownfield__option-context {
-  font-size: .8rem;
+  font-size: $text-xs;
   color: var(--cms-text-muted);
 }
 

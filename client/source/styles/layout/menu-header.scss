@@ -9,7 +9,7 @@
   align-items: center;
   // The same height as the panels' headers (and the frame's gap above them), so the line under it carries on theirs
   min-height: $header-height + 8px;
-  padding: 8px 1.25rem 0;
+  padding: 8px $space-2xl 0;
   border-bottom: 1px solid var(--cms-border);
 
   // The silverstripe logo link, the site's own name is enough
@@ -21,7 +21,7 @@
     display: block;
     min-width: 0;
     overflow: hidden;
-    font-size: 1.15rem;
+    font-size: $text-lg;
     font-weight: $bold;
     letter-spacing: -.02em;
     line-height: 1.2;
@@ -43,19 +43,19 @@
 .cms-login-status {
   display: flex;
   align-items: center;
-  gap: .25rem;
-  margin: .75rem .75rem 0;
+  gap: $space-2xs;
+  margin: $space-lg $space-lg 0;
   padding: 0;
 
   &__profile-link {
     display: flex;
     flex: 1 1 auto;
     align-items: center;
-    gap: .85rem;
+    gap: $space-lg;
     min-width: 0;
-    padding: .35rem .75rem;
+    padding: $space-xs $space-lg;
     border-radius: var(--cms-radius-sm);
-    font-size: .93rem;
+    font-size: $text-base;
     color: var(--cms-text-muted);
 
     &:hover {
@@ -72,9 +72,13 @@
     width: 1.75rem;
     height: 1.75rem;
     border-radius: 50%;
-    font-size: .9rem;
     color: var(--cms-link);
     background-color: var(--cms-accent-soft);
+
+    // The menu's icons are Lucide's, so is this one
+    &::before {
+      @include lucide('user', 1rem);
+    }
   }
 
   &__profile-text {
@@ -97,6 +101,10 @@
       text-decoration: none;
       color: var(--cms-danger);
       background-color: var(--cms-danger-soft);
+    }
+
+    .font-icon-logout::before {
+      @include lucide('log-out', 1.1rem);
     }
   }
 }

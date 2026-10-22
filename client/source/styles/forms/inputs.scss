@@ -24,14 +24,14 @@ textarea {
 input[type="color"] {
   width: 3rem;
   height: 2.5rem;
-  padding: .2rem;
-  border: 1px solid var(--cms-border-strong);
+  padding: $space-2xs;
+  border: 1px solid var(--cms-control-border);
   border-radius: var(--cms-radius);
   background-color: var(--cms-surface);
 }
 
 input[type="file"] {
-  font-size: .9rem;
+  font-size: $text-base;
 }
 
 // Native pickers follow the color-scheme
@@ -51,13 +51,13 @@ input[type="number"] {
 
 .form-control-sm {
   min-height: 2rem;
-  padding: .3rem .6rem;
-  font-size: .86rem;
+  padding: $space-xs $space-md;
+  font-size: $text-sm;
 }
 
 .form-control-lg {
   min-height: 3rem;
-  font-size: 1.05rem;
+  font-size: $text-md;
 }
 
 // ===============================
@@ -105,10 +105,10 @@ input[type="number"] {
 .input-group-text {
   display: flex;
   align-items: center;
-  padding: 0 .8rem;
-  border: 1px solid var(--cms-border-strong);
+  padding: 0 $space-lg;
+  border: 1px solid var(--cms-control-border);
   border-radius: var(--cms-radius);
-  font-size: .9rem;
+  font-size: $text-base;
   white-space: nowrap;
   color: var(--cms-text-muted);
   background-color: var(--cms-sunken);
@@ -128,7 +128,7 @@ span.readonly,
 p.readonly,
 .form-control-plaintext {
   display: block;
-  padding: .5rem 0;
+  padding: $space-sm 0;
   min-height: 2.5rem;
   color: var(--cms-text);
 }
@@ -138,7 +138,7 @@ p.readonly,
 .form-group.readonly .form__field-holder > p,
 .form-control-static {
   display: block;
-  padding: .5rem 0;
+  padding: $space-sm 0;
   color: var(--cms-text);
 }
 
@@ -151,7 +151,7 @@ p.readonly,
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: .5rem;
+    gap: $space-sm;
     min-height: 2.5rem;
 
     a {
@@ -169,8 +169,8 @@ p.readonly,
 
     .btn {
       --btn-height: auto;
-      --btn-font-size: .93rem;
-      padding: 0 1rem;
+      --btn-font-size: #{$text-base};
+      padding: 0 $space-xl;
     }
   }
 
@@ -181,7 +181,7 @@ p.readonly,
 
 // The "Update URL" button after the page name
 .form__field-update-url {
-  margin-top: .5rem;
+  margin-top: $space-sm;
 }
 
 // ===============================
@@ -190,11 +190,11 @@ p.readonly,
 
 .confirmedpassword {
   .showOnClick {
-    margin-top: .75rem;
+    margin-top: $space-lg;
   }
 
   .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: $space-xl;
   }
 }
 
