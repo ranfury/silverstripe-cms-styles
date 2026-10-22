@@ -1,0 +1,174 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// User forms (silverstripe/userforms): the form's fields, page breaks and field groups
+// ===============================
+
+// Its stylesheet is userforms-cms.css, not a bundle.css, so it's listed in blocked_stylesheets (_config/config.yml)
+
+// How far each level of field group sits in
+$-indent: 1.25rem;
+
+// A page break's row: a step off the card, as the column headings are (sections/grid-field)
+$-step-bg: light-dark(var(--cms-sunken), color-mix(in srgb, var(--cms-surface), var(--cms-theme) 6%));
+
+.uf-field-editor {
+  // Add new Field / Page Break / Field Group, on the left. They stay in reach as a long form scrolls, under the form's
+  // tabs (which stick 2.9rem tall, pulled up into the panel's padding: components/tabs.scss)
+  .ss-gridfield-buttonrow-before {
+    position: sticky;
+    z-index: 4;
+    top: calc(2.9rem - #{$space-4xl});
+    margin: (-$space-sm) 0 $space-2xs;
+    padding: $space-sm 0;
+    background-color: var(--cms-bg);
+
+    > .btn-toolbar {
+      order: -1;
+      gap: $space-sm;
+    }
+
+    // (empty, its margin-left: auto pushed the buttons over to the right)
+    > .pull-xs-right:not(:has(*)) {
+      display: none;
+    }
+  }
+
+  // ===============================
+  // Rows: the drag handle, the field's type, its label, edit / delete
+  // ===============================
+
+  .grid-field__table tbody {
+    td {
+      padding-block: $space-sm;
+    }
+
+    td.col-ClassName {
+      width: 20rem;
+      // In as far as the field's groups go, with a line down each one (--uf-depth, below)
+      padding-left: calc(#{$space-md} + var(--uf-depth, 0) * #{$-indent});
+      background-image: repeating-linear-gradient(to right, var(--cms-border-strong) 0 1px, transparent 1px $-indent);
+      background-position: calc(#{$space-md} + #{$-indent * .5}) 0;
+      background-size: calc(var(--uf-depth, 0) * #{$-indent}) 100%;
+      background-repeat: no-repeat;
+    }
+
+    // A page break's or a group's name, in place of the type
+    .form-label {
+      margin: 0;
+    }
+
+    // The row just added (FieldEditor.js adds flashBackground, userforms' own styles had it as flash-background)
+    .ss-gridfield-item:is(.flashBackground, .flash-background) td {
+      animation: uf-flash 2s $ease;
+    }
+  }
+
+  // How deep in groups a field is (FieldEditor.js gives each level it's in its own class, up to 5)
+  @for $level from 1 through 5 {
+    .infieldgroup-level-#{$level} {
+      --uf-depth: #{$level};
+    }
+  }
+
+  // ===============================
+  // Page breaks: each starts a page of the form, its fields follow
+  // ===============================
+
+  .ss-gridfield-item[data-class$="EditableFormStep"] {
+    td {
+      background-color: $-step-bg;
+    }
+
+    &:hover td {
+      background-color: color-mix(in srgb, $-step-bg, var(--cms-text) 4%);
+    }
+
+    // A page after the first: a firmer line above it
+    &:not(:first-child) td {
+      border-top: 1px solid var(--cms-border-strong);
+    }
+
+    .form-label {
+      display: inline-flex;
+      align-items: center;
+      gap: $space-sm;
+      font-weight: $semibold;
+
+      &::before {
+        @include lucide('file-text', 1rem);
+        color: var(--cms-text-muted);
+      }
+    }
+  }
+
+  // ===============================
+  // Field groups: a start and an end row, the fields between them sit in
+  // ===============================
+
+  .ss-gridfield-item[data-class$="EditableFieldGroup"] .form-label {
+    font-weight: $semibold;
+  }
+
+  // The end row has nothing to edit: a quieter, shorter row. Edit / delete are hidden (deleting the group's start
+  // deletes its end), they still hold their room so the columns line up
+  .ss-gridfield-item[data-class$="EditableFieldGroupEnd"] {
+    td {
+      padding-block: $space-2xs;
+    }
+
+    .form-label {
+      font-size: $text-sm;
+      font-weight: $regular;
+      color: var(--cms-text-muted);
+    }
+
+    .grid-field__icon-action {
+      visibility: hidden;
+    }
+  }
+}
+
+@keyframes uf-flash {
+  from {
+    background-color: var(--cms-accent-soft);
+  }
+}
+
+// ===============================
+// A field's settings
+// ===============================
+
+// Allowed text length: [min] to [max], on one line
+.form__fieldgroup.userform-field__allowed-length {
+  flex-wrap: nowrap;
+  align-items: center;
+  column-gap: $space-md;
+
+  > .form__fieldgroup-item {
+    flex: 0 0 auto;
+  }
+
+  input.text {
+    width: 6rem;
+  }
+}
+
+.userform-field__allowed-length-separator {
+  color: var(--cms-text-muted);
+}
+
+// The file field's folder (a dialog): who can see the files, an icon beside it
+.userform-confirm-folder .form__field-description {
+  display: flex;
+  align-items: center;
+  gap: $space-xs;
+
+  .icon::before {
+    font-size: 1rem;
+    line-height: 1;
+  }
+}
+
+// The Lucide icons used above (this stylesheet is built on its own, cms.css has its own list)
+@include lucide-icons;

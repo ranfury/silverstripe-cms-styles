@@ -25,6 +25,7 @@ Ranfury\CMSStyles\Extensions\LeftAndMainExtension:
     - 'plasticstudio/iconfield: css/IconField.css'
     - 'jonom/focuspoint: client/dist/styles/main.css'
     - 'bummzack/sortablefile: client/dist/styles/main.css'
+    - 'silverstripe/userforms: client/dist/styles/userforms-cms.css'
 
   # Also available, empty by default (see LeftAndMainExtension and the README):
   #   ignored_modules: modules to keep the styles of
