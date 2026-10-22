@@ -155,8 +155,15 @@
     min-width: $menu-collapsed-width;
     max-width: $menu-collapsed-width;
 
+    // Scrolls without a scrollbar: its gutter (11px with classic scrollbars) put the tiles left of the log out and
+    // expand buttons below them
     .cms-panel-content {
       width: $menu-collapsed-width;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
 
     // The header's parts become items of the menu's own column, so the log out button can go under Settings
@@ -165,8 +172,7 @@
       display: contents;
     }
 
-    // (the row stays, empty: its line carries on the panels' header line)
-    .cms-sitename__title,
+    .cms-sitename,
     .cms-login-status__profile-link {
       display: none;
     }
@@ -246,17 +252,19 @@
       opacity: 0;
       translate: -.25rem -50%;
       pointer-events: none;
-      transition:
-        opacity $fast ease,
-        translate $fast $ease;
     }
 
+    // It fades in, and goes at once: fading out, the last tile's name had lost its anchor (the next tile has it) and
+    // flew across the screen as it went
     .cms-menu__list li a:is(:hover, :focus-visible) {
       anchor-name: --cms-menu-item;
 
       .text {
         opacity: 1;
         translate: 0 -50%;
+        transition:
+          opacity $fast ease,
+          translate $fast $ease;
       }
     }
 

@@ -4,8 +4,10 @@
 // Menu footer
 // ===============================
 
-// Help links, the CMS version and the appearance menu (scripts/components/appearance.js)
-.cms-menu .cms-panel-toggle {
+// Help links, the CMS version and the appearance menu (scripts/components/appearance.js).
+// (.cms-panel as well: the panels' own toggle rule, layout/content-tools, comes later and took the 8px gap below off,
+// so the buttons sat 4px below the tree's and the form's along the same line)
+.cms-menu.cms-panel > .cms-panel-toggle {
   position: relative;
   display: flex;
   align-items: center;
