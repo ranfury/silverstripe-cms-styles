@@ -141,6 +141,135 @@
 }
 
 // ===============================
+// Collapsed: the icons only
+// ===============================
+
+// From the button in the footer, as an activity bar: a column of icon tiles, the section's name beside the one
+// pointed at, the log out button under Settings and only the expand button in the footer. Not on a phone, where the
+// menu slides in over the content and is either there in full or not at all
+@include media($md) {
+  .cms-menu.collapsed {
+    // A layer over the panels beside it (the tree's is the same as the menu's, and later): the names it shows on
+    // hover lie across them, and were drawn under the tree
+    z-index: $z-sticky + 1;
+    min-width: $menu-collapsed-width;
+    max-width: $menu-collapsed-width;
+
+    .cms-panel-content {
+      width: $menu-collapsed-width;
+    }
+
+    // The header's parts become items of the menu's own column, so the log out button can go under Settings
+    .cms-menu__header,
+    .cms-login-status {
+      display: contents;
+    }
+
+    // (the row stays, empty: its line carries on the panels' header line)
+    .cms-sitename__title,
+    .cms-login-status__profile-link {
+      display: none;
+    }
+
+    .cms-login-status__logout-link {
+      order: 1;
+      align-self: center;
+      width: 2.85rem;
+      height: 2.85rem;
+      margin-bottom: $space-lg;
+      border-radius: var(--cms-radius);
+
+      .font-icon-logout::before {
+        width: 1.35rem;
+        height: 1.35rem;
+      }
+    }
+
+    .cms-panel-toggle {
+      order: 2;
+      justify-content: center;
+      padding-inline: 0;
+
+      > :not(.cms-panel-toggle__button) {
+        display: none;
+      }
+    }
+
+    .cms-menu__list {
+      gap: $space-xs;
+      padding: $space-sm 0;
+
+      li a {
+        justify-content: center;
+        width: 2.85rem;
+        height: 2.85rem;
+        min-height: 0;
+        margin-inline: auto;
+        padding: 0;
+        border-radius: var(--cms-radius);
+      }
+    }
+
+    .menu__icon {
+      font-size: 1.5rem;
+
+      &::before {
+        width: 1.4rem;
+        height: 1.4rem;
+      }
+
+      &--masked {
+        mask-size: 1.4rem;
+      }
+    }
+
+    // The section's name, beside the tile pointed at or focused (the tile is its anchor only then, so one name is
+    // anchored at a time). Fixed, so the list's scrolling doesn't clip it. Hidden by opacity, not visibility, so it's
+    // still the link's name for a screen reader
+    .cms-menu__list li a .text {
+      position: fixed;
+      z-index: $z-popover;
+      position-anchor: --cms-menu-item;
+      top: anchor(center);
+      left: anchor(right);
+      flex: none;
+      margin-left: $space-sm;
+      padding: $space-xs $space-sm;
+      overflow: visible;
+      border: 1px solid var(--cms-border);
+      border-radius: var(--cms-radius-sm);
+      font-size: $text-sm;
+      font-weight: $medium;
+      color: var(--cms-text);
+      background-color: var(--cms-surface-raised);
+      box-shadow: var(--cms-shadow);
+      opacity: 0;
+      translate: -.25rem -50%;
+      pointer-events: none;
+      transition:
+        opacity $fast ease,
+        translate $fast $ease;
+    }
+
+    .cms-menu__list li a:is(:hover, :focus-visible) {
+      anchor-name: --cms-menu-item;
+
+      .text {
+        opacity: 1;
+        translate: 0 -50%;
+      }
+    }
+
+    // A browser without anchor positioning can't place the name: it's kept for screen readers only
+    @supports not (anchor-name: --a) {
+      .cms-menu__list li a .text {
+        @include visually-hidden;
+      }
+    }
+  }
+}
+
+// ===============================
 // Menu icons
 // ===============================
 

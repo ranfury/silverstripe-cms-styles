@@ -23,8 +23,12 @@
     margin-left: $space-lg;
   }
 
-  // The menu always stays open, so its collapse and sticky controls aren't needed
-  .cms-panel-toggle__button,
+  // The menu's collapse button at the end of the row (a chevron, layout/content-tools: .cms-panel). The sticky switch
+  // isn't needed: the menu always keeps the state it was left in (scripts/components/menu-state.js)
+  .cms-panel-toggle__button {
+    flex: 0 0 auto;
+  }
+
   .sticky-toggle {
     display: none;
   }
@@ -82,15 +86,9 @@
     background-color: var(--cms-hover);
   }
 
-  // A chevron like the rest of the CMS's (not the icon font's solid caret), pointing up to the menu
+  // No caret: the collapse button sits there, and the button opens its links all the same
   &__caret {
-    margin-left: auto;
-    transition: rotate $normal $ease;
-
-    &::before {
-      @include chevron(.85rem);
-      rotate: 180deg;
-    }
+    display: none;
   }
 
   // The links open upwards from the button
@@ -129,8 +127,5 @@
         translate $fast $ease;
     }
 
-    .cms-help__caret {
-      rotate: 180deg;
-    }
   }
 }

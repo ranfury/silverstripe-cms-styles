@@ -31,6 +31,10 @@ Then flush (`?flush=1`). The built files are in the package (`client/dist`), the
   first thing, the themed loading screen, and the CMS isn't drawn until the rest have loaded
 - The theme colour and light / dark mode are applied by a small script (`appearance-boot.js`), also inlined, before
   anything is drawn, so there's no flash of the default theme
+- The menu collapses to a column of icons from the button in its footer (each section's name shows beside its icon on
+  hover or focus), and stays as it was left. That's the CMS's own collapse and its own memory of it: Silverstripe only
+  follows that memory with its "sticky nav" switch on (otherwise it collapses the menu itself on every screen with the
+  pages tree), so the boot script turns sticky on and leaves the menu open until it's collapsed
 - The dev pages (`dev/build`, `dev/tasks`, errors in dev mode) are styled to match (`dev.css`). To do it, the module
   replaces Silverstripe's `SilverStripe\Dev\DebugView` with its own through the Injector (`Ranfury\CMSStyles\Dev\DebugView`)
   and empties the task runner's own stylesheet list (`_config.php`). A project that customises the dev pages itself,
