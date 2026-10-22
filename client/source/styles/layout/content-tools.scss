@@ -89,10 +89,12 @@
     padding: 0 $space-sm;
   }
 
+  // (a flex row, not a grid: in a grid the hidden « / » was a row of its own under the chevron, which sat 4.5px high)
   .cms-panel-toggle__button {
     @include button-reset;
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 2.25rem;
     height: 2.25rem;
     border-radius: var(--cms-radius-sm);
