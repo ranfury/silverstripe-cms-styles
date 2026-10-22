@@ -180,8 +180,8 @@
     .cms-login-status__logout-link {
       order: 1;
       align-self: center;
-      width: 2.85rem;
-      height: 2.85rem;
+      width: $menu-tile;
+      height: $menu-tile;
       margin-bottom: $space-lg;
       border-radius: var(--cms-radius);
 
@@ -201,14 +201,15 @@
       }
     }
 
+    // The same space above the first tile as either side of them all
     .cms-menu__list {
       gap: $space-xs;
-      padding: $space-sm 0;
+      padding: ($menu-collapsed-width - $menu-tile) * .5 0 $space-sm;
 
       li a {
         justify-content: center;
-        width: 2.85rem;
-        height: 2.85rem;
+        width: $menu-tile;
+        height: $menu-tile;
         min-height: 0;
         margin-inline: auto;
         padding: 0;

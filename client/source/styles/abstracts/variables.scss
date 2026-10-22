@@ -38,8 +38,9 @@ $menu-width: 272px;
 $tree-width: 300px;
 // Below $xl: at 1024 the full widths left the edit form about 430px, its tabs wrapped and the editor's toolbar took four rows
 $menu-width-compact: 224px;
-// The menu collapsed to its icons: a 40px tile and 12px either side
+// The menu collapsed to its icons: a 40px tile and 12px either side (and above the first)
 $menu-collapsed-width: 64px;
+$menu-tile: 40px;
 $tree-width-compact: 256px;
 $panel-collapsed-width: 56px;
 

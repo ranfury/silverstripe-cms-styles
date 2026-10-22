@@ -307,6 +307,24 @@
   }
 }
 
+// jQuery UI's tooltips (e.g. the panels' Collapse panel), as the bootstrap ones above. Its own stylesheet is blocked
+// and nothing laid it out: it was put in the body's row as a box of its own, and the CMS beside it was squeezed 89px
+// narrower for as long as it showed. jQuery UI places it (left / top) once it's out of the flow
+.ui-tooltip {
+  position: absolute;
+  z-index: $z-popover + 10;
+  max-width: 16rem;
+  padding: $space-xs $space-md;
+  border-radius: var(--cms-radius-sm);
+  font-size: $text-xs;
+  font-weight: $medium;
+  line-height: 1.4;
+  color: var(--cms-bg);
+  background-color: var(--cms-text);
+  box-shadow: var(--cms-shadow);
+  pointer-events: none;
+}
+
 .tooltip-inner {
   max-width: 16rem;
   padding: $space-xs $space-md;
