@@ -134,9 +134,9 @@
     display: none;
   }
 
+  // Nothing in it once collapsed (the title is the strip's, sideways): an empty square over the strip
   .cms-content-header {
-    padding-left: 0;
-    padding-right: 0;
+    display: none;
   }
 }
 
