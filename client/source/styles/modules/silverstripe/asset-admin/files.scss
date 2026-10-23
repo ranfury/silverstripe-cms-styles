@@ -1222,12 +1222,12 @@
   }
 
   &--error {
-    color: #fff;
+    color: var(--cms-on-danger);
     background-color: var(--cms-danger);
   }
 
   &--success {
-    color: #fff;
+    color: var(--cms-on-success);
     background-color: var(--cms-success);
   }
 }

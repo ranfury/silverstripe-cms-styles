@@ -15,7 +15,8 @@
   --dev-accent: #{scheme(tint(var(--dev-theme), $s: 85%, $l: 34%), tint(var(--dev-theme), $s: 90%, $l: 74%))};
   // The accent is a dark shade in light mode and a light one in dark mode, so the text on it follows (white was
   // about 2:1 on the dark mode accent)
-  --dev-on-accent: #{scheme(#fff, hsl(0 0% 8%))};
+  --dev-on-accent: contrast-color(var(--dev-accent));
+  --dev-on-theme: contrast-color(var(--dev-theme));
   --dev-success: #{scheme(#15803d, #4ade80)};
   --dev-warning: #{scheme(#a15c07, #fbbf24)};
   --dev-error: #{scheme(#c2261c, #f87171)};

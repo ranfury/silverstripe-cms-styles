@@ -4,8 +4,8 @@
 // Theme
 // ===============================
 
-// --cms-theme and --cms-accent-text-colour are set by the appearance menu (scripts/components/appearance.js),
-// every other colour is made from them, so changing the theme colour restyles the whole CMS.
+// --cms-theme is set by the appearance menu (scripts/components/appearance.js), every other colour is made from it,
+// so changing the theme colour restyles the whole CMS.
 // Each colour has a light and a dark value (light-dark()), the color-scheme below picks which one is used
 
 :root {
@@ -13,7 +13,8 @@
 
   // Accent
   --cms-accent: var(--cms-theme);
-  --cms-on-accent: var(--cms-accent-text-colour, #000);
+  // Black or white, whichever has more contrast on the accent
+  --cms-on-accent: contrast-color(var(--cms-accent));
   --cms-accent-soft: #{scheme(tint(var(--cms-theme), $s: 90%, $l: 50%, $a: .14), tint(var(--cms-theme), $s: 80%, $l: 60%, $a: .18))};
   --cms-focus: #{scheme(tint(var(--cms-theme), $s: 85%, $l: 42%), tint(var(--cms-theme), $s: 90%, $l: 70%))};
   --cms-link: #{scheme(tint(var(--cms-theme), $s: 85%, $l: 34%), tint(var(--cms-theme), $s: 90%, $l: 74%))};
@@ -59,14 +60,15 @@
   --cms-warning-soft: #{scheme(#fdf3dc, hsl(43 90% 50% / .14))};
   --cms-danger: #{scheme(#c2261c, #f87171)};
   --cms-danger-soft: #{scheme(#fdecea, hsl(0 85% 60% / .14))};
-  // Text on a solid status colour: the dark mode colours are light, so they take dark text (white was 2.77:1 on #f87171)
-  --cms-on-danger: #{scheme(#fff, hsl(0 70% 9%))};
-  --cms-on-success: #{scheme(#fff, hsl(142 70% 7%))};
+  // Text on a solid status colour: the dark mode colours are light, so they take black text (white was 2.77:1 on #f87171)
+  --cms-on-danger: contrast-color(var(--cms-danger));
+  --cms-on-success: contrast-color(var(--cms-success));
   --cms-info: #{scheme(#1d5fbf, #7cb4ff)};
   --cms-info-soft: #{scheme(#e8f0fc, hsl(215 90% 65% / .14))};
 
   // The names the previous CMS theme module used, other Toast modules' styles (colour palettes, theme transfer, blocks) still use them
   --cms-accent-colour: var(--cms-accent);
+  --cms-accent-text-colour: var(--cms-on-accent);
   --cms-text-colour: var(--cms-text);
   --cms-border-colour: var(--cms-border);
   --cms-background-colour: var(--cms-surface);

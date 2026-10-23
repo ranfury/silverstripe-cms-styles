@@ -44,45 +44,12 @@ export function saveSettings({ colour, mode }) {
   if (mode) storage(MODE_KEY, mode);
 }
 
-// WCAG relative luminance (0-1) of a hex or rgb() colour
-function luminance(colour) {
-  let channels = [0, 0, 0];
-
-  if (colour.startsWith('#')) {
-    const hex = colour.length === 4 ? colour.slice(1).split('').map((c) => c + c).join('') : colour.slice(1, 7);
-    channels = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
-  } else {
-    channels = (colour.match(/\d+/g) || []).slice(0, 3).map(Number);
-  }
-
-  const [r, g, b] = channels.map((value) => {
-    const c = value / 255;
-    return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
-  });
-
-  return (0.2126 * r) + (0.7152 * g) + (0.0722 * b);
-}
-
-// Black or white text, whichever has more contrast on the colour. A brightness cut-off used to pick white on the
-// default #2D9CDB, 3.05:1 on the primary buttons; black there is 6.9:1
-function readableOn(colour) {
-  const l = luminance(colour);
-
-  return (l + 0.05) / 0.05 >= 1.05 / (l + 0.05) ? '#000' : '#fff';
-}
-
-// Puts the settings on <html>: the colour as --cms-theme (every other colour is made from it, base/tokens.scss),
-// text that is readable on it, and the mode (html[data-darkmode] sets the color-scheme)
+// Puts the settings on <html>: the colour as --cms-theme (every other colour is made from it, base/tokens.scss,
+// including the text on it) and the mode (html[data-darkmode] sets the color-scheme)
 export function applyAppearance({ colour, mode }) {
   const root = document.documentElement;
 
-  if (colour) {
-    const text = readableOn(colour);
-
-    root.style.setProperty('--cms-theme', colour);
-    root.style.setProperty('--cms-accent-text-colour', text);
-    root.setAttribute('data-accent-contrast', text === '#000' ? 'dark' : 'light');
-  }
+  if (colour) root.style.setProperty('--cms-theme', colour);
 
   if (mode) root.setAttribute('data-darkmode', mode);
 }

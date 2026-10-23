@@ -137,13 +137,13 @@
 // Running the task is the main action
 .task__button:first-child {
   border-color: transparent;
-  color: var(--cms-accent-text-colour, #000);
+  color: var(--dev-on-theme);
   background-color: var(--dev-theme);
 
   &:hover,
   &:focus {
     border-color: transparent;
-    color: var(--cms-accent-text-colour, #000);
+    color: var(--dev-on-theme);
     background-color: hsl(from var(--dev-theme) h calc(s * 1.1) calc(l * .9));
   }
 }

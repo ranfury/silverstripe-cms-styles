@@ -345,13 +345,10 @@ $-lucide-used: ();
 // Check boxes
 // ===============================
 
-// The tick / dash are inline svgs, dark or light to suit the accent (html[data-accent-contrast], set by the appearance script)
-$-tick: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='none' stroke='COLOUR' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3E%3C/svg%3E";
-$-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath stroke='COLOUR' stroke-linecap='round' stroke-width='3' d='M6 10h8'/%3E%3C/svg%3E";
-
-@function -svg($svg, $colour) {
-  @return url(str-replace($svg, 'COLOUR', $colour));
-}
+// The tick / dash are inline svgs, a black mark on white (an svg in a url can't use a css colour, check-box-checked
+// turns the mark into --cms-on-accent)
+$-tick: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' fill='%23fff'/%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3E%3C/svg%3E";
+$-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' fill='%23fff'/%3E%3Cpath stroke='%23000' stroke-linecap='round' stroke-width='3' d='M6 10h8'/%3E%3C/svg%3E";
 
 // An empty box (for inputs, and the spans the tree / files use as checkboxes)
 @mixin check-box {
@@ -378,13 +375,15 @@ $-dash: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0
     $svg: $-dash;
   }
 
+  // The mark in --cms-on-accent (black or white): the accent is flipped by it (difference), the mark cut out of
+  // that in black (multiply), then flipped back, which puts the accent back and turns the black mark into it
   border-color: var(--cms-accent);
   background-color: var(--cms-accent);
-  background-image: -svg($svg, '%23000');
-
-  :root[data-accent-contrast="light"] & {
-    background-image: -svg($svg, '%23fff');
-  }
+  background-image:
+    linear-gradient(var(--cms-on-accent), var(--cms-on-accent)),
+    url($svg),
+    linear-gradient(var(--cms-on-accent), var(--cms-on-accent));
+  background-blend-mode: difference, multiply, difference;
 }
 
 // ===============================
