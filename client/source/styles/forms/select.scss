@@ -58,10 +58,11 @@ select:is([multiple], [size]:not([size="1"])) {
       background-color: var(--cms-hover);
     }
 
-    // The browser paints a focused list's chosen options blue with an !important background-color, but not a
-    // background-image, so the accent is drawn as one
+    // The browser paints a focused list's chosen options blue with white text, over their color and background-color,
+    // but not over a background-image or the text's fill, so the accent and its text are set as those
     &:checked {
       color: var(--cms-on-accent);
+      -webkit-text-fill-color: var(--cms-on-accent);
       background-color: var(--cms-accent);
       background-image: linear-gradient(var(--cms-accent), var(--cms-accent));
       font-weight: $medium;
