@@ -130,10 +130,34 @@ function initEditorBackground() {
   });
 }
 
+/* ------------------------------------------------------------------
+Multiple selects (list boxes): clicking an option toggles it, without
+needing ctrl / command or shift held. Add no-click-toggle to a select
+to keep the browser's behaviour
+------------------------------------------------------------------ */
+
+function initClickToggleSelects() {
+  document.addEventListener('mousedown', (e) => {
+    const option = e.target.closest?.('select[multiple]:not(.no-click-toggle) option');
+    const select = option?.parentElement.closest('select');
+
+    // Left clicks only (and not disabled ones), a right click or a drag with a modifier is left to the browser
+    if (!option || !select || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (select.disabled || option.disabled) return;
+
+    e.preventDefault();
+    select.focus({ preventScroll: true });
+    option.selected = !option.selected;
+    select.dispatchEvent(new Event('input', { bubbles: true }));
+    select.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+}
+
 export default function initFields() {
   initDataIcons();
   initCharacterCounts();
   initRangeSliders();
   initFieldNames();
   initEditorBackground();
+  initClickToggleSelects();
 }

@@ -32,20 +32,43 @@ select,
   }
 }
 
-// Lists (multiple / size)
+// Lists (multiple / size, e.g. ss-listbox-field)
 select:is([multiple], [size]:not([size="1"])) {
   min-height: 8rem;
   padding: $space-xs;
   background-image: none;
   cursor: default;
+  scrollbar-color: var(--cms-text-faint) transparent;
+  scrollbar-width: thin;
+
+  // (a focused list has its own outline, not the browser's dotted one around the current option)
+  &:focus,
+  &:focus-visible {
+    @include control-focus;
+  }
 
   option {
+    min-height: 2rem;
     padding: $space-xs $space-md;
     border-radius: var(--cms-radius-sm);
+    color: var(--cms-text);
+    outline: 0;
 
+    &:hover {
+      background-color: var(--cms-hover);
+    }
+
+    // The browser paints a focused list's chosen options blue with an !important background-color, but not a
+    // background-image, so the accent is drawn as one
     &:checked {
-      color: var(--cms-text);
-      background: var(--cms-accent-soft);
+      color: var(--cms-on-accent);
+      background-color: var(--cms-accent);
+      background-image: linear-gradient(var(--cms-accent), var(--cms-accent));
+      font-weight: $medium;
+    }
+
+    &:disabled {
+      color: var(--cms-text-faint);
     }
   }
 }
