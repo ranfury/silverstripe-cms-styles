@@ -33,10 +33,10 @@ Ranfury\CMSStyles\Extensions\LeftAndMainExtension:
 
   # The colours offered in the appearance menu (any colour can be picked as well), the first is the default
   theme_colours:
-    - '#2D9CDB'
-    - '#2dd4bf'
-    - '#A78BFA'
-    - '#f0a279'
+    - '#8eb4dd'
+    - '#7becde'
+    - '#EFCBF9'
+    - '#ffc4a5'
 
 # The dev pages (dev/build, dev/tasks) in the module's style
 SilverStripe\Core\Injector\Injector:
