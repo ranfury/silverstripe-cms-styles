@@ -126,6 +126,30 @@ Ranfury\CMSStyles\Extensions\LeftAndMainExtension:
   heading check, and the dev pages. The code editor (and its syntax highlighting) loads only on pages with a code field
 - Chosen dropdowns are hidden (their javascript still runs) and the native selects are styled instead
 
+## A second row of tabs in a section
+
+A section's header tabs are one row (a model admin's models, say). For a section that groups them, with a second row of
+tabs for what's in the chosen group, the module draws that row as it draws nested tabs (Settings > Theme): a menu
+column down the side of the panel when there's room, pills above the list when there isn't. Silverstripe has no such
+row, so the section's own `_Content` template draws it, first in its `.cms-content-fields`:
+
+```html
+<div class="cms-content-fields …">
+  <nav class="cms-content-subtabs" aria-label="Projects">
+    <ul class="nav">
+      <li class="nav-item"><a href="…" class="nav-link cms-panel-link" aria-current="page">Surveys</a></li>
+      <li class="nav-item"><a href="…" class="nav-link cms-panel-link">Designs</a></li>
+    </ul>
+  </nav>
+  $Tools
+  <div class="cms-content-view">$EditForm</div>
+</div>
+```
+
+They're links to other pages, not tabs over panels on this one: a `nav` of links, the current one marked with
+`aria-current="page"` (or `.active`), and `cms-panel-link` so they load as the header tabs do. Leave the row out when
+the group has only one thing in it.
+
 ## Using it in a page template
 
 `{$CMSStylesPreviewScripts}` in the page's `<head>` runs the SEO heading check when the page is in the CMS preview. It only
