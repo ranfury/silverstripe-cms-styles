@@ -137,16 +137,44 @@
 // Table
 // ===============================
 
+// The card's radius, less its border
+$-table-inner-radius: calc(var(--cms-radius) - 1px);
+
 .grid-field__table {
   width: 100%;
   margin: 0;
-  overflow: hidden;
+  // Not overflow: hidden, which crops a row's ⋮ menu to the table (a one-row table is shorter than its menu).
+  // The corners are rounded on the cells in the corners instead, below
   border: 1px solid var(--cms-border);
   border-collapse: separate;
   border-spacing: 0;
   border-radius: var(--cms-radius);
   background-color: var(--cms-surface);
   box-shadow: var(--cms-shadow-sm);
+
+  // The first visible row (the title row is hidden when it has nothing to show, see below)...
+  thead > tr:first-child:not(.grid-field__title-row:not(:has(.grid-field__title, h2, a, button, input))),
+  thead > .grid-field__title-row:not(:has(.grid-field__title, h2, a, button, input)) + tr {
+    > :first-child {
+      border-top-left-radius: $-table-inner-radius;
+    }
+
+    > :last-child {
+      border-top-right-radius: $-table-inner-radius;
+    }
+  }
+
+  // ...and the last (the footer, or the last item without one)
+  tfoot > tr:last-child,
+  &:not(:has(tfoot)) > tbody > tr:last-child {
+    > :first-child {
+      border-bottom-left-radius: $-table-inner-radius;
+    }
+
+    > :last-child {
+      border-bottom-right-radius: $-table-inner-radius;
+    }
+  }
 
   th,
   td {

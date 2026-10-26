@@ -126,7 +126,22 @@
     width: 100%;
     height: 100%;
     max-width: 100%;
-    fill: currentColor;
+
+    // Only colours are overridden, never "none": the svg's own fill="none" / stroke="none" (and the
+    // stroke-only icons that set it on the root) are kept. An unset fill is the default black.
+    &:not([fill]) {
+      fill: currentColor;
+    }
+
+    &[fill^="#"],
+    [fill^="#"] {
+      fill: currentColor;
+    }
+
+    &[stroke^="#"],
+    [stroke^="#"] {
+      stroke: currentColor;
+    }
   }
 }
 

@@ -137,6 +137,16 @@
   }
 }
 
+// The nav's negative margin pulls it up over the form's padding, which is empty above it. Not when the form has
+// a message (the "Published ..." one after saving) above the fields: it would be pulled up over the message,
+// its foot trimmed off. (the form's message is always there, empty and hidden when there's nothing to say)
+:is(.alert, .message):not(:empty, [style*="none"]) {
+  + fieldset > .ss-tabset > .ui-tabs-nav,
+  + .ss-tabset > .ui-tabs-nav {
+    margin-top: 0;
+  }
+}
+
 $nested-tabs-width: 15.5rem;
 
 // The current tab, however it's marked: jQuery UI's class on its item, or the class or aria-current on the link

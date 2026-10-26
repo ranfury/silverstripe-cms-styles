@@ -81,6 +81,11 @@ td.col-IconForCMS div::before,
   > fieldset {
     padding: $space-4xl 0 0 $space-4xl;
   }
+
+  // The form's message ("Published ..."), before the fieldset: it has the same padding the fieldset has
+  > :is(.alert, .message):not(:empty, [style*="none"]) {
+    margin: $space-4xl $space-4xl 0;
+  }
 }
 
 fieldset:has(> #Root .content-block-siblings) .tab-pane {
