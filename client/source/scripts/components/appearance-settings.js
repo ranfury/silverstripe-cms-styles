@@ -1,15 +1,15 @@
 /* ------------------------------------------------------------------
-Appearance settings: the theme colour and light / dark mode,
+Appearance settings: the theme colour's hue and light / dark mode,
 saved in the browser and applied to <html>
 ------------------------------------------------------------------ */
 
-// The same keys the previous CMS theme module used, so people keep the colour / mode they had picked
-const COLOUR_KEY = 'cms-theme-colour';
+// The mode's key is the one the previous CMS theme module used, so people keep the mode they had picked
+const HUE_KEY = 'cms-theme-hue';
 const MODE_KEY = 'silverstripe-cms-darkmode';
 
 export const MODES = ['off', 'on', 'auto'];
 
-// Settings from the server (the theme colours), a JSON block in the head
+// Settings from the server (the default hue), a JSON block in the head
 export function readConfig() {
   try {
     return JSON.parse(document.getElementById('CMSStylesConfig')?.textContent || '{}');
@@ -30,26 +30,28 @@ function storage(key, value) {
 }
 
 export function readSettings() {
-  const { colours = [] } = readConfig();
+  const { hue: defaultHue } = readConfig();
+  const hue = parseFloat(storage(HUE_KEY));
   const mode = storage(MODE_KEY);
 
   return {
-    colour: storage(COLOUR_KEY) || colours[0] || null,
+    // null when there is none, the hue in base/tokens.scss is used
+    hue: Number.isFinite(hue) ? hue : (defaultHue ?? null),
     mode: MODES.includes(mode) ? mode : 'auto',
   };
 }
 
-export function saveSettings({ colour, mode }) {
-  if (colour) storage(COLOUR_KEY, colour);
+export function saveSettings({ hue, mode }) {
+  if (Number.isFinite(hue)) storage(HUE_KEY, String(hue));
   if (mode) storage(MODE_KEY, mode);
 }
 
-// Puts the settings on <html>: the colour as --cms-theme (every other colour is made from it, base/tokens.scss,
-// including the text on it) and the mode (html[data-darkmode] sets the color-scheme)
-export function applyAppearance({ colour, mode }) {
+// Puts the settings on <html>: the hue as --cms-hue (the theme colour is made from it and every other colour from that,
+// base/tokens.scss) and the mode (html[data-darkmode] sets the color-scheme)
+export function applyAppearance({ hue, mode }) {
   const root = document.documentElement;
 
-  if (colour) root.style.setProperty('--cms-theme', colour);
+  if (Number.isFinite(hue)) root.style.setProperty('--cms-hue', hue);
 
   if (mode) root.setAttribute('data-darkmode', mode);
 }

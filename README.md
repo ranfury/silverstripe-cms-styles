@@ -43,8 +43,9 @@ Then flush (`?flush=1`). The built files are in the package (`client/dist`), the
 ## Colours and appearance
 
 Colours all come from one theme colour (`--cms-theme`) with `light-dark()`. It, and light / dark / system, are set from the
-appearance menu in the menu footer and remembered in the browser (the dev pages use them too). The colours the menu offers are
-`theme_colours` in `_config/config.yml`.
+appearance menu in the menu footer and remembered in the browser (the dev pages use them too). The menu picks a hue with a
+slider: the theme colour's lightness and chroma are fixed (`base/tokens.scss`, matched to the pastel colours this started
+with), so every hue is as bright as the others. The hue before one is picked is `theme_hue` in `_config/config.yml`.
 
 The text on the theme colour (buttons, selections, ticks) is black or white, whichever has the more contrast on it by
 WCAG's measure, so any colour picked stays readable.
@@ -80,7 +81,7 @@ All on `Ranfury\CMSStyles\Extensions\LeftAndMainExtension` (`_config/config.yml`
 | Setting | What it is |
 | --- | --- |
 | `blocked_stylesheets` | Stylesheets of other modules to block, `'vendor/package: path'`. The CMS itself, and those that aren't a module's `client/dist/styles/bundle.css` |
-| `theme_colours` | The colours offered in the appearance menu (any colour can be picked too), the first is the default |
+| `theme_hue` | The theme colour's hue (0 to 360) until one is picked in the appearance menu. 250 by default |
 | `ignored_modules` | Modules to keep the styles of: nothing is blocked or loaded for them. Empty by default |
 | `module_overrides` | Styles that another package brings itself (below). Empty by default |
 

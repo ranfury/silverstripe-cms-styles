@@ -20,10 +20,10 @@ class DebugView extends BaseDebugView
         return '<!DOCTYPE html><html><head><title>' . $url . '</title>'
             . '<meta name="viewport" content="width=device-width, initial-scale=1">'
             . '<meta name="robots" content="noindex">'
-            // The theme colour and light / dark mode picked in the CMS. The boot script falls back on the first of the
-            // theme colours when none has been picked, so it needs them too (without them the pages had the token's
-            // default colour, not the CMS's)
-            . LeftAndMainExtension::getConfigTag(['colours' => LeftAndMainExtension::getThemeColours()])
+            // The theme colour and light / dark mode picked in the CMS. The boot script falls back on the default
+            // hue when none has been picked, so it needs it too (without it the pages had the token's default colour,
+            // not the CMS's)
+            . LeftAndMainExtension::getConfigTag(['hue' => LeftAndMainExtension::getThemeHue()])
             . (($boot = LeftAndMainExtension::getBootScript()) ? '<script>' . $boot . '</script>' : '')
             . '<link rel="stylesheet" href="' . $loader->resolveURL('ranfury/silverstripe-cms-styles: client/dist/styles/dev.css') . '">'
             . '<script src="' . $loader->resolveURL('ranfury/silverstripe-cms-styles: client/dist/scripts/dev.js') . '" defer></script>'

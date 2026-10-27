@@ -108,63 +108,68 @@
   }
 }
 
-// Colour swatches, then any colour
-.cms-appearance__colours {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: $space-sm;
-}
-
-.cms-appearance__colour,
-.cms-appearance__custom {
-  position: relative;
+// The theme colour: a hue slider, its track the hues at the lightness and chroma the theme colour has (base/tokens.scss)
+.cms-appearance__hue {
+  --_track: .5rem;
+  --_thumb: 1.1rem;
+  // The same hues, drawn on the track (a slim bar through the thumb's height)
+  --_hues: linear-gradient(
+    to right,
+    oklch(.85 .085 0), oklch(.85 .085 30), oklch(.85 .085 60), oklch(.85 .085 90), oklch(.85 .085 120), oklch(.85 .085 150),
+    oklch(.85 .085 180), oklch(.85 .085 210), oklch(.85 .085 240), oklch(.85 .085 270), oklch(.85 .085 300),
+    oklch(.85 .085 330), oklch(.85 .085 360)
+  );
+  display: block;
   width: 100%;
-  aspect-ratio: 1;
+  height: var(--_thumb);
   margin: 0;
-  border: 0;
-  border-radius: 50%;
-  // A hairline so a swatch close to the popover's colour still shows
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cms-text), transparent 82%);
+  background: none;
   cursor: pointer;
-  transition: scale $fast ease;
+  appearance: none;
 
-  &:hover {
-    scale: 1.08;
+  &::-webkit-slider-runnable-track {
+    height: var(--_track);
+    border-radius: var(--cms-radius-pill);
+    background: var(--_hues);
+    // A hairline so the track keeps its shape against the popover
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cms-text), transparent 82%);
   }
 
-  // The chosen one has a ring
-  &[aria-pressed="true"],
-  &.is-selected {
+  &::-moz-range-track {
+    height: var(--_track);
+    border-radius: var(--cms-radius-pill);
+    background: var(--_hues);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--cms-text), transparent 82%);
+  }
+
+  // The thumb is the theme colour itself, ringed so it shows on any part of the track
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: var(--_thumb);
+    height: var(--_thumb);
+    // Centred on the track (webkit lines the thumb up with the track's top)
+    margin-top: calc((var(--_track) - var(--_thumb)) / 2);
+    border: 0;
+    border-radius: 50%;
+    background-color: var(--cms-theme);
     box-shadow:
-      inset 0 0 0 1px color-mix(in srgb, var(--cms-text), transparent 82%),
       0 0 0 2px var(--cms-surface-raised),
       0 0 0 4px var(--cms-text);
   }
-}
 
-.cms-appearance__colour {
-  background-color: var(--_colour);
+  &::-moz-range-thumb {
+    box-sizing: border-box;
+    width: var(--_thumb);
+    height: var(--_thumb);
+    border: 0;
+    border-radius: 50%;
+    background-color: var(--cms-theme);
+    box-shadow:
+      0 0 0 2px var(--cms-surface-raised),
+      0 0 0 4px var(--cms-text);
+  }
 
   &:focus-visible {
     @include focus-ring;
   }
-}
-
-// A rainbow, opening the browser's colour picker
-.cms-appearance__custom {
-  overflow: hidden;
-  background: conic-gradient(#ff6b6b, #f5c84c, #6fcf8e, #2dd4bf, #77cdff, #8b7cff, #ff8fbd, #ff6b6b);
-
-  &:focus-within {
-    @include focus-ring;
-  }
-}
-
-.cms-appearance__picker {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  cursor: pointer;
 }

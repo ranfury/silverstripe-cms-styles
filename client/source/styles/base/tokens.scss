@@ -4,12 +4,15 @@
 // Theme
 // ===============================
 
-// --cms-theme is set by the appearance menu (scripts/components/appearance.js), every other colour is made from it,
-// so changing the theme colour restyles the whole CMS.
+// --cms-hue is set by the appearance menu (scripts/components/appearance.js) and --cms-theme is made from it,
+// at a lightness and chroma fixed here (the same pastel brightness for every hue, close to the colours the menu used to offer),
+// then every other colour is made from the theme, so changing the hue restyles the whole CMS.
+// The hue until one is picked is `theme_hue` in the module's config (LeftAndMainExtension), this is the fallback
 // Each colour has a light and a dark value (light-dark()), the color-scheme below picks which one is used
 
 :root {
-  --cms-theme: #77cdff;
+  --cms-hue: 250;
+  --cms-theme: oklch(.85 .085 var(--cms-hue));
 
   // Accent
   --cms-accent: var(--cms-theme);

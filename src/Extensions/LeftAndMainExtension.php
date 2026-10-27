@@ -15,7 +15,7 @@ use SilverStripe\Core\Manifest\ModuleResourceLoader;
  * Blocks the CMS's own stylesheets (see blocked_css in _config/config.yml), so the CMS is styled by
  * this module's cms.css alone, with nothing to override. The blocked modules' javascript still loads as normal.
  *
- * Also puts the appearance settings in the head: the theme colours to pick from,
+ * Also puts the appearance settings in the head: the default theme hue,
  * and a small script that applies the saved colour / mode before the CMS is drawn
  */
 class LeftAndMainExtension extends Extension
@@ -44,9 +44,10 @@ class LeftAndMainExtension extends Extension
     private static array $module_overrides = [];
 
     /**
-     * The theme colours offered in the appearance menu (any colour can be picked too), the first is the default
+     * The theme colour's hue (0 to 360) until one is picked in the appearance menu. The menu picks a hue only: its
+     * lightness and chroma are fixed (base/tokens.scss), so every theme colour is as bright as the others
      */
-    private static array $theme_colours = [];
+    private static int $theme_hue = 250;
 
     protected function onAfterInit(): void
     {
@@ -84,7 +85,7 @@ class LeftAndMainExtension extends Extension
     public function getCMSStylesConfig(): array
     {
         $config = [
-            'colours' => static::getThemeColours(),
+            'hue' => static::getThemeHue(),
         ];
 
         $this->owner->extend('updateCMSStylesConfig', $config);
@@ -93,11 +94,11 @@ class LeftAndMainExtension extends Extension
     }
 
     /**
-     * The colours the appearance menu offers, the first is the default
+     * The theme colour's hue until one is picked
      */
-    public static function getThemeColours(): array
+    public static function getThemeHue(): int
     {
-        return array_values(array_filter(static::config()->get('theme_colours') ?: []));
+        return (int) static::config()->get('theme_hue') % 360;
     }
 
     /**

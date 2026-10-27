@@ -31,12 +31,8 @@ Ranfury\CMSStyles\Extensions\LeftAndMainExtension:
   #   ignored_modules: modules to keep the styles of
   #   module_overrides: styles that another package brings itself
 
-  # The colours offered in the appearance menu (any colour can be picked as well), the first is the default
-  theme_colours:
-    - '#8eb4dd'
-    - '#7becde'
-    - '#EFCBF9'
-    - '#ffc4a5'
+  # The theme colour's hue (0 to 360) until one is picked in the appearance menu
+  theme_hue: 250
 
 # The dev pages (dev/build, dev/tasks) in the module's style
 SilverStripe\Core\Injector\Injector:

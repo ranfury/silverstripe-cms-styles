@@ -2,13 +2,13 @@
 Appearance menu
 
 A button in the menu's footer opening a popover to pick light / dark / system,
-and the theme colour (the configured colours, or any colour).
+and the theme colour (its hue, on a slider).
 The choice is saved in the browser and applied straight away
 ------------------------------------------------------------------ */
 
 import DomObserver from './dom-observer';
 import {
-  MODES, applyAppearance, readConfig, readSettings, saveSettings,
+  MODES, applyAppearance, readSettings, saveSettings,
 } from './appearance-settings';
 
 const MODE_LABELS = {
@@ -26,7 +26,6 @@ const MODE_ICONS = {
 let menuCount = 0;
 
 function render(holder) {
-  const { colours = [] } = readConfig();
   const id = `CMSAppearance${menuCount += 1}`;
 
   const wrapper = document.createElement('div');
@@ -50,37 +49,23 @@ function render(holder) {
 
       <p class="cms-appearance__heading">Theme colour</p>
 
-      <div class="cms-appearance__colours" role="group" aria-label="Theme colour">
-        ${colours.map((colour) => `
-          <button type="button" class="cms-appearance__colour" data-colour="${colour}" style="--_colour: ${colour}" aria-pressed="false" aria-label="${colour}"></button>
-        `).join('')}
-
-        <label class="cms-appearance__custom" title="Any colour">
-          <input type="color" class="cms-appearance__picker" aria-label="Any colour">
-        </label>
-      </div>
+      <input type="range" class="cms-appearance__hue" min="0" max="360" step="1" value="250" aria-label="Theme colour">
     </div>
   `;
 
   const toggle = wrapper.querySelector('.cms-appearance__toggle');
   const menu = wrapper.querySelector('.cms-appearance__menu');
-  const picker = wrapper.querySelector('.cms-appearance__picker');
+  const slider = wrapper.querySelector('.cms-appearance__hue');
 
-  // Show which mode / colour is picked
+  // Show which mode / hue is picked
   const update = () => {
-    const { colour, mode } = readSettings();
+    const { hue, mode } = readSettings();
 
     wrapper.querySelectorAll('[data-mode]').forEach((button) => {
       button.setAttribute('aria-pressed', String(button.dataset.mode === mode));
     });
 
-    wrapper.querySelectorAll('[data-colour]').forEach((button) => {
-      button.setAttribute('aria-pressed', String(button.dataset.colour.toLowerCase() === colour?.toLowerCase()));
-    });
-
-    const custom = colour && !colours.some((c) => c.toLowerCase() === colour.toLowerCase());
-    picker.closest('.cms-appearance__custom').classList.toggle('is-selected', !!custom);
-    if (colour?.startsWith('#') && colour.length === 7) picker.value = colour;
+    if (Number.isFinite(hue)) slider.value = hue;
   };
 
   const choose = (settings) => {
@@ -93,11 +78,7 @@ function render(holder) {
     button.addEventListener('click', () => choose({ mode: button.dataset.mode }));
   });
 
-  wrapper.querySelectorAll('[data-colour]').forEach((button) => {
-    button.addEventListener('click', () => choose({ colour: button.dataset.colour }));
-  });
-
-  picker.addEventListener('input', () => choose({ colour: picker.value }));
+  slider.addEventListener('input', () => choose({ hue: Number(slider.value) }));
 
   // The popover opens above its button (it is in the top layer, so it is placed from the button's position)
   menu.addEventListener('beforetoggle', (e) => {
