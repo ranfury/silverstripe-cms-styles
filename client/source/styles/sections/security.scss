@@ -89,6 +89,29 @@ thead .sudo-mode-password-grid-field__row th {
 }
 
 // ===============================
+// Session timeout: the "Login" dialog, with the log back in page in an iframe (login.scss styles what's in it)
+// ===============================
+
+// The form is narrow: the dialog is only as wide as it needs
+.modal-dialog:has(.login-dialog__body) {
+  max-width: 32rem;
+}
+
+// No padding: the page inside has its own, and its message runs across the top edge to edge
+.login-dialog__body.modal-body {
+  padding: 0;
+}
+
+.login-dialog__body__iframe {
+  display: block;
+  width: 100%;
+  // The heading, message, password, tick box and buttons (a wrong password's message above them scrolls a little)
+  height: 25rem;
+  border: 0;
+  background-color: transparent;
+}
+
+// ===============================
 // Permissions (a group's / member's)
 // ===============================
 

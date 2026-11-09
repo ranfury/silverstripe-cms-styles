@@ -232,7 +232,7 @@ class LeftAndMainExtension extends Extension
         return static::getDistFile('client/dist/scripts/appearance-boot.js');
     }
 
-    private static function getDistFile(string $file): ?string
+    public static function getDistFile(string $file): ?string
     {
         $module = ModuleLoader::getModule(self::MODULE);
         $path = $module?->getResource($file)->getPath();

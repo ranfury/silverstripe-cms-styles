@@ -76,6 +76,9 @@ module.exports = (env, argv) => {
       'appearance-boot': path.join(source, 'scripts/appearance-boot.js'),
       // Inlined in the CMS's <head> too: the styles for the first thing drawn (written to dist/styles/critical.css)
       'critical': path.join(source, 'styles/critical.scss'),
+      // The log back in page in the session timeout dialog's iframe (CMSSecurity): its styles (login.css) and boot script
+      'login': path.join(source, 'styles/login.scss'),
+      'login-boot': path.join(source, 'scripts/login-boot.js'),
       ...moduleStyles,
       // Runs in the site's pages when they are shown in the CMS preview
       'preview': path.join(source, 'scripts/preview.js'),

@@ -35,6 +35,10 @@ Then flush (`?flush=1`). The built files are in the package (`client/dist`), the
   hover or focus), and stays as it was left. That's the CMS's own collapse and its own memory of it: Silverstripe only
   follows that memory with its "sticky nav" switch on (otherwise it collapses the menu itself on every screen with the
   pages tree), so the boot script turns sticky on and leaves the menu open until it's collapsed
+- The "session timed out" dialog shows the log back in page (`CMSSecurity/login`) in an iframe. That page isn't a CMS
+  screen, so `CMSSecurityExtension` blocks the admin's `bundle.css` on it and inlines `login.css` in its place, with
+  `login-boot.js`. The page is the same origin as the CMS, so the script reads the theme colour and light / dark mode
+  saved in the browser, the same as the CMS does. The dialog's own side (width, the iframe) is in `sections/security.scss`
 - The dev pages (`dev/build`, `dev/tasks`, errors in dev mode) are styled to match (`dev.css`). To do it, the module
   replaces Silverstripe's `SilverStripe\Dev\DebugView` with its own through the Injector (`Ranfury\CMSStyles\Dev\DebugView`)
   and empties the task runner's own stylesheet list (`_config.php`). A project that customises the dev pages itself,

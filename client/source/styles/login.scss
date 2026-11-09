@@ -1,0 +1,188 @@
+//------------------------------------------------------------------
+// Silverstripe CMS Styles: the log back in page (CMSSecurity)
+//
+// The page the "session timed out" dialog shows in an iframe (CMSSecurity/login, and /success for a moment after
+// it). The iframe is a page of its own, so it doesn't get cms.css: CMSSecurityExtension swaps the admin's
+// bundle.css for this, inlined in its <head>, with the boot script that puts the CMS's theme colour and
+// light / dark mode on it (the iframe is the same origin as the CMS, so it reads the same saved settings)
+//------------------------------------------------------------------
+
+@use 'cms/abstracts' as *;
+@use 'base/tokens';
+@use 'base/reset';
+@use 'components/buttons';
+@use 'components/feedback';
+@use 'forms/inputs';
+@use 'forms/choices';
+
+// ===============================
+// Page
+// ===============================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 14px;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  // The dialog's own colour (components/modals: .modal-content), so the frame doesn't show as a different panel
+  background-color: #{scheme(var(--cms-bg), var(--cms-surface-raised))};
+}
+
+body {
+  margin: 0;
+  font-family: $font-body;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--cms-text);
+  background-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+// ===============================
+// Layout
+// ===============================
+
+.cms-security__container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: $space-3xl;
+
+  // Bootstrap's .row (the page's markup): each part one under the other, no negative margins
+  .row {
+    display: block;
+    margin: 0;
+  }
+}
+
+.cms-security__container__form {
+  width: 100%;
+}
+
+// ===============================
+// Heading
+// ===============================
+
+.cms-security h1 {
+  display: flex;
+  align-items: center;
+  gap: $space-lg;
+  margin: 0 0 $space-lg;
+  font-size: $text-xl;
+  font-weight: $semibold;
+  line-height: 1.25;
+  letter-spacing: -.01em;
+  color: var(--cms-text);
+
+  // The icon font isn't loaded here: the same icon, drawn as the rest of the CMS draws its icons, in the theme colour
+  .icon {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--cms-radius);
+    color: var(--cms-link);
+    background-color: var(--cms-accent-soft);
+
+    &::before {
+      @include lucide('history', 1.4rem);
+    }
+  }
+}
+
+.cms-security .Content {
+  margin-bottom: $space-2xl;
+  color: var(--cms-text-muted);
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+// ===============================
+// Message (a wrong password, "Invalid user")
+// ===============================
+
+// A band across the top of the dialog, over its own padding, not a card in it
+.cms-security__container__error.alert {
+  margin: 0;
+  padding: $space-lg $space-3xl;
+  border-width: 0 0 1px;
+  border-radius: 0;
+}
+
+// ===============================
+// Form
+// ===============================
+
+.cms-security fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.cms-security .clear {
+  display: none;
+}
+
+.cms-security .form-group {
+  margin-bottom: $space-xl;
+}
+
+.cms-security .form__field-label {
+  display: block;
+  margin-bottom: $space-xs;
+  font-size: $text-base;
+  font-weight: $medium;
+}
+
+.cms-security .form__field-holder {
+  position: relative;
+  min-width: 0;
+}
+
+// "Keep me signed in": the label and its box on one line, as a field's option rows are in the CMS
+.cms-security .form-check-label {
+  align-items: flex-start;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.cms-security .form-check-input {
+  margin-top: .15rem;
+}
+
+// A field's own message, under it
+.cms-security .form__field-holder > :is(.message, .alert) {
+  margin: $space-xs 0 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.cms-security .btn-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-sm;
+  margin-top: $space-2xl;
+}
+
+// The way back in first, the other two are quiet buttons beside it
+.cms-security .btn-primary {
+  flex: 1 1 auto;
+}
+
+@include lucide-icons;
+@include reduced-motion;
