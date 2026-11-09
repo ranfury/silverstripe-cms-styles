@@ -1,0 +1,422 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Tree field (akqa/silverstripe-tree-field): a hierarchy of records, the tree on one side and the chosen record's
+// fields on the other (the menu manager's links)
+// ===============================
+
+// The tree and its record side by side take the whole width, the label above them. Twice .treefield: level with
+// forms/layout's label-beside grid, which this stylesheet comes after
+.cms-edit-form .form-group.treefield.treefield {
+  display: block;
+
+  > .form__field-label {
+    margin-bottom: $space-sm;
+    padding-top: 0;
+  }
+}
+
+// The tree lays itself out by its own width, not the window's
+.tree-field {
+  container: tree-field / inline-size;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.tree-field--busy {
+  cursor: progress;
+}
+
+// Collapse all / Expand all
+.tree-field__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-sm;
+  margin-bottom: $space-lg;
+}
+
+.tree-field__messages:empty {
+  display: none;
+}
+
+.tree-field__message {
+  margin-bottom: $space-lg;
+}
+
+.tree-field__body {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xl;
+  min-height: 0;
+
+  @container tree-field (min-width: 48rem) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.tree-field__tree {
+  flex: 1 1 40%;
+  width: 100%;
+  min-width: 0;
+}
+
+// ===============================
+// Rows: a card for each record, indented by its depth (the field sets the indent itself)
+// ===============================
+
+.tree-field__list {
+  @include list-reset;
+}
+
+.tree-field__row {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tree-field__row-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: $space-3xs;
+  min-height: 3rem;
+  margin-bottom: $space-2xs;
+  padding: $space-2xs $space-2xs $space-2xs 0;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-surface);
+  box-shadow: var(--cms-shadow-sm);
+  transition:
+    background-color $fast ease,
+    border-color $fast ease,
+    box-shadow $fast ease;
+
+  &:hover {
+    border-color: var(--cms-border-strong);
+    background-color: color-mix(in srgb, var(--cms-surface), var(--cms-text) 2%);
+  }
+}
+
+// The record that's open: the soft tint, and a bar in the theme colour down its side
+.tree-field__row--selected > .tree-field__row-inner {
+  border-color: color-mix(in srgb, var(--cms-accent), var(--cms-border) 55%);
+  background-color: var(--cms-accent-soft);
+  box-shadow: inset 3px 0 0 var(--cms-accent);
+}
+
+.tree-field__row--dragging {
+  opacity: .4;
+}
+
+// Where the dragged row will land
+.tree-field__row--ghost > .tree-field__row-inner {
+  border: 1px dashed var(--cms-accent);
+  background-color: var(--cms-accent-soft);
+  box-shadow: none;
+}
+
+.tree-field__row--disabled .tree-field__label {
+  cursor: default;
+}
+
+// Drag, open / close and the row's menu: small icon buttons
+.tree-field__handle.btn,
+.tree-field__toggle.btn,
+.tree-field__action.btn,
+.tree-field__toggle {
+  --btn-color: var(--cms-text-muted);
+  --btn-bg: transparent;
+  --btn-border: transparent;
+  --btn-shadow: none;
+  --btn-hover-color: var(--cms-text);
+  --btn-hover-bg: var(--cms-hover);
+  --btn-hover-shadow: none;
+  --btn-height: 1.75rem;
+  --btn-padding: 0;
+
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  min-width: 0;
+  height: 1.75rem;
+  margin: 0;
+  padding: 0;
+  border-radius: var(--cms-radius-sm);
+  color: var(--cms-text-muted);
+
+  &::before,
+  [class*="font-icon-"]::before {
+    margin: 0;
+  }
+}
+
+.tree-field__handle.btn {
+  color: var(--cms-text-faint);
+  cursor: grab;
+  touch-action: none;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.tree-field__toggle--empty {
+  visibility: hidden;
+}
+
+// The title and its link, which opens the record
+.tree-field__label {
+  @include button-reset;
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: $space-sm;
+  min-width: 0;
+  min-height: 2.25rem;
+  padding: 0 $space-2xs;
+  border-radius: var(--cms-radius-sm);
+  text-align: start;
+
+  &:focus-visible {
+    @include focus-ring(0);
+  }
+}
+
+.tree-field__icon {
+  @include record-icon;
+}
+
+.tree-field__text {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3xs;
+  min-width: 0;
+}
+
+.tree-field__title-line {
+  display: flex;
+  align-items: center;
+  gap: $space-xs;
+  min-width: 0;
+}
+
+.tree-field__title {
+  overflow: hidden;
+  font-weight: $medium;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  .tree-field__row--selected & {
+    font-weight: $semibold;
+  }
+}
+
+.tree-field__subtitle {
+  overflow: hidden;
+  font-size: $text-xs;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--cms-text-muted);
+}
+
+.tree-field__badge {
+  flex: 0 0 auto;
+}
+
+// Unpublished changes, in the corner: modified a dot, draft a ring, as the files area marks them
+.tree-field__status {
+  position: absolute;
+  top: $space-xs;
+  right: $space-xs;
+  width: .6rem;
+  height: .6rem;
+  border: 2px solid var(--cms-surface);
+  border-radius: 50%;
+  background-color: var(--cms-warning);
+  box-shadow: var(--cms-shadow-sm);
+  pointer-events: none;
+
+  .tree-field__row--draft & {
+    border-color: var(--cms-info);
+    background-color: var(--cms-surface);
+  }
+}
+
+.tree-field__status-text {
+  @include visually-hidden;
+}
+
+// The row's menu (move up / down, indent, delete) shows on the row hovered, focused or open
+.tree-field__row-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  opacity: 0;
+  transition: opacity $fast ease;
+
+  .tree-field__row:hover &,
+  .tree-field__row:focus-within &,
+  .tree-field__row--selected & {
+    opacity: 1;
+  }
+
+  // Touch screens can't hover
+  @media (hover: none) {
+    opacity: 1;
+  }
+}
+
+.dropdown-item.tree-field__action--danger {
+  color: var(--cms-danger);
+
+  &:hover,
+  &:focus-visible {
+    color: var(--cms-danger);
+    background-color: var(--cms-danger-soft);
+  }
+}
+
+// The row being dragged, following the pointer
+.tree-field__drag-overlay {
+  @include floating;
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  padding: $space-xs $space-lg;
+  cursor: grabbing;
+}
+
+.tree-field-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.tree-field__empty,
+.tree-field__loading,
+.entwine-treefield > .tree-field__loading {
+  margin: 0;
+  padding: $space-xl;
+  list-style: none;
+  color: var(--cms-text-muted);
+}
+
+// ===============================
+// Add a record (at the end of the tree, or inside one)
+// ===============================
+
+.tree-field__adder {
+  margin: $space-2xs 0 $space-sm;
+  list-style: none;
+}
+
+.tree-field__adder-button {
+  @include button-reset;
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+  width: 100%;
+  min-height: 2.5rem;
+  padding: $space-sm $space-lg;
+  border: 1px dashed var(--cms-border-strong);
+  border-radius: var(--cms-radius);
+  font-size: $text-base;
+  text-align: start;
+  color: var(--cms-text-muted);
+  transition:
+    border-color $fast ease,
+    color $fast ease,
+    background-color $fast ease;
+
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
+    border-color: var(--cms-accent);
+    color: var(--cms-link);
+    background-color: var(--cms-accent-soft);
+  }
+
+  &:disabled {
+    opacity: .5;
+    cursor: default;
+  }
+}
+
+// ===============================
+// The open record's fields
+// ===============================
+
+.tree-field__detail {
+  flex: 1 1 60%;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius);
+  background-color: var(--cms-surface);
+  box-shadow: var(--cms-shadow-sm);
+
+  // Beside the tree it lines up with the row that's open (the field sets the offset)
+  @container tree-field (min-width: 48rem) {
+    margin-top: var(--tree-field-detail-offset, 0);
+    transition: margin-top $fast ease-out;
+  }
+}
+
+.tree-field__detail--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 8rem;
+  padding: $space-xl;
+  text-align: center;
+  color: var(--cms-text-muted);
+  background-color: var(--cms-sunken);
+  box-shadow: none;
+}
+
+.tree-field__detail-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $space-sm;
+  padding: $space-lg $space-xl;
+  border-bottom: 1px solid var(--cms-border);
+}
+
+.tree-field__detail-title {
+  margin: 0;
+  overflow: hidden;
+  font-size: $text-md;
+  font-weight: $semibold;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Saving... / Saved / Not saved
+.tree-field__detail-status {
+  flex: 0 0 auto;
+  font-size: $text-sm;
+  color: var(--cms-text-muted);
+
+  &--saved {
+    color: var(--cms-success);
+  }
+
+  &--failed {
+    color: var(--cms-danger);
+  }
+}
+
+// The record's fields lay themselves out by the panel's width, so their labels go above them when it's narrow
+.tree-field__detail-body {
+  container: form / inline-size;
+  padding: $space-xl;
+
+  > :last-child,
+  .form-group:last-child {
+    margin-bottom: 0;
+  }
+}

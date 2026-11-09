@@ -1,0 +1,152 @@
+@use 'cms/abstracts' as *;
+
+// ===============================
+// Menu manager (heyday/silverstripe-menumanager): the Menus section. Its links are a tree field
+// (modules/akqa/silverstripe-tree-field)
+// ===============================
+
+// The tree fills the panel, the panel scrolls
+.menu-admin .tree-field__tree {
+  max-height: none;
+}
+
+// Every link is a link, so a link's icon only shows when it says something (opens in a new tab...)
+.menu-admin .tree-field__icon:not([class*="font-icon-"]) {
+  display: none;
+}
+
+// ===============================
+// The section's landing view: every menu as a card, as the files area shows its files
+// ===============================
+
+.menu-admin__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: $space-xl;
+  padding: $space-xl 0;
+}
+
+.menu-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  padding: $space-xl;
+  border: 1px solid var(--cms-border);
+  border-radius: var(--cms-radius);
+  text-decoration: none;
+  color: var(--cms-text);
+  background-color: var(--cms-surface);
+  box-shadow: var(--cms-shadow-sm);
+  transition:
+    border-color $fast ease,
+    box-shadow $fast ease,
+    translate $fast ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: color-mix(in srgb, var(--cms-accent), var(--cms-border) 55%);
+    text-decoration: none;
+    color: var(--cms-text);
+    box-shadow: var(--cms-shadow);
+    translate: 0 -1px;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.menu-tile__header {
+  display: flex;
+  align-items: flex-start;
+  gap: $space-md;
+}
+
+// The menu's icon on a soft tile, as the link field shows a link's
+.menu-tile__icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--cms-radius-sm);
+  font-size: 1.1rem;
+  color: var(--cms-link);
+  background-color: var(--cms-accent-soft);
+
+  &::before {
+    margin: 0;
+  }
+}
+
+.menu-tile__heading {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3xs;
+  min-width: 0;
+  padding-top: $space-3xs;
+}
+
+.menu-tile__title {
+  overflow: hidden;
+  font-size: $text-md;
+  font-weight: $semibold;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// The menu's name in the templates
+.menu-tile__name {
+  overflow: hidden;
+  font-family: $font-mono;
+  font-size: $text-xs;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--cms-text-muted);
+}
+
+.menu-tile__count {
+  font-size: $text-xs;
+  font-weight: $semibold;
+  letter-spacing: $caps-tracking;
+  text-transform: uppercase;
+  color: var(--cms-text-muted);
+}
+
+.menu-tile__description {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: $text-sm;
+  line-height: 1.45;
+  color: var(--cms-text-muted);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+// Unpublished changes: the dot the files area marks a modified file with
+.menu-tile__status {
+  flex: 0 0 auto;
+  width: .6rem;
+  height: .6rem;
+  margin-top: $space-xs;
+  margin-inline-start: auto;
+  border: 2px solid var(--cms-surface);
+  border-radius: 50%;
+  background-color: var(--cms-warning);
+  box-shadow: var(--cms-shadow-sm);
+}
+
+.menu-tile__status-text {
+  @include visually-hidden;
+}
+
+.menu-admin__empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: $space-3xl;
+  border: 1px dashed var(--cms-border-strong);
+  border-radius: var(--cms-radius);
+  text-align: center;
+  color: var(--cms-text-muted);
+}

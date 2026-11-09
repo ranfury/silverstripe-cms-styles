@@ -26,6 +26,7 @@ Ranfury\CMSStyles\Extensions\LeftAndMainExtension:
     - 'jonom/focuspoint: client/dist/styles/main.css'
     - 'bummzack/sortablefile: client/dist/styles/main.css'
     - 'silverstripe/userforms: client/dist/styles/userforms-cms.css'
+    - 'heyday/silverstripe-menumanager: client/menu-manager.css'
 
   # Also available, empty by default (see LeftAndMainExtension and the README):
   #   ignored_modules: modules to keep the styles of
