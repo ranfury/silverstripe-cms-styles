@@ -5,3 +5,6 @@
 /package.json export-ignore
 /package-lock.json export-ignore
 /webpack.config.js export-ignore
+/maintenance export-ignore
+/MAINTENANCE.md export-ignore
+/.claude export-ignore

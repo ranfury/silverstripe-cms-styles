@@ -4,7 +4,9 @@
     "description": "Builds the client/dist files of ranfury/silverstripe-cms-styles (the package itself is installed with composer)",
     "scripts": {
         "build": "webpack --mode production --config webpack.config.js",
-        "watch": "webpack --mode development --watch --config webpack.config.js"
+        "watch": "webpack --mode development --watch --config webpack.config.js",
+        "upstream": "node maintenance/upstream.mjs check",
+        "upstream:accept": "node maintenance/upstream.mjs accept"
     },
     "engines": {
         "node": ">=20"

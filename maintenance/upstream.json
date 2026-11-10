@@ -1,0 +1,236 @@
+{
+    "$comment": "The modules whose styles this one blocks, and the version / commit each one's styles here were last checked against. Moved on with `npm run upstream:accept` (see MAINTENANCE.md). `ours`: the built stylesheets that style it (default modules/<vendor>/<package>.css). `watch`: more upstream paths to diff. `track`: a branch to follow instead of tags. `ignore`: installed modules with css that needs nothing here",
+    "modules": {
+        "akqa/silverstripe-tree-field": {
+            "repo": "https://github.com/WPP-Public/akqa-silverstripe-tree-field",
+            "styled": {
+                "version": "1.1.0",
+                "commit": "27a477501a05d6fee109b7feeacd32fa1c95e131",
+                "checked": "2026-11-11"
+            }
+        },
+        "bummzack/sortablefile": {
+            "repo": "https://github.com/bummzack/sortablefile.git",
+            "styled": {
+                "version": "3.0.0",
+                "commit": "1dcc8c2d62a7d863578cc73fab8d8f488f01c0c3",
+                "checked": "2026-11-11"
+            }
+        },
+        "dnadesign/silverstripe-elemental": {
+            "repo": "https://github.com/silverstripe/silverstripe-elemental.git",
+            "styled": {
+                "version": "6.2.3",
+                "commit": "9dac131457e8fcdd5ef938eb5586205800dfd364",
+                "checked": "2026-11-11"
+            }
+        },
+        "heyday/silverstripe-menumanager": {
+            "repo": "https://github.com/WPP-Public/akqa-nz-silverstripe-menumanager.git",
+            "styled": {
+                "version": "6.1.0",
+                "commit": "8384f36ff4477727cbd584e408592e24a1d18f84",
+                "checked": "2026-11-11"
+            }
+        },
+        "jonom/focuspoint": {
+            "repo": "https://github.com/jonom/silverstripe-focuspoint.git",
+            "styled": {
+                "version": "6.0.2",
+                "commit": "2a78dae5da21c6672261514ef796e34254e12e20",
+                "checked": "2026-11-11"
+            }
+        },
+        "plasticstudio/iconfield": {
+            "repo": "https://github.com/toastnz/plasticstudio-iconfield",
+            "styled": {
+                "version": "6.3.4",
+                "commit": "62fdc48f4d9eacdd77caef8682f1d5ae1e92f539",
+                "checked": "2026-11-11"
+            }
+        },
+        "silverstripe/admin": {
+            "repo": "https://github.com/silverstripe/silverstripe-admin.git",
+            "styled": {
+                "version": "3.3.0",
+                "commit": "94a43adaf5fa2df1dc738642ab478aa1e0569466",
+                "checked": "2026-11-11"
+            },
+            "ours": [
+                "cms.css",
+                "critical.css",
+                "login.css"
+            ]
+        },
+        "silverstripe/asset-admin": {
+            "repo": "https://github.com/silverstripe/silverstripe-asset-admin.git",
+            "styled": {
+                "version": "3.3.1",
+                "commit": "dee2131aa4e19ea637110da10235ca583375d6c1",
+                "checked": "2026-11-11"
+            }
+        },
+        "silverstripe/cms": {
+            "repo": "https://github.com/silverstripe/silverstripe-cms.git",
+            "styled": {
+                "version": "6.3.1",
+                "commit": "bdbf72d326ff8133278f1640e0606fb00805b521",
+                "checked": "2026-11-11"
+            },
+            "ours": [
+                "cms.css"
+            ]
+        },
+        "silverstripe/framework": {
+            "repo": "https://github.com/silverstripe/silverstripe-framework.git",
+            "styled": {
+                "version": "6.3.2",
+                "commit": "c46f398ad0884a499c2bbd744011876685206253",
+                "checked": "2026-11-11"
+            },
+            "ours": [
+                "cms.css",
+                "dev.css",
+                "login.css"
+            ],
+            "watch": [
+                "src/Dev/DebugView.php",
+                "src/Dev/TaskRunner.php",
+                "src/Security/CMSSecurity.php"
+            ]
+        },
+        "silverstripe/htmleditor-tinymce": {
+            "repo": "https://github.com/silverstripe/silverstripe-htmleditor-tinymce.git",
+            "styled": {
+                "version": "1.2.0",
+                "commit": "3d7d2a3d5fc0176a1ede2272f6ef8e4e3ef239d9",
+                "checked": "2026-11-11"
+            },
+            "ours": [
+                "cms.css"
+            ]
+        },
+        "silverstripe/linkfield": {
+            "repo": "https://github.com/silverstripe/silverstripe-linkfield.git",
+            "styled": {
+                "version": "5.2.2",
+                "commit": "9bb76a07ae67f180841de779ec019515242c2d4c",
+                "checked": "2026-11-11"
+            }
+        },
+        "silverstripe/lumberjack": {
+            "repo": "https://github.com/silverstripe/silverstripe-lumberjack.git",
+            "styled": {
+                "version": "4.1.2",
+                "commit": "f6201565366b1f1867c39a6e8c1dbc211885fd81",
+                "checked": "2026-11-11"
+            }
+        },
+        "silverstripe/reports": {
+            "repo": "https://github.com/silverstripe/silverstripe-reports.git",
+            "styled": {
+                "version": "6.3.0",
+                "commit": "e05e8bf707053d97f91c90359637f655bde72c7d",
+                "checked": "2026-11-11"
+            },
+            "ours": [
+                "cms.css"
+            ]
+        },
+        "silverstripe/session-manager": {
+            "repo": "https://github.com/silverstripe/silverstripe-session-manager.git",
+            "styled": {
+                "version": "3.1.4",
+                "commit": "b67de0cfbbf857ac94a2196d71fb1a3cdf5ab335",
+                "checked": "2026-11-11"
+            }
+        },
+        "silverstripe/siteconfig": {
+            "repo": "https://github.com/silverstripe/silverstripe-siteconfig.git",
+            "styled": {
+                "version": "6.3.0",
+                "commit": "8c027a8cb15c294034ecbce16f28075e8516035a",
+                "checked": "2026-11-11"
+            },
+            "ours": [
+                "cms.css"
+            ]
+        },
+        "silverstripe/tagfield": {
+            "repo": "https://github.com/silverstripe/silverstripe-tagfield.git",
+            "styled": {
+                "version": "4.2.1",
+                "commit": "d9dd06054d4fd1a5dd6a32aa6fa16788f1587fcb",
+                "checked": "2026-11-11"
+            }
+        },
+        "silverstripe/userforms": {
+            "repo": "https://github.com/silverstripe/silverstripe-userforms.git",
+            "styled": {
+                "version": "7.1.4",
+                "commit": "4d752ea8f3e26a6423e90b7d07c92ae69f96ec2c",
+                "checked": "2026-11-11"
+            }
+        },
+        "silverstripe/versioned": {
+            "repo": "https://github.com/silverstripe/silverstripe-versioned.git",
+            "styled": {
+                "version": "3.3.0",
+                "commit": "1fc3ee50ff3c15f55a2f7533797eff58ab37683a",
+                "checked": "2026-11-11"
+            },
+            "ours": [
+                "cms.css"
+            ]
+        },
+        "silverstripe/versioned-admin": {
+            "repo": "https://github.com/silverstripe/silverstripe-versioned-admin.git",
+            "styled": {
+                "version": "3.3.0",
+                "commit": "1f80a16be9035108df19565a3d11a5587652ed6f",
+                "checked": "2026-11-11"
+            }
+        },
+        "symbiote/silverstripe-gridfieldextensions": {
+            "repo": "https://github.com/silverstripe/silverstripe-gridfieldextensions.git",
+            "styled": {
+                "version": "5.2.2",
+                "commit": "a2d5f559f11ab1d5532ceecff2e3b638effe3711",
+                "checked": "2026-11-11"
+            }
+        },
+        "symbiote/silverstripe-grouped-cms-menu": {
+            "repo": "https://github.com/toastnz/silverstripe-grouped-cms-menu",
+            "styled": {
+                "version": "6.0",
+                "commit": "c9cb3bc9699d6964a934122d3666a198dea8ff04",
+                "checked": "2026-11-11"
+            }
+        },
+        "toastnz/blocks-layouts": {
+            "repo": "https://github.com/toastnz/blocks-layouts.git",
+            "styled": {
+                "version": "dev-feature/2026/m7",
+                "commit": "9a89744b3abc4997792740637786224f791bcc64",
+                "checked": "2026-11-11"
+            }
+        },
+        "toastnz/colourpalettes": {
+            "repo": "https://github.com/toastnz/colourpalettes.git",
+            "styled": {
+                "version": "6.0.7",
+                "commit": "1f099227a4423982a371e3c78a9d7b75cd1b32ba",
+                "checked": "2026-11-11"
+            }
+        },
+        "tractorcow/silverstripe-colorpicker": {
+            "repo": "https://github.com/tractorcow/silverstripe-colorpicker.git",
+            "styled": {
+                "version": "dev-master",
+                "commit": "1c5289302bd36757be52eedca986e4d9ef94454c",
+                "checked": "2026-11-11"
+            }
+        }
+    },
+    "ignore": []
+}
