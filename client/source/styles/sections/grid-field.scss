@@ -15,15 +15,17 @@
     margin-left: 0;
   }
 
-  // The filter / search row above a model admin's list
+  // The filter / search row above a model admin's list.
+  // Not overflow: hidden, which crops the search options form that drops down out of it.
+  // The field's corners are rounded instead (the box's radius, less its border)
   .cms-content-filters {
     margin: 0 0 $space-xl;
-    overflow: hidden;
     border: 1px solid var(--cms-border);
     border-radius: var(--cms-radius);
 
     .search-box__content-field {
       border-bottom: 0;
+      border-radius: calc(var(--cms-radius) - 1px);
     }
   }
 
