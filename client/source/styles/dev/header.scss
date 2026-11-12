@@ -59,8 +59,10 @@
     color: inherit;
   }
 
-  // An error page's header
+  // An error page's header, a card in the flow (sticky, its long message covered the trace, and the trace showed
+  // through its tinted background)
   &.error {
+    position: static;
     max-width: 64rem;
     margin: $space-5xl auto;
     padding: $space-2xl $space-3xl;
