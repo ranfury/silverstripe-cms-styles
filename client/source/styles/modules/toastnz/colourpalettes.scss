@@ -51,3 +51,14 @@
     border: 0;
   }
 }
+
+// ===============================
+// Colour palettes (toastnz/colourpalettes): the hex code input looks like any other text input
+// ===============================
+
+// (the colour picker script sets the field's background and text colour inline to match the chosen colour)
+input.colorfield {
+  background-image: none !important;
+  background-color: var(--cms-surface) !important;
+  color: var(--cms-text) !important;
+}
